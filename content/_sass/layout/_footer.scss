@@ -1,0 +1,12 @@
+footer {
+  background-color: var(--overlay);
+  border-block-start: thin dotted var(--border);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20ch, 75ch));
+  gap: var(--gutter);
+  place-content: center;
+
+  > * {
+    padding: var(--gutter);
+  }
+}

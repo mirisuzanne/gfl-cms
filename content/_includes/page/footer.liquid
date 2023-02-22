@@ -1,0 +1,11 @@
+<footer id="contentinfo">
+  <p>Copyright &copy; {% year %}
+    <strong>{{ site.author }}</strong>
+  </p>
+
+  {% unless isSocialPreview %}
+    <p>
+      <a href="{{ docOg }}">social image page</a>
+    </p>
+  {% endunless %}
+</footer>

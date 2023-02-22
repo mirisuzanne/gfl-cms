@@ -1,0 +1,38 @@
+@use 'sass:color';
+
+body {
+  --margin: minmax(var(--gutter, 1em), 1fr);
+  display: grid;
+  grid-template:
+    'nav nav nav' auto
+    'head head head' minmax(min-content, 60vh)
+    '. main .' minmax(auto, 1fr)
+    'foot foot foot' auto /
+    1fr minmax(min-content, 75ch) 1fr
+  ;
+}
+
+nav {
+  grid-area: nav;
+  z-index: 1;
+
+  [rel='home']:any-link {
+    text-transform: uppercase;
+  }
+}
+
+#hero {
+  grid-area: nav / head / head;
+}
+
+header {
+  grid-area: head;
+}
+
+main {
+  grid-area: main;
+}
+
+footer {
+  grid-area: foot;
+}

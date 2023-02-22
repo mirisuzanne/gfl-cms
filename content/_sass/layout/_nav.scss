@@ -1,0 +1,27 @@
+nav {
+  background-color: var(--overlay);
+  border-bottom: thin solid var(--bg);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: var(--shim, 0.5em);
+}
+
+nav a {
+  &:any-link {
+    --action: mistyrose;
+    display: inline-block;
+    font-stretch: var(--cond);
+    padding: var(--shim, 0.5em);
+    text-shadow: 1px 1px 0 black;
+  }
+}
+
+nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--shim, 0.5em);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}

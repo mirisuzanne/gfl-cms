@@ -1,0 +1,30 @@
+@use '../config';
+
+header {
+  display: grid;
+  font-stretch: var(--cond);
+  padding: var(--shim, 0.5rem);
+  place-content: center;
+  text-shadow: 1px 1px 0 var(--overlay);
+  z-index: 1;
+
+  h1,
+  p {
+    margin: 0;
+  }
+
+  @include config.below(45em) {
+    text-align: center;
+  }
+}
+
+h1 {
+  font-size: clamp(1.4em, 3em + 6vw, 10vw);
+  line-height: 0.9;
+  opacity: 0.7;
+
+  a:any-link {
+    --action: currentColor;
+    text-decoration: none;
+  }
+}

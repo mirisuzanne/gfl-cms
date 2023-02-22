@@ -1,0 +1,14 @@
+$fallback: (
+  /*iOS*/ "AvenirNextCondensed-Bold", "Futura-CondensedExtraBold",
+  /*MacOSX*/ HelveticaNeue-CondensedBold,
+  /*Ubuntu*/ "Ubuntu Condensed", "Liberation Sans Narrow",
+  /*Windows*/ "Franklin Gothic Demi Cond", "Arial Narrow",
+  /*Android*/ sans-serif-condensed,
+  /*Fallback*/ Arial, "Trebuchet MS", "Lucida Grande", Tahoma, Verdana,
+  sans-serif
+);
+
+$stack-novf: 'Roboto', $fallback;
+$stack: 'Roboto Extremo', $fallback;
+
+$cond: 25%;

@@ -1,0 +1,12 @@
+.venue {
+  margin-block-end: 0;
+}
+
+.h-adr {
+  font-style: italic;
+}
+
+[data-section] {
+  border-block-start: thin dotted var(--border);
+  margin-block-start: var(--spacer);
+}

@@ -1,0 +1,29 @@
+@use '../config/fonts';
+@use 'sass:meta';
+
+
+@font-face {
+  font-family: "Roboto Extremo";
+  src:
+    url("../fonts/RobotoExtremo-VF-slnt-alpha.woff2") format("woff2 supports variations"),
+    url("../fonts/RobotoExtremo-VF-slnt-alpha.woff2") format("woff2-variations")
+  ;
+  font-style: oblique 0deg 10deg;
+  font-weight: 100 900;
+  font-stretch: 25% 150%;
+  font-display: swap;
+}
+
+html {
+  @each $var, $value in meta.module-variables('fonts') {
+    --#{$var}: #{$value};
+  }
+
+  --vf-support: false;
+  font-family: var(--stack-novf);
+
+  @supports (font-variation-settings: normal) {
+    --vf-support: true;
+    font-family: var(--stack);
+  }
+}

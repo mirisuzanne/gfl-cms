@@ -1,0 +1,76 @@
+@use '../config';
+@use 'sass:meta';
+
+html {
+  --large: calc(1.2em + 0.25vw);
+  font-size: calc(1em + 0.25vmin);
+  line-height: 1.4;
+}
+
+h1 {
+  text-transform: uppercase;
+}
+
+h1, h2, h3, h4, h5 {
+  font-stretch: condensed;
+  font-stretch: var(--cond);
+  font-weight: 600;
+}
+
+h2, h3, h4, h5 {
+  margin-block-start: var(--gutter);
+}
+
+:is(ul, ol) {
+  padding-inline-start: 1em;
+
+  &:not(ul *, ol *) {
+    @include config.above(40em) {
+      padding-inline-start: 0;
+    }
+  }
+}
+
+main li + li {
+  margin-block-start: var(--half-shim);
+}
+
+strong, b {
+  font-stretch: var(--cond);
+  font-weight: 600;
+}
+
+a:any-link {
+  color: var(--action);
+}
+
+a:hover,
+a:focus,
+a:active {
+  color: var(--focus);
+}
+
+p:empty {
+  display: none;
+}
+
+blockquote {
+  border-inline-start: var(--half-shim) solid var(--border);
+  font-style: italic;
+  margin-inline: calc(var(--gutter) * -1.25) 0;
+  padding-inline: var(--gutter) 0;
+
+  em {
+    font-style: normal;
+  }
+
+  p:last-child em:only-child {
+    font-size: max(0.75em, 0.75rem);
+  }
+}
+
+hr {
+  border: 0 dotted var(--border);
+  border-block-end-width: thin;
+  margin-block: var(--spacer);
+}

@@ -1,0 +1,55 @@
+@forward '../../node_modules/cssremedy/css/remedy.css';
+
+// screen only
+header {
+  border-block-end: thin dotted;
+  margin-block-end: 2em;
+  padding-block-end: 2em;
+}
+
+h1 {
+  margin-block-end: 1rem;
+}
+
+// print styles
+@page {
+  margin-left: 1in;
+}
+
+html {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: calc(var(--fs-print, 12) * 1pt);
+}
+
+@media print {
+  header {
+    display: none;
+  }
+}
+
+@media screen {
+  body {
+    margin: 0 auto;
+    max-width: 75ch;
+  }
+}
+
+h2 {
+  font-size: 1.2em;
+  margin-bottom: 0;
+  break-after: avoid;
+}
+
+h2 + h3 {
+  margin-top: 0;
+}
+
+h3 {
+  font-size: 1em;
+  font-style: italic;
+}
+
+pre,
+code {
+  font: inherit;
+}

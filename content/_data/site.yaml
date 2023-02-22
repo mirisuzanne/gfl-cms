@@ -1,0 +1,7 @@
+title: &company Grapefruit Lab
+author: *company
+domain: GrapefruitLab.com
+description: >
+  Mixed-media theater and performance in Denver, CO.
+cssPath: '/css/'
+style: style.css

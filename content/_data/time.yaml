@@ -1,0 +1,4 @@
+# used by build plugins
+short: PP
+long: &default MMMM d, y
+default: *default

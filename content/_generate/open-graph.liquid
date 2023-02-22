@@ -1,0 +1,14 @@
+---
+layout: base
+isSocialPreview: true
+titlePre: 'OpenGraph: '
+style: 'social.css'
+pagination:
+  data: collections.all
+  size: 1
+  alias: source
+permalink: "_og/{{ source.url }}/index.html"
+---
+
+<h1>{{ source.data.title | mdInline }}</h1>
+<p>{{ site.domain }}</p>

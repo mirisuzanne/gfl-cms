@@ -1,0 +1,34 @@
+@use '../config/color';
+@use '../config/size';
+@use 'sass:meta';
+
+html {
+  @each $var, $value in meta.module-variables('color') {
+    --#{$var}: #{$value};
+  }
+  @each $var, $value in meta.module-variables('size') {
+    --#{$var}: #{$value};
+  }
+
+  background-color: var(--bg);
+  color: var(--fg);
+  color-scheme: dark;
+  accent-color: var(--action);
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+}
+
+picture {
+  display: contents;
+}
+
+source {
+  display: none;
+}
+
+picture img {
+  width: 100%;
+}
