@@ -1,0 +1,23 @@
+#hero {
+  border-bottom: thin dotted var(--border);
+  display: grid;
+  overflow: hidden;
+}
+
+.hero-img {
+  filter: brightness(var(--bright, 80%)) sepia(var(--sepia, 25%)) blur(var(--blur, 0));
+  width: 100%;
+
+  #hero & {
+    --bright: 40%;
+    --blur: 2px;
+    --sepia: 50%;
+    height: 0;
+    min-height: 100%;
+    overflow: hidden;
+    object-position: center;
+    object-fit: cover;
+    place-self: stretch;
+    scale: 1.1;
+  }
+}

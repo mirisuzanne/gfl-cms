@@ -1,0 +1,10 @@
+<script webc:setup>
+  const attrs = {
+    loading: 'eager',
+    class: 'hero-img',
+  };
+</script>
+
+<div id="hero">
+  <img :src="hero.url" :alt="hero.alternativeText" sizes="hero" :@attrs="attrs">
+</div>

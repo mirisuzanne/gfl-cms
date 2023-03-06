@@ -1,0 +1,7 @@
+main {
+  padding: var(--spacer) var(--gutter);
+}
+
+main > :first-child:not(h2) {
+  font-size: var(--large);
+}

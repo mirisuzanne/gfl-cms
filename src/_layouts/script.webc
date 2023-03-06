@@ -1,0 +1,37 @@
+---
+layout: base
+style: script
+step: 0.5
+---
+
+<nav>
+  <a href="../">« back to <strong @html="showTitle"></strong></a>
+  <details>
+    <summary>Adjust font size for printing</summary>
+    <form-field
+      @id="print-size"
+      @label="Font size (pt)"
+      @type="number"
+      @value="12"
+      @name="print-size"
+      :@attrs="({ step })"
+    >
+    </form-field>
+  </details>
+</nav>
+
+<header>
+  <h1 @html="title"></h1>
+  <time :datetime="formatDate(date, 'iso')" @html="formatDate(date)"></time>
+  <p @html="byline"></p>
+</header>
+
+<main id="content" @raw="md(cms.script)"></main>
+
+<script webc:keep>
+  const root = document.documentElement;
+  const fsInput = document.getElementById('print-size');
+  fsInput.addEventListener('change', () => {
+    root.style.setProperty('--fs-print', fsInput.value);
+  });
+</script>

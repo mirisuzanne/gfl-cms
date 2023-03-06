@@ -1,0 +1,9 @@
+<script webc:setup>
+  const padText = (level, text, url) => {
+    const pre = ''.padStart(level, '#');
+    const textLink = url ? `[${text}](${url})` : text;
+    return `${pre} ${textLink}`;
+  }
+</script>
+
+<h2 webc:nokeep @html="md(padText(level, title, linkTo))"></h2>

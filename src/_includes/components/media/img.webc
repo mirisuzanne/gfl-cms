@@ -1,0 +1,1 @@
+<picture webc:nokeep @raw="img(src, alt, sizes, attrs)"></picture>

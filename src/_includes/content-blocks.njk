@@ -1,0 +1,120 @@
+{% for item in cms.content %}
+  {% set is = item.__component %}
+
+  {% if is == 'content.body' %}
+    {% set itemData = { 'mdContent': item.body } %}
+
+    {% renderTemplate "webc", itemData %}
+      <div webc:nokeep @html="md(mdContent)"></div>
+    {% endrenderTemplate %}
+
+  {% elif is == 'content.h2' %}
+    {% set itemData = { 'mdHeading': item.heading } %}
+
+    {% renderTemplate "webc", itemData %}
+      <h @level="2" :@title="mdHeading"></h>
+    {% endrenderTemplate %}
+
+  {% elif is == 'content.action-link' %}
+    {% set itemData = {
+      'linkText': item.text,
+      'linkUrl': item.url
+    } %}
+
+    {% renderTemplate "webc", itemData %}
+      <a :href="linkUrl" @html="linkText" class="action"></a>
+    {% endrenderTemplate %}
+
+  {% elif is == 'content.quote' %}
+    {% set itemData = {
+      'quoteText': item.content,
+      'citeName': item.cite.name
+    } %}
+
+    {% renderTemplate "webc", itemData %}
+      <block-quote
+        :@quote-text="quoteText"
+        :@cite-name="citeName"
+      ></block-quote>
+    {% endrenderTemplate %}
+
+  {% elif is == 'content.person-card' %}
+    {% set person = item.person.data.attributes %}
+    {% set cardHero = person.header.hero.data.attributes %}
+    {% set itemData = {
+      'imgSrc': cardHero.url,
+      'imgAlt': cardHero.alternativeText,
+      'pName': person.name,
+      'proNouns': person.pronouns,
+      'pSummary': person.header.summary
+    } %}
+
+    {% renderTemplate "webc", itemData %}
+      <person-card
+        :name="pName"
+        :pronouns="proNouns"
+        :summary="pSummary"
+        :src="imgSrc"
+        :alt="imgAlt"
+      ></person-card>
+    {% endrenderTemplate %}
+
+  {% elif is == 'content.gallery-card' %}
+    {% set gallery = item.gallery.data.attributes %}
+    {% set itemData = {
+      'title': item.title or gallery.title,
+      'caption': gallery.figure.caption,
+      'media': gallery.figure.gallery.data
+    } %}
+
+    {% renderTemplate "webc", itemData %}
+      <h webc:if="title" level="2" :@title="title"></h>
+      <media-gallery
+        :media="media"
+        :caption="caption"
+      ></media-gallery>
+    {% endrenderTemplate %}
+
+  {% elif is == 'content.figure' %}
+    {% set itemData = {
+      'caption': item.caption,
+      'media': item.gallery.data
+    } %}
+
+    {% renderTemplate "webc", itemData %}
+      <media-gallery
+        :media="media"
+        :caption="caption"
+      ></media-gallery>
+    {% endrenderTemplate %}
+
+  {% elif is == 'auto.show-history' %}
+    {% set itemData = {
+      'shows': shows,
+      'limit': item.shows
+    } %}
+
+    {% renderTemplate "webc", itemData %}
+      <show-history
+        :shows="shows"
+        :limit="limit"
+      ></show-history>
+    {% endrenderTemplate %}
+
+  {% elif is == 'auto.contact-form' %}
+    {% set itemData = {
+      'pageUrl': page.url,
+      'submit': item.submit,
+      'action': item.action
+    } %}
+
+    {% renderTemplate "webc", itemData %}
+      <contact-form
+        :action="action"
+        :submit="submit"
+        :page-url="pageUrl"
+      ></contact-form>
+    {% endrenderTemplate %}
+
+  {% endif %}
+{% endfor %}

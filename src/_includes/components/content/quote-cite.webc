@@ -1,0 +1,4 @@
+<figcaption class="quote-cite">
+  &mdash;<strong class="h-card" @html="citeName"></strong>
+  <template webc:if="citeDetails" webc:nokeep @html="citeDetails"></template>
+</figcaption>

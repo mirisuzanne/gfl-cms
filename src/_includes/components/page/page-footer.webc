@@ -1,0 +1,10 @@
+<footer id="contentinfo">
+  <p>
+    Copyright &copy; <time :datetime="year()" @html="year()"></time>
+    <strong @html="site.title"></strong>
+  </p>
+
+  <p @html="site.description"></p>
+
+  <!-- <a :href="`/_og${page.url}`">social image</a> -->
+</footer>

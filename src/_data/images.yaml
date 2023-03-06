@@ -1,0 +1,12 @@
+# used by build plugins
+imgFolder: './src/_assets/images/'
+output:
+  formats: ['avif', 'jpeg']
+  widths: [640, 960, 1600]
+  urlPath: '/img/'
+  outputDir: './_site/img/'
+sizes:
+  default: '(min-width: 95em) 50vw, (min-width: 60em) 75vw, 100vw'
+  hero: '100vw'
+  gallery: '(min-width: 65em) 30vw, (min-width: 30em) 45vw, 95vw'
+  media: '(min-width: 65em) 15vw, (min-width: 30em) 30vw, 50vw'

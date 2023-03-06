@@ -1,0 +1,21 @@
+<nav>
+  <a href="/" rel="home" :data-nav="page.url === '/' ? 'active' : ''">
+    <b>Grapefruit</b> Lab
+  </a>
+  <ul>
+    <script webc:type="js">
+      nav.map(item => {
+        const itemPage = item.page.data.attributes;
+        const itemSlug = `/${permaSlug(itemPage)}`;
+
+        return `
+          <nav-item
+            title="${item.title}"
+            link="${itemSlug}"
+            active="${itemSlug === page.url}"
+          ></nav-item>
+        `;
+      }).join('');
+    </script>
+</ul>
+</nav>

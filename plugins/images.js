@@ -1,6 +1,10 @@
 const Image = require('@11ty/eleventy-img');
 const path = require('path');
 
+const cms = process.env.CONTEXT == 'dev'
+  ? 'http://localhost:1337'
+  : 'https://grapefruitlab-cms.fly.dev';
+
 module.exports = function(eleventyConfig, options = {}) {
   const imgFolder = options.imgFolder;
   const imgOutput = { ...options.output };
@@ -15,9 +19,13 @@ module.exports = function(eleventyConfig, options = {}) {
   }
 
   async function getImageData(src) {
-    const imgSrc = imgFolder && !src.includes('://')
-      ? path.join(imgFolder, src)
-      : src;
+    let imgSrc = `${src}`;
+
+    if (imgSrc.startsWith('/uploads/')) {
+      imgSrc = `${cms}${src}`;
+    } else if (imgFolder && !src.includes('://')) {
+      imgSrc = path.join(imgFolder, src);
+    }
 
     const metadata = await Image(imgSrc, imgOutput);
     return metadata;
@@ -25,6 +33,10 @@ module.exports = function(eleventyConfig, options = {}) {
 
   async function imageHtml(src, alt, sizes, attrs) {
     let metadata = await getImageData(src);
+
+    if (!alt || (alt === '')) {
+      console.log(`image [${src}] should have alt text`);
+    }
 
     let sizesAttr = sizes || imgSizes.default;
     let namedSizes = sizes && imgSizes[sizes];

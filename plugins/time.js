@@ -9,8 +9,9 @@ module.exports = function (eleventyConfig, options = {}) {
     day: 'd',
     month: 'MMMM',
     year: 'yyyy',
+    rough: 'MMMM yyyy',
     iso: 'yyyy-MM-dd',
-    url: 'yyyy/MM/dd',
+    url: 'yyyy-MM-dd',
     default: 'yyyy/MM/dd',
     ...options,
   };
@@ -19,5 +20,6 @@ module.exports = function (eleventyConfig, options = {}) {
     dateFormat(utcToZonedTime(date, '+00:00'), formats[format] || format);
 
   eleventyConfig.addShortcode('year', year);
-  eleventyConfig.addFilter('date', formatDate);
+  eleventyConfig.addFilter('year', year);
+  eleventyConfig.addFilter('formatDate', formatDate);
 };

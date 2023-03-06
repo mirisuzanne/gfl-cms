@@ -1,0 +1,9 @@
+@use 'sass:color';
+
+$border: #ff5e4d;
+$bg: color.mix($border, black, 5%);
+$fg: color.mix($border, white, 5%);
+$action: color.mix($border, $fg);
+$focus: color.mix($border, $fg, 20%);
+$overlay: color.scale($bg, $alpha: -25%, $blackness: 50%);
+$callout: color.scale($bg, $whiteness: 5%, $blackness: -5%);

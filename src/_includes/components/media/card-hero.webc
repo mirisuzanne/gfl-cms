@@ -1,0 +1,10 @@
+<script webc:setup>
+  const attrs = {
+    class: 'hero-img',
+  };
+</script>
+
+<a webc:if="linkTo" :href="linkTo">
+  <img :src="src" :alt="alt" :sizes="sizes" :@attrs="attrs">
+</a>
+<img webc:if="!linkTo" :src="src" :alt="alt" :sizes="sizes" :@attrs="attrs">

@@ -1,0 +1,22 @@
+<article :data-card="card">
+  <slot name="hero">
+    <card-hero
+      :src="src || 'amol-dress.jpg'"
+      :alt="src ? alt : 'hem of a wedding dress standing in a puddle surrounded by wet paper'"
+      :sizes="sizes"
+      :link-to="linkTo"
+    >
+  </slot>
+  <slot name="header">
+    <header>
+      <h
+        :level="level || 3"
+        :title="title || 'Card Title'"
+        :link-to="linkTo"
+      ></h>
+    </header>
+  </slot>
+  <slot name="summary">
+    <div @html="md(summary || 'lorem ipsum…')"></div>
+  </slot>
+</article>

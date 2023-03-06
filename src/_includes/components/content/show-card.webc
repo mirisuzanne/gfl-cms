@@ -1,0 +1,28 @@
+<media-card
+  :card="onSale ? 'show feature' : 'show'"
+  :level="level"
+  :title="title"
+  :link-to="linkTo"
+  :on-sale="onSale"
+  :src="src"
+  :alt="alt"
+  :show-date="showDate"
+>
+  <header slot="header">
+    <h
+      :level="level || 3"
+      :title="title"
+      :link-to="linkTo"
+    ></h>
+    <time
+      webc:if="showDate"
+      :datetime="formatDate(showDate, 'iso')"
+      @html="formatDate(showDate, 'rough')"
+    ></time>
+  </header>
+  <template webc:nokeep slot="summary">
+    <div @html="md(summary || 'lorem ipsum…')"></div>
+    <a webc:if="onSale" :href="linkTo" class="action" @html="'Reserve Tickets »'"></a>
+  </template>
+
+</media-card>

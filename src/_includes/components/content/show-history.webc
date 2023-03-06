@@ -1,0 +1,27 @@
+<section class="show-history">
+  <h :level="level || 2" :title="title || 'Our Shows'"></h>
+
+  <div class="show-grid">
+    <script webc:type="js">
+      shows
+        .sort((a, b) => a.date > b.date)
+        .slice(0, limit || shows.length)
+        .map(show => {
+          show.hero = show.header.hero.data.attributes;
+          show.url = permaSlug(show, 'show');
+          return show;
+        })
+        .map(show => `
+        <show-card
+          @title="${show.title}"
+          @show-date="${show.date}"
+          @summary="${show.header.summary}"
+          @link-to="${show.url}"
+          @src="${show.hero.url}"
+          @alt="${show.hero.alternativeText}"
+          ${show.onSale ? '@on-sale="true"' : ''}
+        ></show-card>
+      `).join('');
+    </script>
+  </div>
+</section>

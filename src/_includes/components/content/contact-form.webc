@@ -1,0 +1,13 @@
+<form-submit
+  name="contact"
+  data-netlify="true"
+  :action="action || '/contact/thanks/'"
+  :@submit="submit || 'send'"
+>
+  <div class="field-group">
+    <form-field @label="Name" @required="required"></form-field>
+    <form-field @label="Email" @type="email" @required="required"></form-field>
+  </div>
+  <form-field @label="Message" @type="textarea" @required="required"></form-field>
+  <form-field @label="Current URL" name="url" :@value="pageURL" hidden></form-field>
+</form-submit>

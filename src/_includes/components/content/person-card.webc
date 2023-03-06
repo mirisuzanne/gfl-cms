@@ -1,0 +1,9 @@
+<media-card
+  class="h-card"
+  card="person"
+  :level="level"
+  :title="pronouns ? `${name} (${pronouns})` : name"
+  :src="src"
+  :alt="alt"
+  :summary="summary"
+></media-card>

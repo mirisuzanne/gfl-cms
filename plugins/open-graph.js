@@ -1,13 +1,13 @@
 const pluginRss = require('@11ty/eleventy-plugin-rss');
 
-const ogImage = (image, url) => {
-  if (image) {
-    return `/images/${image}`;
+const ogImage = (og, url) => {
+  if (og && og.image) {
+    return `/images/${og.image}`;
   }
 
   const api = 'https://screenshot-api.miriam.codes/';
-  const baseUrl = process.env.URL || 'https://miriamsuzanne.com';
-  const encoded = encodeURIComponent(`${baseUrl}${url}`);
+  const baseUrl = process.env.URL || 'https://grapefruitlab.com';
+  const encoded = encodeURIComponent(`${baseUrl}/_og${url}`);
   return `${api}${encoded}/opengraph/`;
 }
 

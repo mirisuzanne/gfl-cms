@@ -1,0 +1,11 @@
+---
+layout: page
+pagination:
+  data: pages
+  size: 1
+  alias: cms
+  addAllPagesToCollections: true
+permalink: '{{ cms | permaSlug }}'
+---
+
+{% include "content-blocks.njk" %}

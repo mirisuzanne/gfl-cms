@@ -1,0 +1,12 @@
+<form
+  :name="name"
+  :action="action"
+  method="POST"
+  @attributes
+>
+  <slot>
+  </slot>
+  <div class="form-actions">
+    <button type="submit" @html="submit || submit"></button>
+  </div>
+</form>

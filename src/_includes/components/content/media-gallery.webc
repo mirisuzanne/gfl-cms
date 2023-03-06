@@ -1,0 +1,21 @@
+<figure class="gallery">
+  <script webc:type="js">
+    media.sort((a, b) => {
+      const aR = a.attributes.height / a.attributes.width;
+      const bR = b.attributes.height / b.attributes.width;
+      return aR - bR;
+    }).map(item => {
+      const data = item.attributes;
+
+      return `
+        <img
+          src="${data.url}"
+          alt="${data.alternativeText}"
+          sizes="gallery"
+        ></img>
+      `;
+    }).join('');
+  </script>
+
+  <figcaption webc:if="caption" @html="caption"></figcaption>
+</figure>

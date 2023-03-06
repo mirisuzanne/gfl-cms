@@ -1,22 +1,16 @@
 require('dotenv').config();
 
-const plugins = require('./plugins/all');
+const config = require('./plugins/config');
 
 module.exports = function (eleventyConfig) {
-  eleventyConfig.addPlugin(plugins);
-
-  eleventyConfig.addPassthroughCopy({
-    './content/_assets/fonts': 'fonts',
-    './content/_assets/favicons/*.*': './',
-  });
-
   // config
+  eleventyConfig.addPlugin(config);
   eleventyConfig.setLiquidOptions({jsTruthy: true});
   eleventyConfig.setQuietMode(true);
 
   return {
     dir: {
-      input: 'content',
+      input: 'src',
       layouts: '_layouts',
     },
   };
