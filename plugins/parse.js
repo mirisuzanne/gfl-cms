@@ -1,6 +1,6 @@
 const slugify = require('slugify');
 const markdownIt = require('markdown-it');
-const markdownItAnchor = require('markdown-it-anchor');
+const anchor = require('markdown-it-anchor');
 const { documentToHtmlString } = require('@contentful/rich-text-html-renderer');
 const { EleventyRenderPlugin } = require('@11ty/eleventy');
 const syntaxHighlight = require('@11ty/eleventy-plugin-syntaxhighlight');
@@ -20,11 +20,8 @@ const slug = (str) => {
 
 const mdIt = markdownIt({
   html: true,
-}).use(markdownItAnchor, {
-  permalink: markdownItAnchor.permalink.ariaHidden({
-    class: 'md-anchor',
-    space: false,
-  }),
+}).use(anchor, {
+  permalink: anchor.permalink.headerLink({ safariReaderFix: true }),
   level: [2,],
   slugify: slug,
 });

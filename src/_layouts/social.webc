@@ -7,5 +7,7 @@
   <title @text="title"></title>
   <link rel="stylesheet" :href="`${assets.css}social.css`" webc:keep>
 </head>
-<body @raw="content"></body>
+<body>
+  <page-header webc:if="hero"></hero-image>
+</body>
 </html>

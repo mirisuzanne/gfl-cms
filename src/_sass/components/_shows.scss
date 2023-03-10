@@ -19,7 +19,6 @@
   }
 }
 
-
 [data-card~='show'] {
   &:first-of-type {
     grid-column: 1 / -1;
@@ -28,7 +27,6 @@
 
   &[data-card~='feature'] {
     --img-border: medium;
-    --pull: calc(var(--gutter) * -1);
   }
 
   h3 {
@@ -45,7 +43,6 @@
     border: var(--img-border, thin) solid var(--border);
     display: block;
     margin-block-end: var(--shim);
-    margin-inline: var(--pull);
     object-fit: cover;
     overflow: hidden;
   }
