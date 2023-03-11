@@ -26,7 +26,7 @@ step: 0.5
   <p @html="byline"></p>
 </header>
 
-<main id="content" @raw="md(cms.script)"></main>
+<main id="content" @raw="cms ? md(cms.script) : content"></main>
 
 <script webc:keep>
   const root = document.documentElement;

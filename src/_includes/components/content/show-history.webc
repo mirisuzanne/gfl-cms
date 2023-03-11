@@ -4,10 +4,14 @@
   <div class="show-grid">
     <script webc:type="js">
       shows
-        .sort((a, b) => a.date > b.date)
+        .sort((a, b) => {
+          const aD = new Date(a.date);
+          const bD = new Date(b.date);
+          return bD - aD;
+        })
         .slice(0, limit || shows.length)
         .map(show => {
-          show.hero = show.header.hero.data.attributes;
+          show.hero = show.header.hero.data?.attributes;
           show.url = permaSlug(show, 'show');
           return show;
         })
@@ -15,7 +19,7 @@
         <show-card
           @title="${show.title}"
           @show-date="${show.date}"
-          @summary="${show.header.summary}"
+          @summary="${show.header.summary} poop"
           @link-to="${show.url}"
           @src="${show.hero.url}"
           @alt="${show.hero.alternativeText}"
