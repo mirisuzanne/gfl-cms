@@ -6,7 +6,7 @@ const ogImage = (og, url, cache) => {
   }
 
   const api = 'https://screenshot-api.miriam.codes/';
-  const baseUrl = process.env.DEPLOY_PRIME_URL || 'http://localhost:8080/';
+  const baseUrl = process.env.URL || 'http://localhost:8080/';
   const encoded = encodeURIComponent(`${baseUrl}/_og${url}`);
   return `${api}${encoded}/opengraph/`;
 }
