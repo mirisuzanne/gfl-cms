@@ -6,7 +6,7 @@ const ogImage = (og, url) => {
   }
 
   const api = 'https://screenshot-api.miriam.codes/';
-  const baseUrl = process.env.URL || 'https://grapefruitlab.com';
+  const baseUrl = process.env.URL || process.env.DEPLOY_PRIME_URL;
   const encoded = encodeURIComponent(`${baseUrl}/_og${url}`);
   return `${api}${encoded}/opengraph/`;
 }
