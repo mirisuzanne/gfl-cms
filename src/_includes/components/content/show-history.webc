@@ -19,7 +19,7 @@
         <show-card
           @title="${show.title}"
           @show-date="${show.date}"
-          @summary="${show.header.summary} poop"
+          @summary="${show.header.summary}"
           @link-to="${show.url}"
           @src="${show.hero.url}"
           @alt="${show.hero.alternativeText}"
