@@ -1,6 +1,7 @@
 const yaml = require('js-yaml');
 const fs   = require('fs');
 const { EleventyRenderPlugin } = require("@11ty/eleventy");
+const pluginRss = require("@11ty/eleventy-plugin-rss");
 const pluginWebc = require("@11ty/eleventy-plugin-webc");
 
 const build = require('./build');
@@ -45,6 +46,8 @@ module.exports = (eleventyConfig) => {
 
   const data = loadData(opts.data, opts.files);
   eleventyConfig.addPlugin(EleventyRenderPlugin);
+  eleventyConfig.addPlugin(pluginRss);
+  eleventyConfig.addJavaScriptFunction("absoluteUrl", pluginRss.absoluteUrl);
   eleventyConfig.addPlugin(pluginWebc, {
     components: "src/_includes/components/**/*.webc",
   });

@@ -9,7 +9,7 @@
     <link rel="stylesheet" :href="`${assets.css}${ style || 'main' }.css`" webc:keep>
 
     <meta webc:is="meta-icons">
-    <meta webc:is="open-graph" @desc="description || site.description">
+    <meta webc:is="open-graph" :@desc="description || site.description">
   </head>
   <body @raw="content"></body>
 </html>
