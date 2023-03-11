@@ -8,6 +8,9 @@
   <link rel="stylesheet" :href="`${assets.css}social.css`" webc:keep>
 </head>
 <body>
-  <page-header webc:if="hero"></hero-image>
+  <page-header webc:if="hero"></page-header>
+  <footer>
+    <strong @html="site.domain"></strong>
+  </footer>
 </body>
 </html>

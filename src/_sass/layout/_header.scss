@@ -6,7 +6,7 @@
   font-stretch: var(--cond);
   padding: var(--shim, 0.5rem);
   place-content: center;
-  text-shadow: 1px 1px 0 var(--overlay);
+  text-shadow: var(--header-shadow);
   z-index: 1;
 
   @include config.below(45em) {

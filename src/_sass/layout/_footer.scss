@@ -4,9 +4,9 @@ footer {
   display: grid;
   grid-template-columns: var(--columns);
   grid-template-columns: subgrid;
-  gap: var(--gutter);
   padding-block: var(--gutter);
   place-content: center;
+  row-gap: var(--gutter);
 
   > * {
     grid-column: 2;

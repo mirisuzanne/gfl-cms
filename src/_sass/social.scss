@@ -1,5 +1,43 @@
-@use 'config';
-@use 'init';
-@use 'layout/page';
-@use 'layout/header';
-@use 'layout/hero';
+@use 'sass:meta';
+
+@layer site {
+  @include meta.load-css('config');
+  @include meta.load-css('init');
+  @include meta.load-css('layout/page');
+  @include meta.load-css('layout/header');
+  @include meta.load-css('layout/hero');
+}
+
+@layer overrides {
+  html {
+    font-size: 3vw;
+  }
+
+  body {
+    display: grid;
+    gap: var(--gutter);
+    grid-template:
+      'b' 1fr
+      'f' auto
+      / 1fr;
+  }
+
+  #hero {
+    grid-area: b / b / f;
+    border: 0;
+  }
+
+  #banner {
+    grid-area: b;
+    padding: var(--gutter);
+    place-content: start;
+  }
+
+  footer {
+    grid-area: f;
+    padding: var(--gutter);
+    position: relative;
+    text-shadow: var(--header-shadow);
+    z-index: 1;
+  }
+}
