@@ -1,0 +1,9 @@
+img {
+  :any-link & {
+    border: thin dotted var(--action);
+  }
+
+  :any-link:is(:focus, :hover, :active) & {
+    border-color: var(--focus);
+  }
+}

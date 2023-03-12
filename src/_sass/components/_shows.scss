@@ -1,6 +1,6 @@
 .show-grid {
   display: grid;
-  gap: var(--gutter);
+  gap: var(--spacer);
 
   @media (min-width: 40em) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -18,11 +18,6 @@
 [data-card~='show'] {
   &:first-of-type {
     grid-column: 1 / -1;
-    margin-block: var(--gutter);
-  }
-
-  &[data-card~='feature'] {
-    --img-border: medium;
   }
 
   h3 {

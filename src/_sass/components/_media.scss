@@ -1,0 +1,17 @@
+[data-card~='feature'] {
+  --img-border: medium;
+}
+
+.hero-link {
+  &:any-link {
+    display: block;
+    transition: 150ms scale ease-in-out, 200ms rotate ease-in-out;
+  }
+
+  &:focus,
+  &:hover,
+  &:active {
+    rotate: 1deg;
+    scale: 1.005;
+  }
+}

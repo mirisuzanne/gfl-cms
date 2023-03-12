@@ -4,8 +4,8 @@
   crossorigin>
 <meta property="og:type" content="website" />
 <meta property="og:title" :content="title || site.title">
-<!-- <meta property="og:image" :content="ogImage(og, page.url)"> -->
-<meta property="og:image" :content="hero ? src(hero.url) : ogImage(og, page.url)">
+<meta property="og:image" :content="ogImage(og, page.url)">
+<!-- <meta property="og:image" :content="hero ? src(hero.url) : ogImage(og, page.url)"> -->
 <meta property="og:url" :content="absoluteUrl(page.url, site.url)">
 <meta property="og:site_name" :content="site.title">
 <meta property="og:description" :content="mdRemove(desc)">

@@ -4,11 +4,6 @@ body {
   --margin: minmax(var(--gutter, 1em), 1fr);
   --content: minmax(min-content, 75ch);
   --columns: var(--margin) var(--content) var(--margin);
-  --header-shadow:
-    0 0 var(--shim) var(--bg),
-    0 0 2px var(--bg),
-    2px 2px 2px var(--bg),
-    1px 1px black;
   display: grid;
   grid-template:
     'nav nav nav' auto

@@ -4,7 +4,7 @@
   };
 </script>
 
-<a webc:if="linkTo" :href="linkTo">
+<a webc:if="linkTo" :href="linkTo" class="hero-link">
   <img :src="src" :alt="alt" :sizes="sizes" :@attrs="attrs">
 </a>
 <img webc:if="!linkTo" :src="src" :alt="alt" :sizes="sizes" :@attrs="attrs">

@@ -8,14 +8,6 @@ figure {
   gap: var(--shim);
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 24ch), 1fr));
   place-items: center;
-
-  :any-link img {
-    border: thin dotted var(--action);
-  }
-
-  :is(:hover, :focus, :active) img {
-    border-color: var(--focus);
-  }
 }
 
 

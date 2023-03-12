@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title @html="page.url === '/' ? title : `${title || slug} :: ${site.title}`"></title>
+
+    <meta webc:is="font-files" webc:nokeep>
     <link rel="stylesheet" :href="`${assets.css}${ style || 'main' }.css`" webc:keep>
 
     <meta webc:is="meta-icons">

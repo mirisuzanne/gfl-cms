@@ -7,3 +7,10 @@ $action: color.mix($border, $fg);
 $focus: color.mix($border, $fg, 20%);
 $overlay: color.scale($bg, $alpha: -25%, $blackness: 50%);
 $callout: color.scale($bg, $whiteness: 5%, $blackness: -5%);
+
+$header-shadow:
+  0 0 var(--shim) var(--bg),
+  0 0 2px var(--bg),
+  2px 2px 2px var(--bg),
+  1px 1px black
+;
