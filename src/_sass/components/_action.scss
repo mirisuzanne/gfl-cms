@@ -1,0 +1,11 @@
+.action {
+  border: medium solid;
+  border-radius: var(--shim) 0;
+  display: inline-block;
+  margin-block: var(--gutter) ;
+  padding: var(--shim) var(--gutter);
+
+  &::after {
+    content: ' »'
+  }
+}

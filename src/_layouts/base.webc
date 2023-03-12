@@ -11,7 +11,7 @@
     <link rel="stylesheet" :href="`${assets.css}${ style || 'main' }.css`" webc:keep>
 
     <meta webc:is="meta-icons">
-    <meta webc:is="open-graph" :@desc="summary || site.description">
+    <meta webc:is="open-graph" :@desc="summary || site.header.summary">
   </head>
   <body @raw="content"></body>
 </html>
