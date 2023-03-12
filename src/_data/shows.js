@@ -44,11 +44,8 @@ const query = qs.stringify(
           },
         },
       },
-    }
+    },
   },
-  {
-    encodeValuesOnly: true,
-  }
 );
 
 module.exports = async function() {

@@ -19,13 +19,13 @@ header {
 
   > * {
     margin: 0;
+    opacity: 0.7;
   }
 }
 
 h1 {
   font-size: clamp(1.4em, 3em + 6vw, 10vw);
   line-height: 0.9;
-  opacity: 0.7;
 
   a:any-link {
     --action: currentColor;

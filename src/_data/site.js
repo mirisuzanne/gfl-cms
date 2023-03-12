@@ -6,13 +6,24 @@ const cms = process.env.CONTEXT == 'dev'
   : 'https://grapefruitlab-cms.fly.dev';
 
 const object = 'site';
-const query = qs.stringify({ populate: '*' });
+const query = qs.stringify({
+  populate: {
+    header: {
+      populate: {
+        hero: {
+          populate: '*'
+        },
+      },
+    },
+  },
+});
 
 module.exports = async function() {
   try {
     const data = await EleventyFetch(`${cms}/api/${object}?${query}`, {
       type: 'json',
       removeUrlQueryParams: true,
+      duration: '0s',
       fetchOptions: {
         headers: {
           Authorization: `Bearer ${process.env.STRAPI_KEY}`,

@@ -5,7 +5,6 @@ layout: base
 <site-nav></site-nav>
 <page-header></page-header>
 <main id="content">
-  <!-- <div class="summary" @raw="summary"></div> -->
   <div webc:nokeep @raw="content"></div>
 </main>
 <page-footer></page-footer>
