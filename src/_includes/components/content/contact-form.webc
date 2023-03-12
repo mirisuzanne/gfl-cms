@@ -1,6 +1,6 @@
 <form-submit
   name="contact"
-  data-netlify="true"
+  netlify
   :action="action || '/contact/thanks/'"
   :@submit="submit || 'send'"
 >
