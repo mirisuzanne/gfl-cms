@@ -1,5 +1,7 @@
 _local
 _site
+netlify/functions/dynamic/**
+!netlify/functions/dynamic/index.js
 
 # Logs
 logs

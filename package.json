@@ -36,5 +36,9 @@
     "sass": "^1.58.0",
     "stripe": "^8.211.0",
     "striptags": "^3.2.0"
+  },
+  "dependencies": {
+    "@notionhq/client": "^2.2.3",
+    "api": "^5.0.7"
   }
 }
