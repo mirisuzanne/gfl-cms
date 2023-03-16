@@ -6,7 +6,7 @@ const apiBase = process.env.CONTEXT == 'dev'
   : 'https://grapefruitlab-cms.fly.dev/api';
 
 const get = 'scripts';
-const query = qs.stringify({ populate: '*' });
+const query = qs.stringify({ populate: '*' }, { encodeValuesOnly: true });
 
 module.exports = async function() {
   try {

@@ -6,28 +6,33 @@ const apiBase = process.env.CONTEXT == 'dev'
   : 'https://grapefruitlab-cms.fly.dev/api';
 
 const api = 'events';
-const query = qs.stringify({
-  populate: {
-    option: {
-      populate: {
-        tickets: {
-          populate: '*'
+const query = qs.stringify(
+  {
+    populate: {
+      option: {
+        populate: {
+          tickets: {
+            populate: '*'
+          },
         },
       },
-    },
-    show: {
-      populate: {
-        header: {
-          populate: {
-            hero: {
-              populate: '*'
+      show: {
+        populate: {
+          header: {
+            populate: {
+              hero: {
+                populate: '*'
+              },
             },
           },
         },
       },
     },
   },
-});
+  {
+    encodeValuesOnly: true,
+  }
+);
 
 module.exports = async function() {
   try {

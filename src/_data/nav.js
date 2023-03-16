@@ -6,13 +6,18 @@ const cms = process.env.CONTEXT == 'dev'
   : 'https://grapefruitlab-cms.fly.dev';
 
 const object = 'nav';
-const query = qs.stringify({
-  populate: {
-    items: {
-      populate: '*'
+const query = qs.stringify(
+  {
+    populate: {
+      items: {
+        populate: '*'
+      },
     },
   },
-});
+  {
+    encodeValuesOnly: true,
+  }
+);
 
 module.exports = async function() {
   try {
