@@ -16,8 +16,18 @@ const query = qs.stringify(
           },
         },
       },
+      events: {
+        populate: {
+          option: {
+            populate: '*',
+          },
+        },
+      },
       content: {
         populate: {
+          venue: {
+            populate: '*'
+          },
           cite: {
             populate: '*'
           },
@@ -30,17 +40,6 @@ const query = qs.stringify(
           },
           figure: {
             populate: '*'
-          },
-          person: {
-            populate: {
-              header: {
-                populate: {
-                  hero: {
-                    populate: '*'
-                  },
-                },
-              },
-            },
           },
         },
       },

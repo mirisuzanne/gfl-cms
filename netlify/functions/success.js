@@ -16,8 +16,12 @@ const apiKeys =
     ? environmentKeys.other
     : environmentKeys.production;
 
-const stripe = require("stripe")(apiKeys.STRIPE_KEY);
+const apiBase = environment !== 'production'
+  ? 'http://localhost:1337/api'
+  : 'https://grapefruitlab-cms.fly.dev/api';
 
+const fetch = require("node-fetch");
+const stripe = require("stripe")(apiKeys.STRIPE_KEY);
 const { Client } = require("@notionhq/client")
 const notion = new Client({
   auth: process.env.NOTION_TOKEN,
@@ -30,6 +34,8 @@ exports.handler = async function (event, context) {
   const { body, headers } = event;
 
   try {
+    let response = {};
+
     // 1. Check that the request is really from Stripe
     const stripeEvent = stripe.webhooks.constructEvent(
       body,
@@ -48,21 +54,83 @@ exports.handler = async function (event, context) {
       );
 
       // The data to fulfill the order
+      const fields = eventObject.custom_fields || [];
       const order = items.data[0];
       const product = order.price.product;
 
+      const nameField = fields.find((field) => field.key === 'name');
+
       const customer = {
-        name: session.customer_details.name || 'no name provided',
+        name: nameField?.text.value || session.customer_details.name || 'no name',
         email: session.customer_details.email,
       };
 
       const payment = {
-        name: product.name || 'no product listed',
+        name: product.name || 'no product',
         unit: order.price.unit_amount / 100,
         count: order.quantity,
         type: product.metadata.type,
       }
 
+      // send to strapi
+      if (payment.type === 'ticket') {
+        const noteField = fields.find((field) => field.key === 'note');
+
+        const ticketSale = {
+          data: {
+            name: customer.name,
+            email: customer.email,
+            seats: order.quantity,
+            paid: order.price.unit_amount / 100,
+            note: noteField?.text.value,
+            stripeID: session.payment_intent,
+          }
+        }
+
+        const makeTicket = await fetch(`${apiBase}/tickets`, {
+          method: 'POST',
+          body: JSON.stringify(ticketSale),
+          headers: {
+            accept: 'application/json',
+            Authorization: `Bearer ${process.env.STRAPI_KEY}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        const ticket = await makeTicket.json();
+
+        response.ticket = ticket;
+
+        const eventID = session.metadata.eventID;
+        const optionID = session.metadata.optionID;
+
+        const strapiEvent = {
+          data: {
+            option: [
+              {
+                id: optionID,
+                tickets: {
+                  connect: [ticket.data.id]
+                }
+              }
+            ]
+          }
+        };
+
+        const eventResponse = await fetch(`${apiBase}/events/${eventID}`, {
+          method: 'PUT',
+          body: JSON.stringify(strapiEvent) ,
+          headers: {
+            accept: 'application/json',
+            Authorization: `Bearer ${process.env.STRAPI_KEY}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        const eventData = await eventResponse.json();
+
+        response.event = eventData;
+      }
+
+      // send to notion
       const notionCustomer = await notion.databases.query({
         database_id: customerDb,
         filter: {
@@ -83,7 +151,7 @@ exports.handler = async function (event, context) {
           },
         });
 
-      const response = await notion.pages.create({
+      const notionResponse = await notion.pages.create({
         parent: { database_id: paymentDb },
         properties: {
           'Name': {title: [{text: {content: payment.name}}] },
@@ -99,9 +167,11 @@ exports.handler = async function (event, context) {
         },
       });
 
+      response.notion = notionResponse;
+
       return {
         statusCode: 200,
-        body: JSON.stringify({ response }),
+        body: JSON.stringify(response),
       };
     }
 

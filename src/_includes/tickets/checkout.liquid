@@ -1,78 +1,86 @@
-{% assign eventID = ticketOption.id %}
-{% assign max = ticketOption.seats | getEventSeats: tickets %}
-{% assign product = ticketOption.product %}
+{% for option in event.option %}
+  {% assign max = option | getSeats %}
+  {% assign product = option.product %}
 
-{% if max > 0 %}
-  <form id="checkout" action="#">
-    <input
-      type="hidden"
-      id="eventID"
-      value="{{ eventID }}">
-    <input
-      type="hidden"
-      id="max"
-      value="{{ max }}">
-    <input
-      type="hidden"
-      id="show"
-      value="{{ product }}">
-
-    <div class="form-field">
-      <label for="name">Name for reservation</label>
+  {% if max > 0 %}
+    <form
+      id="checkout-{{ option.id }}"
+      action="/api/checkout"
+      method="POST">
+      <h2>{{ option.title }}</h2>
       <input
-        type="text"
-        id="name"
-        name="name"
-        required>
-    </div>
-
-    <div class="form-field">
-      <label for="count">Number of tickets</label>
+        type="hidden"
+        id="eventID-{{ option.id }}"
+        name="event"
+        value="{{ event.id }}">
       <input
-        type="number"
-        id="count"
-        name="count"
-        min="1"
-        max="{{ max }}"
-        value="1"
-        required>
-      <p id="max-warn" hidden>
-        Only
-        <strong id="max-warn-count">{{ max }}</strong>
-        tickets available.
-      </p>
-    </div>
-
-    <div class="form-field">
-      <label for="price">Price per ticket</label>
+        type="hidden"
+        id="optionID-{{ option.id }}"
+        name="option"
+        value="{{ option.id }}">
       <input
-        type="number"
-        id="price"
-        name="price"
-        min="0.5"
-        step="0.5"
-        required>
-    </div>
+        type="hidden"
+        id="max-{{ option.id }}"
+        name="max"
+        value="{{ max }}">
+      <input
+        type="hidden"
+        id="product-{{ option.id }}"
+        name="product"
+        value="{{ product }}">
 
-    <div class="form-field">
-      <label for="note">Optional note</label>
-      <textarea name="note" id="note"></textarea>
-    </div>
+      <div class="form-field">
+        <label for="count-{{ option.id }}">
+          How many tickets?
+        </label>
+        <input
+          type="number"
+          id="count-{{ option.id }}"
+          name="count"
+          min="1"
+          max="{{ max }}"
+          required
+          value="1">
+        <p class="max-warning" hidden>
+          Only
+          <strong class="max-warning-count">
+            {{ max }} ticket{% if max != 1 %}s{% endif %}
+          </strong>
+          remaining.
+        </p>
+      </div>
 
-    <div class="form-actions">
-      <p id="checkout-summary" hidden>
-        <strong>{{ date | date }}</strong>:
-        <output id="total-count">1 Ticket</output>
-        @
-        <output id="total-price">(set your own price)</output>
-      </p>
-      <button type="submit">Checkout</button>
-    </div>
-  </form>
-  <template id="sold-out-template">
-    {% renderFile './src/_includes/tickets/sold-out.liquid' %}
-  </template>
-  <script type="module" src="/js/checkout.js"></script>
-{% else %}
-  {% renderFile './src/_includes/tickets/sold-out.liquid' %}
-{% endif %}
+      <div class="form-field">
+        <label for="price-{{ option.id }}">
+          Name your price ($)
+        </label>
+        <input
+          type="number"
+          id="price-{{ option.id }}"
+          name="price"
+          min="0.5"
+          step="0.5"
+          required>
+      </div>
+
+      <div class="form-actions">
+        <p class="checkout-summary" hidden>
+          <strong>Total:</strong>
+          <output class="total-price">(set your own price)</output>
+          for
+          <output class="total-count">1 Ticket</output>
+          on
+          <strong>{{ event.date | formatDate: 'event' }}</strong>
+        </p>
+        <button type="submit">Reserve »</button>
+      </div>
+    </form>
+  {% else %}
+    {% render 'tickets/sold-out' %}
+  {% endif %}
+{% endfor %}
+
+<script type="module" src="/js/checkout.js"></script>
+<template id="sold-out-template">
+  {% render 'tickets/sold-out' %}
+</template>

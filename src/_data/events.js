@@ -6,13 +6,34 @@ const apiBase = process.env.CONTEXT == 'dev'
   : 'https://grapefruitlab-cms.fly.dev/api';
 
 const api = 'events';
-const query = qs.stringify({ populate: '*' });
+const query = qs.stringify({
+  populate: {
+    option: {
+      populate: {
+        tickets: {
+          populate: '*'
+        },
+      },
+    },
+    show: {
+      populate: {
+        header: {
+          populate: {
+            hero: {
+              populate: '*'
+            },
+          },
+        },
+      },
+    },
+  },
+});
 
 module.exports = async function() {
   try {
     const data = await EleventyFetch(`${apiBase}/${api}?${query}`, {
       type: 'json',
-      removeUrlQueryParams: true,
+      duration: '0s',
       fetchOptions: {
         headers: {
           Authorization: `Bearer ${process.env.STRAPI_KEY}`,
@@ -23,6 +44,7 @@ module.exports = async function() {
     const cms = data.data.map(item => {
       const data = item.attributes;
       data.id = item.id;
+      data.show_slug = data.show.data.attributes.slug;
       return data;
     });
     return cms;

@@ -2,6 +2,6 @@
 
 <header id="banner">
   <p webc:if="feature" class="pretitle">Presenting:</p>
-  <h1 @html="title"></h1>
-  <p webc:if="subtitle" class="subtitle" @html="subtitle"></p>
+  <h1 @html="mdInline(title)"></h1>
+  <p webc:if="subtitle" class="subtitle" @html="mdInline(subtitle)"></p>
 </header>

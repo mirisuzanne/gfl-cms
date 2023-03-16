@@ -6,14 +6,7 @@ const apiBase = process.env.CONTEXT == 'dev'
   : 'https://grapefruitlab-cms.fly.dev/api';
 
 const get = 'scripts';
-const query = qs.stringify(
-  {
-    populate: '*'
-  },
-  {
-    encodeValuesOnly: true,
-  }
-);
+const query = qs.stringify({ populate: '*' });
 
 module.exports = async function() {
   try {
@@ -30,6 +23,7 @@ module.exports = async function() {
     const cms = data.data.map(item => {
       const data = item.attributes;
       data.id = item.id;
+      data.show_slug = data.show.data.attributes.slug;
       return data;
     });
     return cms;

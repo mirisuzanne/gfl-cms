@@ -1,0 +1,2 @@
+<span webc:if="!link || link === 'null'" @attributes ><slot></slot></span>
+<a webc:if="link && link !== 'null'" :href="link" @attributes ><slot></slot></a>

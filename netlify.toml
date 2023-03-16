@@ -4,6 +4,12 @@ package = "netlify-plugin-cache"
   [plugins.inputs]
   paths = [ ".cache" ]
 
+[[plugins]]
+package = "netlify-plugin-inline-functions-env"
+
+  [plugins.inputs]
+  include = [ "CONTEXT" ]
+
 [[redirects]]
 from = "/api/*"
 to = "/.netlify/functions/:splat"

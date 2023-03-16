@@ -17,5 +17,6 @@ module.exports = {
       return pageHero || data.site.header.hero.data?.attributes;
     },
     date: data => data.cms.date,
+    id: data => data.cms.id,
   }
 };

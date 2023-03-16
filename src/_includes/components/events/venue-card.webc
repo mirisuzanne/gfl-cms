@@ -1,0 +1,17 @@
+<article class="h-card org venue">
+  <h :@level="level || 3" :@title="name"></h>
+  <p webc:if="adr" class="h-adr">
+    <span
+      webc:if="adr.street"
+      class="p-street-address"
+      @text="adr.street"></span>,
+    <span
+      webc:if="adr.locality"
+      class="p-locality"
+      @text="adr.locality"></span>
+    <span
+      webc:if="adr.region"
+      class="p-postal-code"
+      @text="adr.region"></span>
+  </p>
+</article>
