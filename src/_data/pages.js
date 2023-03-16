@@ -1,7 +1,7 @@
 const EleventyFetch = require('@11ty/eleventy-fetch');
 const qs = require('qs');
 
-const apiBase = process.env.CONTEXT == 'dev'
+const apiBase = process.env.CONTEXT === 'dev'
   ? 'http://localhost:1337/api'
   : 'https://grapefruitlab-cms.fly.dev/api';
 

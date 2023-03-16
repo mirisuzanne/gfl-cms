@@ -4,7 +4,7 @@ const siteBase = environment !== "production"
   ? (environment === "dev" ? 'http://localhost:8888' : process.env.DEPLOY_PRIME_URL)
   : process.env.URL;
 
-const apiBase = environment !== 'production'
+const apiBase = environment === 'dev'
   ? 'http://localhost:1337/api'
   : 'https://grapefruitlab-cms.fly.dev/api';
 

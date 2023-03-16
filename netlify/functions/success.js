@@ -16,7 +16,7 @@ const apiKeys =
     ? environmentKeys.other
     : environmentKeys.production;
 
-const apiBase = environment !== 'production'
+const apiBase = environment === 'dev'
   ? 'http://localhost:1337/api'
   : 'https://grapefruitlab-cms.fly.dev/api';
 
