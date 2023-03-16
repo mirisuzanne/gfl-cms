@@ -14,7 +14,8 @@ module.exports = {
       : data.summary,
     hero: data => {
       const pageHero = data.cms.header?.hero.data?.attributes;
-      return pageHero || data.site.header.hero.data?.attributes;
+      const showHero = data.cms.show?.data.attributes.header?.hero.data?.attributes;
+      return pageHero || showHero || data.site.header?.hero.data?.attributes;
     },
     date: data => data.cms.date,
     id: data => data.cms.id,
