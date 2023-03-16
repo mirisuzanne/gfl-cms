@@ -1,0 +1,49 @@
+<section class='event-run'>
+  <h @level="2" :@title="title"></h>
+  <venue-card :@name="venue.title" :@adr="venue.address"></venue-card>
+  <ul>
+    <script webc:type="js">
+      const convertTime = (timeStr) => {
+        const pm = timeStr.endsWith('am') ? false : true;
+        timeStr = timeStr.replace('am', '')
+        timeStr = timeStr.replace('pm', '')
+        let [hours, minutes] = timeStr.split(':');
+
+        if (hours === '12') {
+          hours = '00';
+        }
+        if (pm) {
+          hours = `${parseInt(hours, 10) + 12}`;
+        }
+        return `${hours.padStart(2, '0')}:${minutes}`;
+      };
+
+      events
+        .map(event => {
+          const e = event.attributes;
+          e.page = getPage(collections.all, event.id, 'event');
+          const has_tickets = e.page.data.has_tickets;
+          e.note = (has_tickets === 0 || !has_tickets)
+              ? ' (no tickets available)'
+              : '';
+          e.id = event.id;
+          e.show_slug = showSlug;
+          e.sort = new Date(`${e.date}T${convertTime(e.time)}:00`)
+          e.link = e.sort >= new Date() && has_tickets > 0
+            ? e.page.url
+            : null;
+          return e;
+        })
+        .sort((a, b) => a.sort - b.sort)
+        .map(event => `
+        <event-item
+          @event-title="${event.title}${event.note}"
+          @date="${event.date}"
+          @time="${event.time}"
+          @link="${event.link}"
+        ></event-item>
+      `).join('');
+    </script>
+
+  </ul>
+</section>

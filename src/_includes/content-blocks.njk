@@ -2,14 +2,20 @@
   {% set is = item.__component %}
 
   {% if is == 'content.body' %}
-    {% set itemData = { 'mdContent': item.body } %}
+    {% set itemData = {
+      'collections': collections,
+      'mdContent': item.body
+    } %}
 
     {% renderTemplate "webc", itemData %}
       <div webc:nokeep @html="md(mdContent)"></div>
     {% endrenderTemplate %}
 
   {% elif is == 'content.h2' %}
-    {% set itemData = { 'mdHeading': item.heading } %}
+    {% set itemData = {
+      'collections': collections,
+      'mdHeading': item.heading
+    } %}
 
     {% renderTemplate "webc", itemData %}
       <h @level="2" :@title="mdHeading"></h>
@@ -17,6 +23,7 @@
 
   {% elif is == 'content.action-link' %}
     {% set itemData = {
+      'collections': collections,
       'linkText': item.text,
       'linkUrl': item.url
     } %}
@@ -27,6 +34,7 @@
 
   {% elif is == 'content.quote' %}
     {% set itemData = {
+      'collections': collections,
       'quoteText': item.content,
       'citeName': item.cite.name
     } %}
@@ -42,6 +50,7 @@
     {% set person = item.person.data.attributes %}
     {% set cardHero = person.header.hero.data.attributes %}
     {% set itemData = {
+      'collections': collections,
       'imgSrc': cardHero.url,
       'imgAlt': cardHero.alternativeText,
       'pName': person.name,
@@ -62,6 +71,7 @@
   {% elif is == 'content.gallery-card' %}
     {% set gallery = item.gallery.data.attributes %}
     {% set itemData = {
+      'collections': collections,
       'title': item.title or gallery.title,
       'caption': gallery.figure.caption,
       'media': gallery.figure.gallery.data
@@ -77,6 +87,7 @@
 
   {% elif is == 'content.figure' %}
     {% set itemData = {
+      'collections': collections,
       'caption': item.caption,
       'media': item.gallery.data
     } %}
@@ -90,6 +101,7 @@
 
   {% elif is == 'auto.show-history' %}
     {% set itemData = {
+      'collections': collections,
       'shows': shows,
       'limit': item.shows
     } %}
@@ -101,8 +113,27 @@
       ></show-history>
     {% endrenderTemplate %}
 
+  {% elif is == 'auto.run-card' %}
+    {% set run = item %}
+    {% set itemData = {
+      'collections': collections,
+      'title': run.title,
+      'venue': run.venue.data.attributes,
+      'events': cms.events.data,
+      'show_slug': cms.slug
+    } %}
+    {% renderTemplate "webc", itemData %}
+      <run-card
+        :@title='title'
+        :@venue='venue'
+        :@events='events'
+        :@show-slug="show_slug"
+      ></run-card>
+    {% endrenderTemplate %}
+
   {% elif is == 'auto.contact-form' %}
     {% set itemData = {
+      'collections': collections,
       'pageUrl': page.url,
       'submit': item.submit,
       'action': item.action

@@ -13,6 +13,7 @@ module.exports = function (eleventyConfig, options = {}) {
     iso: 'yyyy-MM-dd',
     url: 'yyyy-MM-dd',
     default: 'yyyy/MM/dd',
+    event: 'EEEE, MMMM d',
     ...options,
   };
 

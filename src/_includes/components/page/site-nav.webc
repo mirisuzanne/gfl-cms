@@ -6,7 +6,7 @@
     <script webc:type="js">
       nav.map(item => {
         const itemPage = item.page.data.attributes;
-        const itemSlug = `/${permaSlug(itemPage)}`;
+        const itemSlug = `${permaSlug(itemPage)}`;
 
         return `
           <nav-item

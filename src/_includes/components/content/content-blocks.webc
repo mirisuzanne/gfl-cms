@@ -1,0 +1,90 @@
+<script webc:if="blocks && blocks.length > 0" webc:type="js">
+  blocks.map((item, i) => {
+    let itemOut = `<p>ugh ${i}</p>`;
+
+    if (item.__component === 'content.body') {
+      itemOut = `<md-body
+        :body="blocks[${i}].body"
+        ></md-body>`;
+    }
+
+    else if (item.__component === 'content.h2') {
+      itemOut = `<h
+        @level="2"
+        @title="blocks[${i}].heading"
+      ></h>`;
+    }
+
+    else if (item.__component === 'content.action-link') {
+      itemOut = `<a
+        :href="blocks[${i}].url"
+        :@text="blocks[${i}].text"
+        class="action"
+      ></a>`;
+    }
+
+    // if (item.__component === 'content.quote') {
+    //   return `<block-quote
+    //     @quote-text="${ item.content }"
+    //     @cite-name="${ item.cite.name }"
+    //   ></block-quote>`;
+    // }
+
+    // if (item.__component === 'content.person-card') {
+    //   const person = item.person.data.attributes;
+    //   const cardHero = person.header.hero.data.attributes;
+
+    //   return `<person-card
+    //     name="${ person.name }"
+    //     pronouns="${ person.pronouns }"
+    //     summary="${ person.header.summary }"
+    //     src="${ cardHero.url }"
+    //     alt="${ cardHero.alternativeText }"
+    //   ></person-card>`;
+    // }
+
+    // if (item.__component === 'content.gallery-card') {
+    //   const gallery = item.gallery.data.attributes;
+    //   const title = item.title || gallery.title;
+    //   const caption = gallery.figure.caption;
+    //   const media = gallery.figure.gallery.data;
+
+    //   return `<h
+    //     webc:if="${ title }"
+    //     level="2"
+    //     @title="${ title }"
+    //   ></h>
+    //   <media-gallery
+    //     :media="media"
+    //     caption="${ caption }"
+    //   ></media-gallery>`;
+    // }
+
+    // if (item.__component === 'content.figure') {
+    //   const caption = item.caption;
+    //   const media = item.gallery.data;
+
+    //   return `<media-gallery
+    //     :media="media"
+    //     caption="${ caption }"
+    //   ></media-gallery>`;
+    // }
+
+    // if (item.__component === 'auto.show-history') {
+    //   return `<show-history
+    //     :shows="shows"
+    //     limit="${ item.shows }"
+    //   ></show-history>`;
+    // }
+
+    // if (item.__component === 'auto.contact-form') {
+    //   return `<contact-form
+    //     action="${ item.action }"
+    //     submit="${ item.submit }"
+    //     :page-url="page.url"
+    //   ></contact-form>`;
+    // }
+
+    return itemOut;
+  }).join(' ');
+</script>

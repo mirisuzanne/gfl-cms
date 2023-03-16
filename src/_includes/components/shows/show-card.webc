@@ -23,7 +23,7 @@
   </header>
   <template webc:nokeep slot="summary">
     <div @html="md(summary || 'lorem ipsum…')"></div>
-    <a webc:if="onSale" :href="linkTo" class="action" @html="'Reserve Tickets »'"></a>
+    <a webc:if="onSale" :href="linkTo" class="action" @html="'Reserve Tickets'"></a>
   </template>
 
 </media-card>

@@ -39,6 +39,6 @@
   },
   "dependencies": {
     "@notionhq/client": "^2.2.3",
-    "api": "^5.0.7"
+    "node-fetch": "^2.6.9"
   }
 }

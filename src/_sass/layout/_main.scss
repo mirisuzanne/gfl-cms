@@ -2,6 +2,6 @@ main {
   padding: var(--spacer) 0;
 }
 
-main > :first-child:not(h2) {
+main > :first-child:not(h2, section) {
   font-size: var(--large);
 }

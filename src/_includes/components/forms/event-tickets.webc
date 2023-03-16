@@ -1,0 +1,25 @@
+<form-submit
+  webc:if="max > 0"
+  name="checkout"
+  action="/api/checkout/"
+  :@submit="submit || 'reserve'"
+>
+  <input
+    type="hidden"
+    id="eventID"
+    value="ticketOption.id">
+  <input
+    type="hidden"
+    id="max"
+    value="{{ max }}">
+  <input
+    type="hidden"
+    id="show"
+    value="{{ product }}">
+  <form-field
+    @label="Current URL"
+    type="hidden"
+    :@value="pageURL"
+    hidden
+  ></form-field>
+</form-submit>

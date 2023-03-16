@@ -4,6 +4,7 @@
   display: grid;
   color: white;
   font-stretch: var(--cond);
+  margin: var(--gutter);
   padding: var(--shim, 0.5rem);
   place-content: center;
   text-shadow: var(--header-shadow);
@@ -15,7 +16,7 @@
 }
 
 header {
-  margin: var(--gutter);
+  margin-block: var(--gutter);
 
   > * {
     margin: 0;

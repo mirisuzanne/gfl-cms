@@ -1,0 +1,9 @@
+<li class="event-item">
+  <link-if :@link="link" :@date="date" :@time="time">
+    <time
+      :datetime="formatDate(date, 'iso')"
+      @text="`${formatDate(date, 'event')} @ ${time}`"
+    ></time>
+  </link-if>
+  <span webc:if="eventTitle !== 'null'" @html="mdInline(`&ndash; ${eventTitle}`)"></span>
+</li>
