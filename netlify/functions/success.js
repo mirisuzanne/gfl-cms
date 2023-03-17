@@ -69,6 +69,7 @@ exports.handler = async function (event, context) {
 
       const payment = {
         name: product.name || 'no product',
+        id: session.payment_intent,
         total: session.amount_total / 100,
         unit: order.price.unit_amount / 100,
         count: order.quantity,
@@ -86,22 +87,46 @@ exports.handler = async function (event, context) {
             seats: payment.count,
             paid: payment.total,
             note: payment.note,
-            stripeID: session.payment_intent,
+            stripeID: payment.id,
+            productName: payment.name,
           }
         }
 
-        const makeTicket = await fetch(`${apiBase}/tickets`, {
-          method: 'POST',
-          body: JSON.stringify(ticketSale),
+        const getTickets = await fetch(`${apiBase}/tickets/`, {
           headers: {
-            accept: 'application/json',
             Authorization: `Bearer ${process.env.STRAPI_KEY}`,
-            'Content-Type': 'application/json',
           },
         });
-        const ticket = await makeTicket.json();
+        const theTickets = await getTickets.json();
+        const foundTicket = theTickets.data.find((ticket) => {
+          return ticket.attributes.stripeID === payment.id;
+        });
 
-        response.ticket = ticket;
+        if (foundTicket) {
+          const makeTicket = await fetch(`${apiBase}/tickets/${foundTicket.id}`, {
+            method: 'PUT',
+            body: JSON.stringify(ticketSale),
+            headers: {
+              accept: 'application/json',
+              Authorization: `Bearer ${process.env.STRAPI_KEY}`,
+              'Content-Type': 'application/json',
+            },
+          });
+          const putTicket = await makeTicket.json();
+          response.ticket = putTicket.data;
+        } else {
+          const makeTicket = await fetch(`${apiBase}/tickets`, {
+            method: 'POST',
+            body: JSON.stringify(ticketSale),
+            headers: {
+              accept: 'application/json',
+              Authorization: `Bearer ${process.env.STRAPI_KEY}`,
+              'Content-Type': 'application/json',
+            },
+          });
+          const newTicket = await makeTicket.json();
+          response.ticket = newTicket.data;
+        }
 
         const eventID = session.metadata.eventID;
         const optionID = session.metadata.optionID;
@@ -112,7 +137,7 @@ exports.handler = async function (event, context) {
               {
                 id: optionID,
                 tickets: {
-                  connect: [ticket.data.id]
+                  connect: [response.ticket.id]
                 }
               }
             ]
@@ -133,7 +158,7 @@ exports.handler = async function (event, context) {
         response.event = eventData;
       }
 
-      // send to notion
+      // notion customer
       const notionCustomer = await notion.databases.query({
         database_id: customerDb,
         filter: {
@@ -154,23 +179,50 @@ exports.handler = async function (event, context) {
           },
         });
 
-      const notionResponse = await notion.pages.create({
-        parent: { database_id: paymentDb },
-        properties: {
-          'Name': { title: [{ text: { content: name }}] },
-          'Note': { rich_text: [{ text: { content: payment.note || '' }}]},
-          'Follow-up': { status: { name: 'todo' }},
-          'Product': { rich_text: [{ text: { content: payment.name || 'unknown' }}]},
-          'ID': { rich_text: [{ text: { content: product.id || 'unknown' }}]},
-          'Type': { select: { name: payment.type || 'unknown' }},
-          'Recurring': { select: { name: payment.recurring || 'no' }},
-          'Unit': { number: payment.unit || payment.total },
-          'Count': { number: payment.count || 1 },
-          'Customer': { relation: [{ id: person.id }]}
+      // notion payment
+      const notionPaymentProps = {
+        'Name': { title: [{ text: { content: name }}] },
+        'Note': { rich_text: [{ text: { content: payment.note || '' }}]},
+        'Status': { status: {
+          name: payment.type === 'ticket' ? 'will call' : 'todo'
+        }},
+        'Product': { rich_text: [{ text: { content: payment.name || 'unknown' }}]},
+        'ID': { rich_text: [{ text: { content: product.id || 'unknown' }}]},
+        'paymentID': { rich_text: [{ text: { content: payment.id }}]},
+        'Type': { select: { name: payment.type || 'unknown' }},
+        'Recurring': { select: { name: payment.recurring || 'no' }},
+        'Unit': { number: payment.unit || payment.total },
+        'Count': { number: payment.count || 1 },
+        'Customer': { relation: [{ id: person.id }]}
+      };
+
+      const notionPaymentList = await notion.databases.query({
+        database_id: paymentDb,
+        filter: {
+          property: 'paymentID',
+          rich_text: {
+            contains: payment.id
+          }
         },
       });
 
-      response.notion = notionResponse;
+      const notionPayment = notionPaymentList.results.length > 0
+        ? notionPaymentList.results[0]
+        : null;
+
+      if (notionPayment) {
+        const patchPayment = await notion.pages.update({
+          page_id: notionPayment.id,
+          properties: notionPaymentProps,
+        });
+        response.notion = patchPayment;
+      } else {
+        const newPayment = await notion.pages.create({
+          parent: { database_id: paymentDb },
+          properties: notionPaymentProps,
+        });
+        response.notion = newPayment;
+      }
 
       return {
         statusCode: 200,
