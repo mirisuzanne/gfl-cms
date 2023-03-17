@@ -7,7 +7,6 @@ const updatePrice = (opt) => {
     const count = opt.countIn.value || 0;
     const total = Number(opt.priceIn.value * count).toFixed(2);
     opt.priceOut.value = `$${total}`;
-    opt.checkOut.removeAttribute('hidden');
   } else {
     opt.priceOut.value = opt.priceOutDefault;
   }
@@ -17,7 +16,7 @@ const updateCount = (opt) => {
   const count = Number(opt.countIn.value || 0);
 
   if (count >= Number(opt.maxIn.value - 4)) {
-    opt.maxWarn.removeAttribute('hidden');
+    opt.maxWarn.dataset.help = 'visible';
   }
 
   if (count > Number(opt.maxIn.value)) {
