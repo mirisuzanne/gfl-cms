@@ -58,31 +58,34 @@ exports.handler = async function (event, context) {
       const order = items.data[0];
       const product = order.price.product;
 
+      const noteField = fields.find((field) => field.key === 'note');
       const nameField = fields.find((field) => field.key === 'name');
+      const name = nameField?.text.value || session.customer_details.name;
 
       const customer = {
-        name: nameField?.text.value || session.customer_details.name || 'no name',
+        name,
         email: session.customer_details.email,
       };
 
       const payment = {
         name: product.name || 'no product',
+        total: session.amount_total / 100,
         unit: order.price.unit_amount / 100,
         count: order.quantity,
         type: product.metadata.type,
+        recurring: product.metadata.recurring,
+        note: noteField?.text.value,
       }
 
       // send to strapi
       if (payment.type === 'ticket') {
-        const noteField = fields.find((field) => field.key === 'note');
-
         const ticketSale = {
           data: {
-            name: customer.name,
+            name,
             email: customer.email,
-            seats: order.quantity,
-            paid: order.price.unit_amount / 100,
-            note: noteField?.text.value,
+            seats: payment.count,
+            paid: payment.total,
+            note: payment.note,
             stripeID: session.payment_intent,
           }
         }
@@ -146,24 +149,24 @@ exports.handler = async function (event, context) {
         : await notion.pages.create({
           parent: { database_id: customerDb },
           properties: {
-            'Name': {title: [{text: {content: customer.name}}] },
-            'Email': {email: customer.email},
+            'Name': { title: [{ text: { content: customer.name }}] },
+            'Email': { email: customer.email },
           },
         });
 
       const notionResponse = await notion.pages.create({
         parent: { database_id: paymentDb },
         properties: {
-          'Name': {title: [{text: {content: payment.name}}] },
-          'Follow-up': {status: {name: 'todo'}},
-          'Type': {select: {name: payment.type || 'unknown'}},
-          'Unit': {number: payment.unit},
-          'Count': {number: payment.count},
-          'Customer': {
-            relation: [
-              { id: person.id },
-            ]
-          }
+          'Name': { title: [{ text: { content: name }}] },
+          'Note': { rich_text: [{ text: { content: payment.note || '' }}]},
+          'Follow-up': { status: { name: 'todo' }},
+          'Product': { rich_text: [{ text: { content: payment.name || 'unknown' }}]},
+          'ID': { rich_text: [{ text: { content: product.id || 'unknown' }}]},
+          'Type': { select: { name: payment.type || 'unknown' }},
+          'Recurring': { select: { name: payment.recurring || 'no' }},
+          'Unit': { number: payment.unit || payment.total },
+          'Count': { number: payment.count || 1 },
+          'Customer': { relation: [{ id: person.id }]}
         },
       });
 

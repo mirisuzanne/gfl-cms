@@ -60,6 +60,15 @@ exports.handler = async function (event, context) {
         type: 'text',
         optional: true,
       },
+      {
+        key: 'note',
+        label: {
+          type: 'custom',
+          custom: 'Notes',
+        },
+        type: 'text',
+        optional: true,
+      },
     ],
     metadata: { eventID, optionID },
     mode: "payment",

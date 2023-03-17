@@ -29,6 +29,14 @@
         name="product"
         value="{{ product }}">
 
+      <p class="max-warning" data-help='hidden'>
+        Only
+        <strong class="max-warning-count">
+          {{ max }} ticket{% if max != 1 %}s{% endif %}
+        </strong>
+        remaining.
+      </p>
+
       <div class="form-field">
         <label for="count-{{ option.id }}">
           How many tickets?
@@ -41,13 +49,6 @@
           max="{{ max }}"
           required
           value="1">
-        <p class="max-warning" hidden>
-          Only
-          <strong class="max-warning-count">
-            {{ max }} ticket{% if max != 1 %}s{% endif %}
-          </strong>
-          remaining.
-        </p>
       </div>
 
       <div class="form-field">
@@ -64,7 +65,7 @@
       </div>
 
       <div class="form-actions">
-        <p class="checkout-summary" hidden>
+        <p class="checkout-summary">
           <strong>Total:</strong>
           <output class="total-price">(set your own price)</output>
           for
