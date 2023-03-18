@@ -1,3 +1,5 @@
+@use '../config';
+
 figure {
   margin: 0;
   padding: 0;
@@ -6,8 +8,11 @@ figure {
 .gallery {
   display: grid;
   gap: var(--shim);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 24ch), 1fr));
   place-items: center;
+
+  @include config.above(40em) {
+    grid-template-columns: repeat(2, minmax(min(100%, 20ch), 1fr));
+  }
 }
 
 
