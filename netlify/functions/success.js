@@ -62,9 +62,20 @@ exports.handler = async function (event, context) {
       const nameField = fields.find((field) => field.key === 'name');
       const name = nameField?.text.value || session.customer_details.name;
 
+      const shipping = session.customer_shipping || session.shipping || customer_details;
+      const address = shipping && shipping.address ? {
+        street1: shipping.address.line1,
+        street2: shipping.address.line2,
+        locality: shipping.address.city,
+        region: shipping.address.state,
+        postal_code: shipping.address.postal_code,
+        country: shipping.address.country,
+      } : {};
+
       const customer = {
         name,
         email: session.customer_details.email,
+        ...address,
       };
 
       const payment = {
@@ -158,8 +169,18 @@ exports.handler = async function (event, context) {
         response.event = eventData;
       }
 
+      // notion address
+      const notionAddress = {
+        'Street-1': { rich_text: [{ text: { content: customer.street1 }}]},
+        'Street-2': { rich_text: [{ text: { content: customer.street2 }}]},
+        'Locality': { rich_text: [{ text: { content: customer.locality }}]},
+        'Region': { rich_text: [{ text: { content: customer.region }}]},
+        'PostalCode': { rich_text: [{ text: { content: customer.postal_code }}]},
+        'Country': { rich_text: [{ text: { content: customer.country }}]},
+      };
+
       // notion customer
-      const notionCustomer = await notion.databases.query({
+      const notionPersonList = await notion.databases.query({
         database_id: customerDb,
         filter: {
           property: 'Email',
@@ -169,33 +190,31 @@ exports.handler = async function (event, context) {
         },
       });
 
-      const person = notionCustomer.results.length > 0
-        ? notionCustomer.results[0]
-        : await notion.pages.create({
-          parent: { database_id: customerDb },
-          properties: {
-            'Name': { title: [{ text: { content: customer.name }}] },
-            'Email': { email: customer.email },
-          },
-        });
+      const notionPerson = notionPersonList.results.length > 0
+        ? notionPersonList.results[0]
+        : null;
 
-      // notion payment
-      const notionPaymentProps = {
-        'Name': { title: [{ text: { content: name }}] },
-        'Note': { rich_text: [{ text: { content: payment.note || '' }}]},
-        'Status': { status: {
-          name: payment.type === 'ticket' ? 'will call' : 'todo'
-        }},
-        'Product': { rich_text: [{ text: { content: payment.name || 'unknown' }}]},
-        'ID': { rich_text: [{ text: { content: product.id || 'unknown' }}]},
-        'paymentID': { rich_text: [{ text: { content: payment.id }}]},
-        'Type': { select: { name: payment.type || 'unknown' }},
-        'Recurring': { select: { name: payment.recurring || 'no' }},
-        'Unit': { number: payment.unit || payment.total },
-        'Count': { number: payment.count || 1 },
-        'Customer': { relation: [{ id: person.id }]}
+      const notionPersonProps = {
+        'Name': { title: [{ text: { content: customer.name }}] },
+        'Email': { email: customer.email },
+        ...notionAddress,
       };
 
+      if (notionPerson) {
+        const patchPerson = await notion.pages.update({
+          page_id: notionPerson.id,
+          properties: notionPersonProps,
+        });
+        response.notionPerson = patchPerson;
+      } else {
+        const newPerson = await notion.pages.create({
+          parent: { database_id: customerDb },
+          properties: notionPersonProps,
+        });
+        response.notionPerson = newPerson;
+      }
+
+      // notion payment
       const notionPaymentList = await notion.databases.query({
         database_id: paymentDb,
         filter: {
@@ -210,18 +229,34 @@ exports.handler = async function (event, context) {
         ? notionPaymentList.results[0]
         : null;
 
+      const notionPaymentProps = {
+        'Name': { title: [{ text: { content: name }}] },
+        'Note': { rich_text: [{ text: { content: payment.note || '' }}]},
+        'Status': { status: {
+          name: payment.type === 'ticket' ? 'will call' : 'todo'
+        }},
+        'Product': { rich_text: [{ text: { content: payment.name || 'unknown' }}]},
+        'ID': { rich_text: [{ text: { content: product.id || 'unknown' }}]},
+        'paymentID': { rich_text: [{ text: { content: payment.id }}]},
+        'Type': { select: { name: payment.type || 'unknown' }},
+        'Recurring': { select: { name: payment.recurring || 'one-time' }},
+        'Unit': { number: payment.unit || payment.total },
+        'Count': { number: payment.count || 1 },
+        'Customer': { relation: [{ id: response.notionPerson.id }]}
+      };
+
       if (notionPayment) {
         const patchPayment = await notion.pages.update({
           page_id: notionPayment.id,
           properties: notionPaymentProps,
         });
-        response.notion = patchPayment;
+        response.notionPayment = patchPayment;
       } else {
         const newPayment = await notion.pages.create({
           parent: { database_id: paymentDb },
           properties: notionPaymentProps,
         });
-        response.notion = newPayment;
+        response.notionPayment = newPayment;
       }
 
       return {
