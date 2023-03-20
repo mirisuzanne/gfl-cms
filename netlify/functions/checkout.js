@@ -22,6 +22,7 @@ exports.handler = async function (event, context) {
   const eventID = params.get("event");
   const optionID = params.get("option");
   const productID = params.get("product");
+  const note = params.get("note");
   const max = parseInt(params.get("max"), 10);
   const count = parseInt(params.get("count"), 10);
   const price = parseFloat(params.get("price"), 10);
@@ -60,17 +61,8 @@ exports.handler = async function (event, context) {
         type: 'text',
         optional: true,
       },
-      {
-        key: 'note',
-        label: {
-          type: 'custom',
-          custom: 'Notes',
-        },
-        type: 'text',
-        optional: true,
-      },
     ],
-    metadata: { eventID, optionID },
+    metadata: { eventID, optionID, note },
     mode: "payment",
     success_url: `${siteBase}/checkout/success/`,
     // go back to page that they were on

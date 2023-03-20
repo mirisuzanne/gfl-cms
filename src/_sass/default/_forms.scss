@@ -1,7 +1,7 @@
 @use '../config';
 
 textarea {
-  min-height: calc(6em + 4vw);
+  min-height: 4em;
   resize: vertical;
 }
 
@@ -52,11 +52,19 @@ button {
 
 .form-field {
   display: var(--ccs-custom-display, block);
-  margin-bottom: var(--shim);
+  margin-bottom: var(--gutter);
+
+  &:focus-within {
+    --focus-help: 1;
+  }
 }
 
 label {
   display: block;
+}
+
+output {
+  font-weight: bold;
 }
 
 input:not([type='checkbox'], [type='radio']),
@@ -82,16 +90,8 @@ textarea {
   }
 }
 
-.form-hint {
-  margin: 0 0 var(--shim);
-  opacity: 0.75;
-
-  :focus ~ & {
-    opacity: 1;
-  }
-}
-
 [data-help] {
+  opacity: var(--focus-help, 0.75);
   transition: opacity 200ms;
 }
 

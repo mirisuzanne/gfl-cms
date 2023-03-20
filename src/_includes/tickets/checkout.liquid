@@ -29,17 +29,14 @@
         name="product"
         value="{{ product }}">
 
-      <p class="max-warning" data-help='hidden'>
-        Only
-        <strong class="max-warning-count">
-          {{ max }} ticket{% if max != 1 %}s{% endif %}
-        </strong>
-        remaining.
-      </p>
-
       <div class="form-field">
         <label for="count-{{ option.id }}">
           How many tickets?
+          <span class="max-warning" data-help='hidden'>
+            (only
+            <output class="max-warning-count">{{ max }}</output>
+            remaining)
+          </span>
         </label>
         <input
           type="number"
@@ -53,7 +50,8 @@
 
       <div class="form-field">
         <label for="price-{{ option.id }}">
-          Name your price ($)
+          Name your price
+          <span data-help>($per-ticket)</span>
         </label>
         <input
           type="number"
@@ -62,6 +60,13 @@
           min="0.5"
           step="0.5"
           required>
+      </div>
+
+      <div class="form-field">
+        <label for="note-{{ option.id }}">
+          Any notes or requests?
+        </label>
+        <textarea id="note-{{ option.id }}" name="note"></textarea>
       </div>
 
       <div class="form-actions">

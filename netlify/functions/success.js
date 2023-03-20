@@ -75,7 +75,7 @@ exports.handler = async function (event, context) {
         count: order.quantity,
         type: product.metadata.type,
         recurring: product.metadata.recurring,
-        note: noteField?.text.value,
+        note: session.metadata.note || noteField?.text.value,
       }
 
       // send to strapi

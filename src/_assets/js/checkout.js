@@ -1,6 +1,6 @@
 const optionForms = document.querySelectorAll('form[action="/api/checkout"]');
 
-const tix = (opt) => `ticket${opt.countIn.value == 1 ? '' : 's'}`;
+const tix = (count) => `ticket${count == 1 ? '' : 's'}`;
 
 const updatePrice = (opt) => {
   if (opt.priceIn.value) {
@@ -26,7 +26,7 @@ const updateCount = (opt) => {
   }
 
   const plural = opt.countIn.value == 1 ? '' : 's';
-  opt.countOut.value = `${opt.countIn.value} ${tix(opt)}`;
+  opt.countOut.value = `${opt.countIn.value} ${tix(opt.countIn.value)}`;
   updatePrice(opt);
 }
 
@@ -41,7 +41,7 @@ const updateMax = (opt, max) => {
   if (max > 0) {
     opt.maxIn.value = max;
     opt.countIn.setAttribute('max', max);
-    opt.maxOut.innerHTML = `${max} ${tix(opt)}`;
+    opt.maxOut.innerHTML = `${max}`;
   } else {
     const soldOut = document.querySelector('#sold-out-template');
     const soldOutClone = soldOut.content.cloneNode(true);
@@ -50,12 +50,14 @@ const updateMax = (opt, max) => {
 }
 
 const updateSales = (opt) => {
+  if (data.length > 0) {
     const eventID = opt.form.querySelector('[name=event]');
     const optionID = opt.form.querySelector('[name=option]');
     const event = data.find((item) => `${item.id}` === eventID.value);
     const option = event.option.find((opt) => `${opt.id}` === optionID.value);
     const max = option.seats - option.sold;
     updateMax(opt, max);
+  }
 }
 
 const getData = async () => {
