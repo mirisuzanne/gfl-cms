@@ -62,7 +62,7 @@ exports.handler = async function (event, context) {
       const nameField = fields.find((field) => field.key === 'name');
       const name = nameField?.text.value || session.customer_details.name;
 
-      const shipping = session.customer_shipping || session.shipping || customer_details;
+      const shipping = session.customer_shipping || session.shipping || session.customer_details;
       const address = shipping && shipping.address ? {
         street1: shipping.address.line1,
         street2: shipping.address.line2,
@@ -171,12 +171,12 @@ exports.handler = async function (event, context) {
 
       // notion address
       const notionAddress = {
-        'Street-1': { rich_text: [{ text: { content: customer.street1 }}]},
-        'Street-2': { rich_text: [{ text: { content: customer.street2 }}]},
-        'Locality': { rich_text: [{ text: { content: customer.locality }}]},
-        'Region': { rich_text: [{ text: { content: customer.region }}]},
-        'PostalCode': { rich_text: [{ text: { content: customer.postal_code }}]},
-        'Country': { rich_text: [{ text: { content: customer.country }}]},
+        'Street-1': { rich_text: [{ text: { content: customer.street1 || '' }}]},
+        'Street-2': { rich_text: [{ text: { content: customer.street2 || '' }}]},
+        'Locality': { rich_text: [{ text: { content: customer.locality || '' }}]},
+        'Region': { rich_text: [{ text: { content: customer.region || '' }}]},
+        'PostalCode': { rich_text: [{ text: { content: customer.postal_code || '' }}]},
+        'Country': { rich_text: [{ text: { content: customer.country || '' }}]},
       };
 
       // notion customer
