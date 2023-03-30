@@ -60,7 +60,7 @@ exports.handler = async function (event, context) {
 
       const noteField = fields.find((field) => field.key === 'note');
       const nameField = fields.find((field) => field.key === 'name');
-      const name = nameField?.text.value || session.customer_details.name;
+      const name = session.customer_details.name;
 
       const shipping = session.customer_shipping || session.shipping || session.customer_details;
       const address = shipping && shipping.address ? {
@@ -73,13 +73,14 @@ exports.handler = async function (event, context) {
       } : {};
 
       const customer = {
-        name,
+        name: session.customer_details.name,
         email: session.customer_details.email,
         ...address,
       };
 
       const payment = {
         name: product.name || 'no product',
+        reservation: nameField?.text.value || customer.name,
         id: session.payment_intent,
         total: session.amount_total / 100,
         unit: order.price.unit_amount / 100,
@@ -93,7 +94,7 @@ exports.handler = async function (event, context) {
       if (payment.type === 'ticket') {
         const ticketSale = {
           data: {
-            name,
+            name: customer.name,
             email: customer.email,
             seats: payment.count,
             paid: payment.total,
@@ -238,6 +239,7 @@ exports.handler = async function (event, context) {
         'Product': { rich_text: [{ text: { content: payment.name || 'unknown' }}]},
         'ID': { rich_text: [{ text: { content: product.id || 'unknown' }}]},
         'paymentID': { rich_text: [{ text: { content: payment.id }}]},
+        'Reservation': { rich_text: [{ text: { content: payment.reservation }}]},
         'Type': { select: { name: payment.type || 'unknown' }},
         'Recurring': { select: { name: payment.recurring || 'one-time' }},
         'Unit': { number: payment.unit || payment.total },
