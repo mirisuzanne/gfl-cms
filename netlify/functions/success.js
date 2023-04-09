@@ -60,7 +60,8 @@ exports.handler = async function (event, context) {
 
       const noteField = fields.find((field) => field.key === 'note');
       const nameField = fields.find((field) => field.key === 'name');
-      const name = session.customer_details.name;
+      const payName = session.customer_details.name;
+      const name = nameField?.text.value || payName;
 
       const shipping = session.customer_shipping || session.shipping || session.customer_details;
       const address = shipping && shipping.address ? {
@@ -73,14 +74,13 @@ exports.handler = async function (event, context) {
       } : {};
 
       const customer = {
-        name: session.customer_details.name,
+        name, payName,
         email: session.customer_details.email,
         ...address,
       };
 
       const payment = {
-        name: product.name || 'no product',
-        reservation: nameField?.text.value || customer.name,
+        product: product.name || 'no product',
         id: session.payment_intent,
         total: session.amount_total / 100,
         unit: order.price.unit_amount / 100,
@@ -94,13 +94,13 @@ exports.handler = async function (event, context) {
       if (payment.type === 'ticket') {
         const ticketSale = {
           data: {
-            name: customer.name,
+            name,
             email: customer.email,
             seats: payment.count,
             paid: payment.total,
             note: payment.note,
             stripeID: payment.id,
-            productName: payment.name,
+            productName: payment.product,
           }
         }
 
@@ -231,15 +231,15 @@ exports.handler = async function (event, context) {
         : null;
 
       const notionPaymentProps = {
-        'Name': { title: [{ text: { content: name }}] },
+        'Name': { title: [{ text: { content: customer.payName }}] },
         'Note': { rich_text: [{ text: { content: payment.note || '' }}]},
         'Status': { status: {
           name: payment.type === 'ticket' ? 'will call' : 'todo'
         }},
-        'Product': { rich_text: [{ text: { content: payment.name || 'unknown' }}]},
+        'Product': { rich_text: [{ text: { content: payment.product || 'unknown' }}]},
         'ID': { rich_text: [{ text: { content: product.id || 'unknown' }}]},
         'paymentID': { rich_text: [{ text: { content: payment.id }}]},
-        'Reservation': { rich_text: [{ text: { content: payment.reservation }}]},
+        'Reservation': { rich_text: [{ text: { content: customer.name }}]},
         'Type': { select: { name: payment.type || 'unknown' }},
         'Recurring': { select: { name: payment.recurring || 'one-time' }},
         'Unit': { number: payment.unit || payment.total },

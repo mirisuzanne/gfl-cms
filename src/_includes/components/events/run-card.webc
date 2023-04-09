@@ -3,6 +3,7 @@
   <venue-card :@name="venue.title" :@adr="venue.address"></venue-card>
   <ul>
     <script webc:type="js">
+      const today = utcDate();
       const convertTime = (timeStr) => {
         const pm = timeStr.endsWith('am') ? false : true;
         timeStr = timeStr.replace('am', '')
@@ -28,8 +29,8 @@
               : '';
           e.id = event.id;
           e.show_slug = showSlug;
-          e.sort = new Date(`${e.date}T${convertTime(e.time)}:00`)
-          e.link = e.sort >= new Date() && has_tickets > 0
+          e.sort = utcDate(`${e.date}T${convertTime(e.time)}:00`);
+          e.link = e.sort > today && has_tickets > 0
             ? e.page.url
             : null;
           return e;

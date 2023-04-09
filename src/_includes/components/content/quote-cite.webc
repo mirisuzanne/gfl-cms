@@ -1,4 +1,20 @@
 <figcaption class="quote-cite">
-  &mdash;<strong class="h-card" @html="citeName"></strong>
-  <template webc:if="citeDetails" webc:nokeep @html="citeDetails"></template>
+  &mdash;<strong class="h-card">
+    <link-if
+      :@link="citeSource ? null : citeUrl"
+      :@link-text="citeName"
+    ></link-if>
+  </strong>
+  <template webc:nokeep webc:if="citeSource">
+    »
+    <link-if
+      :@link="citeUrl"
+      :@link-text="citeSource"
+    ></link-if>
+  </template>
+  <time
+    webc:if="citeDate"
+    :datetime="formatDate(citeDate, 'iso')"
+    @text="`(${formatDate(citeDate)})`"
+  ></time>
 </figcaption>

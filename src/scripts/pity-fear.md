@@ -1,5 +1,5 @@
 ---
-print: pity-fear
+title: pity-fear
 date: 2022-06-03
 ---
 

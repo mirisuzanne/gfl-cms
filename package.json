@@ -12,16 +12,14 @@
     "lint": "stylelint \"**/*.scss\" --fix"
   },
   "devDependencies": {
-    "@11ty/eleventy": "^2.0.0",
+    "@11ty/eleventy": "^2.0.1",
     "@11ty/eleventy-fetch": "^3.0.0",
     "@11ty/eleventy-img": "^3.0.0",
     "@11ty/eleventy-plugin-rss": "^1.2.0",
     "@11ty/eleventy-plugin-syntaxhighlight": "^4.2.0",
-    "@11ty/eleventy-plugin-webc": "^0.9.3",
+    "@11ty/eleventy-plugin-webc": "^0.11.0",
     "@11ty/is-land": "^3.0.1",
-    "@contentful/rich-text-html-renderer": "^16.0.2",
     "accoutrement": "^4.0.4",
-    "contentful": "^9.3.3",
     "cssremedy": "^0.1.0-beta.2",
     "date-fns": "^2.29.3",
     "date-fns-tz": "^2.0.0",

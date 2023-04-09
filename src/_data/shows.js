@@ -23,6 +23,13 @@ const query = qs.stringify(
           },
         },
       },
+      press: {
+        populate: {
+          quote: {
+            populate: '*',
+          }
+        },
+      },
       content: {
         populate: {
           venue: {

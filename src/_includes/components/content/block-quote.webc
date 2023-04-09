@@ -1,4 +1,9 @@
 <figure class="block-quote">
   <blockquote @html="md(quoteText)"></blockquote>
-  <quote-cite :@cite-name="citeName" :@cite-details="citeDetails"></quote-cite>
+  <quote-cite
+    :@cite-name="citeName"
+    :@cite-date="citeDate"
+    :@cite-url="citeUrl"
+    :@cite-source="citeSource"
+  ></quote-cite>
 </blockquote>
