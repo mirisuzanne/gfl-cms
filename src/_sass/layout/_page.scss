@@ -4,14 +4,19 @@ body {
   --margin: minmax(var(--gutter, 1em), 1fr);
   --content: minmax(min-content, 75ch);
   --columns: var(--margin) var(--content) var(--margin);
+  --head-min: 60vh;
   display: grid;
   grid-template:
     'nav nav nav' auto
-    'head head head' minmax(min-content, min(60svh, 60vw))
+    'head head head' minmax(min-content, min(var(--head-min), 60vw))
     '. main .' minmax(auto, 1fr)
     'foot foot foot' auto /
     var(--columns)
   ;
+
+  @supports (height: 60svh) {
+    --head-min: 60svh;
+  }
 }
 
 nav {

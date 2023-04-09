@@ -1,5 +1,6 @@
 const dateFormat = require('date-fns/format');
 const { utcToZonedTime } = require('date-fns-tz');
+const subDays = require('date-fns/subDays')
 
 const year = () => `${new Date().getFullYear()}`;
 
@@ -17,10 +18,25 @@ module.exports = function (eleventyConfig, options = {}) {
     ...options,
   };
 
+  const utcDate = (date) => {
+    const dateObj = typeof date === 'string'
+      ? new Date(date)
+      : date || new Date();
+
+    return utcToZonedTime(dateObj, '+00:00');
+  };
+
   const formatDate = (date, format = 'default') =>
-    dateFormat(utcToZonedTime(date, '+00:00'), formats[format] || format);
+    dateFormat(utcDate(date), formats[format] || format);
+
+  const isCurrent = (date) => {
+    const today = subDays(utcDate(), 1);
+    return date > today;
+  }
 
   eleventyConfig.addShortcode('year', year);
   eleventyConfig.addFilter('year', year);
+  eleventyConfig.addFilter('utcDate', utcDate);
+  eleventyConfig.addFilter('isCurrent', isCurrent);
   eleventyConfig.addFilter('formatDate', formatDate);
 };

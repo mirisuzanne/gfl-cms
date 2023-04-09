@@ -1,7 +1,6 @@
 const slugify = require('slugify');
 const markdownIt = require('markdown-it');
 const anchor = require('markdown-it-anchor');
-const { documentToHtmlString } = require('@contentful/rich-text-html-renderer');
 const { EleventyRenderPlugin } = require('@11ty/eleventy');
 const syntaxHighlight = require('@11ty/eleventy-plugin-syntaxhighlight');
 const striptags = require('striptags');
@@ -36,7 +35,6 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(EleventyRenderPlugin);
   eleventyConfig.addPlugin(syntaxHighlight);
 
-  eleventyConfig.addFilter('apiToHtml', documentToHtmlString);
   eleventyConfig.addFilter('slug', slug);
   eleventyConfig.addFilter('md', block);
   eleventyConfig.addFilter('mdInline', inline);

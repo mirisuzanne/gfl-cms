@@ -12,7 +12,7 @@
           <nav-item
             title="${item.title}"
             link="${itemSlug}"
-            active="${itemSlug === page.url}"
+            :@active="${itemSlug === page.url}"
           ></nav-item>
         `;
       }).join('');

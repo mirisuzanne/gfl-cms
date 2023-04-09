@@ -36,13 +36,19 @@
     {% set itemData = {
       'collections': collections,
       'quoteText': item.content,
-      'citeName': item.cite.name
+      'citeName': item.cite.name,
+      'citeDate': item.cite.date,
+      'citeSource': item.cite.source,
+      'citeUrl': item.cite.url
     } %}
 
     {% renderTemplate "webc", itemData %}
       <block-quote
         :@quote-text="quoteText"
         :@cite-name="citeName"
+        :@cite-date="citeDate"
+        :@cite-source="citeSource"
+        :@cite-url="citeUrl"
       ></block-quote>
     {% endrenderTemplate %}
 
@@ -110,6 +116,7 @@
       <show-history
         :shows="shows"
         :limit="limit"
+        :@collections="collections"
       ></show-history>
     {% endrenderTemplate %}
 
@@ -128,7 +135,32 @@
         :@venue='venue'
         :@events='events'
         :@show-slug="show_slug"
+        :@collections="collections"
       ></run-card>
+    {% endrenderTemplate %}
+
+  {% elif is == 'auto.press-card' %}
+    {% set itemData = {
+      title: item.title,
+      press: cms.press.data
+    } %}
+
+    {% renderTemplate "webc", itemData %}
+      <h level="2" :@title="title || `In The Press`"></h>
+      <script webc:type="js">
+        press
+          .map(item => item.attributes)
+          .sort((a, b) => a.quote.date - b.quote.date)
+          .map(item => `
+            <block-quote
+              @quote-text="${item.quote.content}"
+              @cite-name="${item.quote.cite.name}"
+              @cite-date="${item.quote.cite.date}"
+              @cite-source="${item.quote.cite.source}"
+              @cite-url="${item.quote.cite.url}"
+            ></block-quote>
+          `).join('');
+      </script>
     {% endrenderTemplate %}
 
   {% elif is == 'auto.contact-form' %}
@@ -144,6 +176,7 @@
         :action="action"
         :submit="submit"
         :page-url="pageUrl"
+        :@collections="collections"
       ></contact-form>
     {% endrenderTemplate %}
 

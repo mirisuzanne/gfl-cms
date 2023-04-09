@@ -1,2 +1,17 @@
-<span webc:if="!link || link === 'null'" @attributes ><slot></slot></span>
-<a webc:if="link && link !== 'null'" :href="link" @attributes ><slot></slot></a>
+<span
+  webc:if="!link || link === 'null'"
+  @attributes
+><template
+  webc:nokeep
+  webc:if="linkText"
+  @html="linkText"
+></template><slot></slot></span>
+<a
+  webc:if="link && link !== 'null'"
+  :href="link"
+  @attributes
+><template
+  webc:nokeep
+  webc:if="linkText"
+  @html="linkText"
+></template><slot></slot></a>
