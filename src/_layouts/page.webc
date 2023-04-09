@@ -2,9 +2,13 @@
 layout: base
 ---
 
-<site-nav></site-nav>
-<page-header></page-header>
+<site-nav :@page="page" :@nav="nav"></site-nav>
+<page-header
+  :@hero="hero"
+  :@title="title"
+  :@subtitle="subtitle"
+></page-header>
 <main id="content">
   <div webc:nokeep @raw="content"></div>
 </main>
-<page-footer></page-footer>
+<page-footer :@site="site"></page-footer>

@@ -1,1 +1,5 @@
-<li><a :href="link" @html="title" :data-nav="active ? 'active' : ''"></a></li>
+<li><a
+  :href="link"
+  @html="title"
+  :data-nav="active ? 'active' : ''"
+></a></li>
