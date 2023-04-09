@@ -1,5 +1,6 @@
 const dateFormat = require('date-fns/format');
 const { utcToZonedTime } = require('date-fns-tz');
+const subDays = require('date-fns/subDays')
 
 const year = () => `${new Date().getFullYear()}`;
 
@@ -28,8 +29,14 @@ module.exports = function (eleventyConfig, options = {}) {
   const formatDate = (date, format = 'default') =>
     dateFormat(utcDate(date), formats[format] || format);
 
+  const isCurrent = (date) => {
+    const today = subDays(utcDate(), 1);
+    return date > today;
+  }
+
   eleventyConfig.addShortcode('year', year);
   eleventyConfig.addFilter('year', year);
   eleventyConfig.addFilter('utcDate', utcDate);
+  eleventyConfig.addFilter('isCurrent', isCurrent);
   eleventyConfig.addFilter('formatDate', formatDate);
 };
