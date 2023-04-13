@@ -22,14 +22,10 @@
         .map(event => {
           const e = event.attributes;
           e.page = getPage(collections.all, event.id, 'event');
-          const has_tickets = e.page.data.has_tickets;
-          e.note = (has_tickets === 0 || !has_tickets)
-              ? ' (no tickets available)'
-              : '';
           e.id = event.id;
           e.show_slug = showSlug;
           e.sort = utcDate(`${e.date}T${convertTime(e.time)}:00`);
-          e.link = isCurrent(e.sort) && has_tickets > 0
+          e.link = isCurrent(e.sort)
             ? e.page.url
             : null;
           return e;
@@ -37,7 +33,7 @@
         .sort((a, b) => a.sort - b.sort)
         .map(event => `
         <event-item
-          @event-title="${event.title}${event.note}"
+          @event-title="${event.title}"
           @date="${event.date}"
           @time="${event.time}"
           @link="${event.link}"
