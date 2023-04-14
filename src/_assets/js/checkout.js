@@ -42,6 +42,10 @@ const updateMax = (opt, max) => {
     opt.maxIn.value = max;
     opt.countIn.setAttribute('max', max);
     opt.maxOut.innerHTML = `${max}`;
+
+    if (max >= Number(opt.maxIn.value - 4)) {
+      opt.maxWarn.dataset.help = 'visible';
+    }
   } else {
     const soldOut = document.querySelector('#sold-out-template');
     const soldOutClone = soldOut.content.cloneNode(true);

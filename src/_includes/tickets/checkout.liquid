@@ -32,7 +32,7 @@
       <div class="form-field">
         <label for="count-{{ option.id }}">
           How many tickets?
-          <span class="max-warning" data-help='hidden'>
+          <span class="max-warning" data-help='{% if max > 1 %}hidden{% endif %}'>
             (only
             <output class="max-warning-count">{{ max }}</output>
             remaining)
