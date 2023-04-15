@@ -25,7 +25,6 @@ const updateCount = (opt) => {
     opt.countIn.value = 1;
   }
 
-  const plural = opt.countIn.value == 1 ? '' : 's';
   opt.countOut.value = `${opt.countIn.value} ${tix(opt.countIn.value)}`;
   updatePrice(opt);
 }
@@ -43,7 +42,7 @@ const updateMax = (opt, max) => {
     opt.countIn.setAttribute('max', max);
     opt.maxOut.innerHTML = `${max}`;
 
-    if (max >= Number(opt.maxIn.value - 4)) {
+    if (max < 4) {
       opt.maxWarn.dataset.help = 'visible';
     }
   } else {

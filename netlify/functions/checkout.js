@@ -34,23 +34,28 @@ exports.handler = async function (event, context) {
   const option = cmsEvent.option.find((opt) => `${opt.id}` === optionID);
   const productMax = option.seats - option.sold;
 
+  const ticketMax = productMax || max;
+
   // create a checkout flow in stripe
+  const item = {
+    price_data: {
+      currency: 'usd',
+      product: productID,
+      unit_amount: price * 100,
+    },
+    quantity: count,
+  };
+
+  if (ticketMax > 1) {
+    item.adjustable_quantity = {
+      enabled: true,
+      minimum: 1,
+      maximum: productMax || max,
+    };
+  }
+
   const session = await stripe.checkout.sessions.create({
-    line_items: [
-      {
-        price_data: {
-          currency: 'usd',
-          product: productID,
-          unit_amount: price * 100,
-        },
-        adjustable_quantity: {
-          enabled: true,
-          minimum: 1,
-          maximum: productMax || max,
-        },
-        quantity: count,
-      },
-    ],
+    line_items: [ item ],
     custom_fields: [
       {
         key: 'name',
