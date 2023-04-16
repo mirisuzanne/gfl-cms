@@ -25,7 +25,7 @@
           e.id = event.id;
           e.show_slug = showSlug;
           e.sort = utcDate(`${e.date}T${convertTime(e.time)}:00`);
-          e.link = isCurrent(e.sort)
+          e.link = e.onSale && isCurrent(e.sort)
             ? e.page.url
             : null;
           return e;
