@@ -41,7 +41,6 @@ module.exports = (eleventyConfig) => {
     './src/_assets/fonts': 'fonts',
     './src/_assets/js': 'js',
     './src/_assets/favicons/*.*': './',
-    "./node_modules/@11ty/is-land/is-land.js": "js/is-land.js"
   });
 
   const data = loadData(opts.data, opts.files);
