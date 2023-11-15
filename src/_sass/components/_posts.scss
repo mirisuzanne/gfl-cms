@@ -1,0 +1,46 @@
+[data-card~='post'] {
+  border-block: thin dotted var(--border);
+  display: grid;
+  gap: var(--gutter);
+  margin-block: var(--spacer);
+  padding-block: var(--gutter);
+
+  & + & {
+    border-block-start: none;
+  }
+
+  @media (min-width: 35em) {
+    grid-template:
+      'img header' auto
+      'img content' 1fr
+      / clamp(4lh, 20%, 6lh) 1fr;
+
+    .hero-link {
+      grid-area: img;
+    }
+  }
+
+  h3,
+  time {
+    display: inline-block;
+  }
+
+  time::before {
+    content: ' // ';
+    opacity: 0.5;
+  }
+
+  header,
+  p {
+    margin: 0;
+  }
+
+  .hero-img {
+    aspect-ratio: 1;
+    border: var(--img-border, thin) solid var(--border);
+    display: block;
+    margin-block-end: var(--shim);
+    object-fit: cover;
+    overflow: hidden;
+  }
+}

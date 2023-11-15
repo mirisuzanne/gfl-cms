@@ -1,0 +1,24 @@
+<media-card
+  class="h-entry"
+  card="post"
+  :level="level"
+  :title="title"
+  :src="src"
+  :alt="alt"
+  :summary="summary"
+  :link-to="permalink"
+  sizes="thumbnail"
+>
+  <header slot="header">
+    <h
+      :level="level || 3"
+      :title="title"
+      :link-to="linkTo"
+    ></h>
+    <time
+      webc:if="postDate"
+      :datetime="formatDate(postDate, 'iso')"
+      @html="formatDate(postDate)"
+    ></time>
+  </header>
+</media-card>

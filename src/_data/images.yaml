@@ -10,3 +10,4 @@ sizes:
   hero: '100vw'
   gallery: '(min-width: 65em) 30vw, (min-width: 30em) 45vw, 95vw'
   media: '(min-width: 65em) 15vw, (min-width: 30em) 30vw, 50vw'
+  thumbnail: '(min-width: 40em) 200px, 95vw'

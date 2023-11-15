@@ -52,6 +52,30 @@
       ></block-quote>
     {% endrenderTemplate %}
 
+  {% elif is == 'content.post-card' %}
+    {% set post = item.page.data.attributes %}
+    {% set cardHero = post.header.hero.data.attributes %}
+    {% set itemData = {
+      'collections': collections,
+      'imgSrc': cardHero.url,
+      'imgAlt': cardHero.alternativeText,
+      'postTitle': post.title,
+      'postSummary': post.header.summary,
+      'permaLink': post | permaSlug | log,
+      'postDate': post.date
+    } %}
+
+    {% renderTemplate "webc", itemData %}
+      <post-card
+        :title="postTitle"
+        :post-date="postDate"
+        :summary="postSummary"
+        :src="imgSrc"
+        :alt="imgAlt"
+        :permalink="permaLink"
+      ></post-card>
+    {% endrenderTemplate %}
+
   {% elif is == 'content.person-card' %}
     {% set person = item.person.data.attributes %}
     {% set cardHero = person.header.hero.data.attributes %}

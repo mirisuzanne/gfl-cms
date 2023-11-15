@@ -42,6 +42,17 @@ const query = qs.stringify(
               },
             },
           },
+          page: {
+            populate: {
+              header: {
+                populate: {
+                  hero: {
+                    populate: '*'
+                  },
+                },
+              },
+            },
+          },
         },
       },
     }
