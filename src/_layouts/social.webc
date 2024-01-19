@@ -11,7 +11,11 @@
   <link rel="stylesheet" :href="`${assets.css}social.css`" webc:keep>
 </head>
 <body>
-  <page-header webc:if="hero"></page-header>
+  <page-header
+    :@title="source.data.title"
+    :@subtitle="source.data.subtitle"
+    :@hero="source.data.hero"
+  ></page-header>
   <footer>
     <strong @html="site.domain"></strong>
   </footer>
