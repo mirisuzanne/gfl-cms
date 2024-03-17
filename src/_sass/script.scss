@@ -1,39 +1,6 @@
 @forward '../../node_modules/cssremedy/css/remedy.css';
 
 // screen only
-nav, header {
-  border-block-end: thin dotted;
-  margin-block-end: 3em;
-  padding-block-end: 3em;
-  display: grid;
-  gap: 0.5em;
-
-  * {
-    margin: 0;
-  }
-}
-
-h1 {
-  margin-block-end: 1rem;
-}
-
-// print styles
-@page {
-  margin-left: 1in;
-}
-
-html {
-  font-family: 'Courier New', Courier, monospace;
-  font-size: calc(var(--fs-print, 12) * 1pt);
-}
-
-@media print {
-  header,
-  nav {
-    display: none;
-  }
-}
-
 @media screen {
   body {
     margin: 2em auto;
@@ -41,10 +8,45 @@ html {
   }
 }
 
+// both
+html {
+  font-family: Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+  font-size: calc(var(--fs-print, 12) * 1pt);
+  line-height: 1.6;
+}
+
+header {
+  border-block: thin dotted;
+  margin-block: 3em;
+  padding-block: 3em;
+  display: grid;
+  gap: 1lh;
+
+  * { margin: 0; }
+}
+
+hi, h2, h3 {
+  text-wrap: balance;
+
+  a:any-link {
+    color: unset;
+    text-decoration: none;
+  }
+}
+
+main {
+  counter-reset: h2;
+}
+
 h2 {
+  counter-increment: h2;
+  break-after: avoid;
   font-size: 1.2em;
   margin-bottom: 0;
-  break-after: avoid;
+
+  &::before {
+    content: counter(h2) '. ';
+  }
 }
 
 h2 + h3 {
@@ -54,9 +56,46 @@ h2 + h3 {
 h3 {
   font-size: 1em;
   font-style: italic;
+
+  &::before { content: '('; }
+  &::after { content: ')'; }
 }
 
 pre,
 code {
   font: inherit;
+}
+
+hr {
+  border: none;
+  block-size: auto;
+  margin-block: 1.5lh;
+
+  &::after {
+    content: '* * *';
+  }
+}
+
+// print styles
+@page {
+  margin: 1in;
+}
+
+@media print {
+  nav {
+    display: none;
+  }
+
+  header {
+    place-content: center;
+    block-size: 100vh;
+    border: unset;
+    margin: unset;
+    padding: unset;
+    max-inline-size: 60ch;
+  }
+
+  h1 {
+    font-size: inherit;
+  }
 }

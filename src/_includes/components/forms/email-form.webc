@@ -1,0 +1,28 @@
+<form
+  action="https://grapefruitlab.us12.list-manage.com/subscribe/post?u=c06c98b0844b3f7d8e16f8bc7&amp;id=526a857f4f&amp;f_id=000e50e0f0"
+  method="post"
+  id="email-signup"
+  aria-labelledby="email-form-label"
+>
+  <div id="mc_embed_signup_scroll">
+    <div id="email-form-label">
+      <slot><h2>Subscribe for updates</h2></slot>
+    </div>
+    <div class="form-field">
+      <label for="mce-EMAIL">Email Address</label>
+      <input type="email" name="EMAIL" class="required email" id="mce-EMAIL" required>
+      <span id="mce-EMAIL-HELPERTEXT" class="helper_text"></span>
+    </div>
+    <div aria-hidden="true" style="position: absolute; left: -5000px;">
+      /* real people should not fill this in and expect good things - do not remove this or risk form bot signups */
+      <input type="text" name="b_c06c98b0844b3f7d8e16f8bc7_526a857f4f" tabindex="-1" value="">
+    </div>
+    <div class="form-actions">
+      <button type="submit" id="mc-embedded-subscribe" class="button">Subscribe</button>
+      or
+      <a href="https://us12.campaign-archive.com/home/?u=c06c98b0844b3f7d8e16f8bc7&amp;id=526a857f4f">
+        see previous emails
+      </a>
+    </div>
+  </div>
+</form>

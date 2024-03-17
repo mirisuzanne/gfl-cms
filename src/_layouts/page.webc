@@ -11,4 +11,7 @@ layout: base
 <main id="content">
   <div webc:nokeep @raw="content"></div>
 </main>
+<aside id="secondary">
+  <email-form></email-form>
+</aside>
 <page-footer :@site="site"></page-footer>

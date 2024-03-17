@@ -1,6 +1,5 @@
 <footer id="contentinfo">
   <div @html="md(site.description)"></div>
-
   <p>
     Copyright &copy; <time :datetime="year()" @html="year()"></time>
     <strong @html="site.title"></strong>

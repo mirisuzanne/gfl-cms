@@ -22,8 +22,8 @@ step: 0.5
 
 <header>
   <h1 @html="title"></h1>
+  <p @html="mdInline(byline)"></p>
   <time :datetime="formatDate(date, 'iso')" @html="formatDate(date)"></time>
-  <p @html="byline"></p>
 </header>
 
 <main id="content" @raw="cms ? md(cms.script) : content"></main>

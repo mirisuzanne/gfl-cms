@@ -40,6 +40,6 @@ main {
   grid-area: main;
 }
 
-footer {
-  grid-area: foot;
+#secondary, #contentinfo {
+  grid-column: foot;
 }
