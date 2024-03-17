@@ -22,10 +22,6 @@ body {
 nav {
   grid-area: nav;
   z-index: 1;
-
-  [rel='home']:any-link {
-    text-transform: uppercase;
-  }
 }
 
 #hero {
@@ -40,6 +36,6 @@ main {
   grid-area: main;
 }
 
-footer {
-  grid-area: foot;
+#secondary, #contentinfo {
+  grid-column: foot;
 }

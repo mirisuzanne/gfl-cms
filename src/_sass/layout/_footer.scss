@@ -1,10 +1,9 @@
-footer {
-  background-color: var(--overlay);
+#secondary, #contentinfo {
   border-block-start: thin dotted var(--border);
   display: grid;
   grid-template-columns: var(--columns);
   grid-template-columns: subgrid;
-  padding-block: var(--gutter);
+  padding-block: var(--spacer);
   place-content: center;
   row-gap: var(--gutter);
 
@@ -12,4 +11,13 @@ footer {
     grid-column: 2;
     margin: 0;
   }
+}
+
+#contentinfo {
+  background-color: var(--overlay);
+}
+
+#email-form-label h2 {
+  font-size: inherit;
+  margin-block-start: unset;
 }

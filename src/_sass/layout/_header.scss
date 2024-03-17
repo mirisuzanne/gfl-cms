@@ -7,7 +7,6 @@
   margin: var(--gutter);
   padding: var(--shim, 0.5rem);
   place-content: center;
-  text-shadow: var(--header-shadow);
   z-index: 1;
 
   @include config.below(45em) {
@@ -20,7 +19,7 @@ header {
 
   > * {
     margin: 0;
-    opacity: 0.7;
+    opacity: 0.8;
   }
 }
 

@@ -18,7 +18,7 @@ nav {
   }
 }
 
-[data-nav~='active'] {
+[data-nav~='active']:not([rel=home]) {
   --action: white;
 }
 
@@ -29,3 +29,7 @@ nav ul {
   margin: 0;
   padding: 0;
 }
+
+[data-logo] { --fill: currentColor; }
+[data-logo=lab] { --fill: var(--fg); }
+[data-logo=fruit] { --fill: var(--border); }
