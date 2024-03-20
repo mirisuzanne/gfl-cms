@@ -5,34 +5,34 @@
 <div @attributes class="form-field">
   <input webc:if="type === 'checkbox'"
     type="checkbox"
-    :value="value"
-    :name="name || label.toLowerCase()"
-    :required="required"
-    :id="id || uid"
+    :value="this.value"
+    :name="slugify(this.name || this.label)"
+    :required="this.required"
+    :id="this.id || uid"
     @attributes="attrs"
   />
 
   <label
-    @html="label"
-    :for="id || uid"
+    @html="this.label"
+    :for="this.id || uid"
   ></label>
 
   <input
     webc:if="!['checkbox', 'textarea'].includes(type)"
-    :type="type"
-    :value="value"
-    :name="name || label.toLowerCase()"
-    :required="required"
-    :id="id || uid"
-    @attributes="attrs"
+    :type="this.type"
+    :value="this.value"
+    :name="slugify(this.name || this.label)"
+    :required="this.required"
+    :id="this.id || uid"
+    @attributes="this.attrs"
   />
   <textarea webc:if="type === 'textarea'"
     type="textarea"
-    :value="value"
-    :name="name || label.toLowerCase()"
-    :required="required"
-    :id="id || uid"
-    @attributes="attrs"
+    :value="this.value"
+    :name="slugify(this.name || this.label)"
+    :required="this.required"
+    :id="this.id || uid"
+    @attributes="this.attrs"
   ></textarea>
   <slot></slot>
 </div>

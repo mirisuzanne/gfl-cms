@@ -48,6 +48,9 @@ const query = qs.stringify(
           figure: {
             populate: '*'
           },
+          formFields: {
+            populate: '*'
+          },
         },
       },
     },

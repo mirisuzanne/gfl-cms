@@ -16,10 +16,4 @@
     type="hidden"
     id="show"
     value="{{ product }}">
-  <form-field
-    @label="Current URL"
-    type="hidden"
-    :@value="pageURL"
-    hidden
-  ></form-field>
 </form-submit>

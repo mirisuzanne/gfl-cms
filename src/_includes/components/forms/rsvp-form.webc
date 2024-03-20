@@ -1,0 +1,20 @@
+<form-submit
+  :name="slugify(this.name || `rsvp-${$data.page.url}`)"
+  netlify
+  :action="this.next || '/contact/thanks/'"
+  :@form-fields="this.formFields"
+  :@submit="this.submit || 'rsvp'"
+>
+  <div class="field-group">
+    <form-field @label="Name" @required="required"></form-field>
+    <form-field @label="Email" @type="email" @required="required"></form-field>
+  </div>
+
+  <form-field
+    webc:for="field of this.formFields"
+    :@label="field.label"
+    :@type="field.type"
+    :@value="field.value"
+    :@required="field.required"
+  ></form-field>
+</form-submit>
