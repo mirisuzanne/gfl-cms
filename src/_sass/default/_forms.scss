@@ -24,6 +24,10 @@ legend {
 
 label {
   cursor: pointer;
+
+  &:not([type=checkbox] + label) {
+    display: block;
+  }
 }
 
 button {
@@ -59,12 +63,15 @@ button {
   }
 }
 
-label {
-  display: block;
-}
-
 output {
   font-weight: bold;
+}
+
+[type=checkbox] {
+  aspect-ratio: 1;
+  block-size: 1cap;
+  font: inherit;
+  margin: unset;
 }
 
 input:not([type='checkbox'], [type='radio']),

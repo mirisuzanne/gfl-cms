@@ -1,7 +1,7 @@
 <form-submit
   :name="slugify(this.name || `rsvp-${$data.page.url}`)"
   netlify
-  :action="this.next || '/contact/thanks/'"
+  :action="this.next || '/rsvp/thanks/'"
   :@form-fields="this.formFields"
   :@submit="this.submit || 'rsvp'"
 >
@@ -16,5 +16,10 @@
     :@type="field.type"
     :@value="field.value"
     :@required="field.required"
+  ></form-field>
+
+  <form-field
+    @type="checkbox"
+    @label="Subscribe to our mailing list"
   ></form-field>
 </form-submit>
