@@ -2,10 +2,12 @@ const environment = process.env.CONTEXT;
 
 const environmentKeys = {
   production: {
+    STRAPI_KEY: process.env.STRAPI_KEY,
     STRIPE_KEY: process.env.STRIPE_SECRET_KEY,
     WEBHOOK_KEY: process.env.STRIPE_WEBHOOK_SECRET,
   },
   other: {
+    STRAPI_KEY: process.env.STRAPI_KEY_DEV,
     STRIPE_KEY: process.env.STRIPE_TEST_KEY,
     WEBHOOK_KEY: process.env.STRIPE_WEBHOOK_SECRET_TEST,
   },
@@ -106,7 +108,7 @@ exports.handler = async function (event, context) {
 
         const getTickets = await fetch(`${apiBase}/tickets/`, {
           headers: {
-            Authorization: `Bearer ${process.env.STRAPI_KEY}`,
+            Authorization: `Bearer ${apiKeys.STRAPI_KEY}`,
           },
         });
         const theTickets = await getTickets.json();
@@ -120,7 +122,7 @@ exports.handler = async function (event, context) {
             body: JSON.stringify(ticketSale),
             headers: {
               accept: 'application/json',
-              Authorization: `Bearer ${process.env.STRAPI_KEY}`,
+              Authorization: `Bearer ${apiKeys.STRAPI_KEY}`,
               'Content-Type': 'application/json',
             },
           });
@@ -132,7 +134,7 @@ exports.handler = async function (event, context) {
             body: JSON.stringify(ticketSale),
             headers: {
               accept: 'application/json',
-              Authorization: `Bearer ${process.env.STRAPI_KEY}`,
+              Authorization: `Bearer ${apiKeys.STRAPI_KEY}`,
               'Content-Type': 'application/json',
             },
           });
@@ -161,7 +163,7 @@ exports.handler = async function (event, context) {
           body: JSON.stringify(strapiEvent) ,
           headers: {
             accept: 'application/json',
-            Authorization: `Bearer ${process.env.STRAPI_KEY}`,
+            Authorization: `Bearer ${apiKeys.STRAPI_KEY}`,
             'Content-Type': 'application/json',
           },
         });
