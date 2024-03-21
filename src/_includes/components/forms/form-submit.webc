@@ -1,6 +1,6 @@
 <form
-  webc:root
   method="POST"
+  @attributes
 >
   <slot>
   </slot>

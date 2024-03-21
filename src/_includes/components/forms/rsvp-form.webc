@@ -2,7 +2,7 @@
   netlify
   :name="this.name || `rsvp-${$data.page.url}`"
   :action="this.next || '/rsvp/thanks/'"
-  :@form-fields="this.formFields"
+  :@fields="this.formFields"
   :@submit="this.submit || 'rsvp'"
 >
   <div class="field-group">
@@ -11,7 +11,7 @@
   </div>
 
   <form-field
-    webc:for="field of this.formFields"
+    webc:for="field of this.fields"
     :@label="field.label"
     :@type="field.type"
     :@value="field.value"
