@@ -2,10 +2,15 @@
   :name="name"
   :action="action"
   method="POST"
-  @attributes
 >
   <slot>
   </slot>
+
+  <form-field
+    @label="Current URL"
+    name="url"
+    :@value="$data.page.url"
+    hidden></form-field>
   <div class="form-actions">
     <button type="submit" @html="submit || submit"></button>
   </div>

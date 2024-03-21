@@ -32,6 +32,21 @@
       <a :href="linkUrl" @html="linkText" class="action"></a>
     {% endrenderTemplate %}
 
+  {% elif is == 'content.rsvp-form' %}
+    {% set itemData = {
+      'name': item.name,
+      'next': item.next.path,
+      'fields': item.formFields
+    } %}
+
+    {% renderTemplate "webc", itemData %}
+      <rsvp-form
+        :@name="name"
+        :@next="next"
+        :@form-fields="fields"
+      ></rsvp-form>
+    {% endrenderTemplate %}
+
   {% elif is == 'content.quote' %}
     {% set itemData = {
       'collections': collections,
@@ -61,7 +76,7 @@
       'imgAlt': cardHero.alternativeText,
       'postTitle': post.title,
       'postSummary': post.header.summary,
-      'permaLink': post | permaSlug | log,
+      'permaLink': post | permaSlug,
       'postDate': post.date
     } %}
 
@@ -153,6 +168,7 @@
       'events': cms.events.data,
       'show_slug': cms.slug
     } %}
+
     {% renderTemplate "webc", itemData %}
       <run-card
         :@title='title'
@@ -190,7 +206,6 @@
   {% elif is == 'auto.contact-form' %}
     {% set itemData = {
       'collections': collections,
-      'pageUrl': page.url,
       'submit': item.submit,
       'action': item.action
     } %}
@@ -199,7 +214,6 @@
       <contact-form
         :action="action"
         :submit="submit"
-        :page-url="pageUrl"
         :@collections="collections"
       ></contact-form>
     {% endrenderTemplate %}

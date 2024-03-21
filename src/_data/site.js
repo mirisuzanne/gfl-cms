@@ -5,6 +5,10 @@ const cms = process.env.CONTEXT == 'dev'
   ? 'http://localhost:1337'
   : 'https://grapefruitlab-cms.fly.dev';
 
+const STRAPI_KEY = process.env.CONTEXT === 'dev'
+  ? process.env.STRAPI_KEY_DEV
+  : process.env.STRAPI_KEY;
+
 const object = 'site';
 const query = qs.stringify(
   {
@@ -31,7 +35,7 @@ module.exports = async function() {
       duration: '0s',
       fetchOptions: {
         headers: {
-          Authorization: `Bearer ${process.env.STRAPI_KEY}`,
+          Authorization: `Bearer ${STRAPI_KEY}`,
         },
       },
     });
