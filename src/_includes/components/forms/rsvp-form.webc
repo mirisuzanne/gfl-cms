@@ -1,6 +1,6 @@
 <form-submit
-  :name="slugify(this.name || `rsvp-${$data.page.url}`)"
   netlify
+  :name="this.name || `rsvp-${$data.page.url}`"
   :action="this.next || '/rsvp/thanks/'"
   :@form-fields="this.formFields"
   :@submit="this.submit || 'rsvp'"

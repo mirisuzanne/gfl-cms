@@ -1,7 +1,5 @@
 <form
   webc:root
-  :name="name"
-  :action="action"
   method="POST"
 >
   <slot>
