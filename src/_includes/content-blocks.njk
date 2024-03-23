@@ -93,6 +93,21 @@
       ></post-card>
     {% endrenderTemplate %}
 
+  {% elif is == 'content.venue-card' %}
+    {% set itemData = {
+      'venues': item.venues.data
+    } %}
+
+    {% renderTemplate "webc", itemData %}
+      <venue-card
+        webc:for="venue of venues"
+        :@name="venue.attributes.title"
+        :@adr="venue.attributes.address"
+        :@details="venue.attributes.details"
+        :@url="venue.attributes.url.path"
+        ></venue-card>
+    {% endrenderTemplate %}
+
   {% elif is == 'content.person-card' %}
     {% set person = item.person.data.attributes %}
     {% set cardHero = person.header.hero.data.attributes %}

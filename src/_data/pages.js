@@ -22,6 +22,9 @@ const query = qs.stringify(
       },
       content: {
         populate: {
+          venues: {
+            populate: '*'
+          },
           cite: {
             populate: '*'
           },
