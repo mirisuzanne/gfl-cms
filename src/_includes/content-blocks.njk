@@ -77,7 +77,7 @@
       'postTitle': post.title,
       'postSummary': post.header.summary,
       'permaLink': post | permaSlug,
-      'postDate': post.date
+      'postDate': post.date if post.type === 'post' else null
     } %}
 
     {% renderTemplate "webc", itemData %}
