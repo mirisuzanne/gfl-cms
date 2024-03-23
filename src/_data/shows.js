@@ -39,6 +39,9 @@ const query = qs.stringify(
           venue: {
             populate: '*'
           },
+          venues: {
+            populate: '*'
+          },
           cite: {
             populate: '*'
           },
