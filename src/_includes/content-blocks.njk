@@ -75,6 +75,7 @@
       'imgSrc': cardHero.url,
       'imgAlt': cardHero.alternativeText,
       'postTitle': post.title,
+      'postSubTitle': post.header.subTitle,
       'postSummary': post.header.summary,
       'permaLink': post | permaSlug,
       'postDate': post.date if post.type === 'post' else null
@@ -83,6 +84,7 @@
     {% renderTemplate "webc", itemData %}
       <post-card
         :title="postTitle"
+        :sub-title="postSubTitle"
         :post-date="postDate"
         :summary="postSummary"
         :src="imgSrc"
