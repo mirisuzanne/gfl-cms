@@ -3,6 +3,7 @@ nav {
   border-bottom: thin solid var(--bg);
   display: flex;
   flex-wrap: wrap;
+  gap: var(--half-shim);
   justify-content: space-between;
   padding: var(--half-shim, 0.25em) var(--gutter, 1em);
 }
@@ -11,8 +12,10 @@ nav {
   --action: mistyrose;
 
   &:any-link {
-    display: inline-block;
+    align-items: center;
+    display: inline-flex;
     font-stretch: var(--cond);
+    min-block-size: 45px;
     padding: var(--half-shim, 0.25em) var(--shim, 0.5em);
     text-shadow: 1px 1px 0 black;
   }

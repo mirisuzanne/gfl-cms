@@ -1,12 +1,13 @@
 <media-card
   class="h-entry"
   card="post"
-  :level="level"
-  :title="title"
-  :src="src"
-  :alt="alt"
-  :summary="summary"
-  :link-to="permalink"
+  :level="this.level"
+  :title="this.title"
+  :sub-title="this.subTitle"
+  :src="this.src"
+  :alt="this.alt"
+  :summary="this.summary"
+  :link-to="this.permalink"
   sizes="thumbnail"
 >
   <header slot="header">
@@ -20,5 +21,9 @@
       :datetime="formatDate(postDate, 'iso')"
       @html="formatDate(postDate)"
     ></time>
+    <p
+      webc:if="subTitle"
+      class="subtitle"
+      @html="mdInline(subTitle)"></p>
   </header>
 </media-card>
