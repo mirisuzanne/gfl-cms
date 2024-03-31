@@ -68,7 +68,7 @@ const getData = async () => {
     const response = await fetch(`${apiBase}/ticket-sales/`);
     data = await response.json();
   } catch(error) {
-    console.log(error);
+    console.error(error);
   }
 }
 

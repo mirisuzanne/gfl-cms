@@ -130,8 +130,6 @@ const recordDonor = async (session) => {
     Country: address.country,
   });
 
-  console.log(donorRow);
-
   const donor = await codaPost(
     `${tableUrl}/rows`,
     {
@@ -205,7 +203,6 @@ const onCheckoutComplete = async (stripeEvent) => {
     case 'monthly':
       const sponsor = await recordDonor(session);
       const subscription = await recordMonthly(session);
-      console.log({sponsor, subscription});
       return eventSuccess({sponsor, subscription});
     default:
       return eventUnknown(session);

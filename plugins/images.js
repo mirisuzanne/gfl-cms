@@ -35,7 +35,7 @@ module.exports = function(eleventyConfig, options = {}) {
     let metadata = await getImageData(src);
 
     if (!alt || (alt === '')) {
-      console.log(`image [${src}] should have alt text`);
+      console.warn(`image [${src}] should have alt text`);
     }
 
     let sizesAttr = sizes || imgSizes.default;

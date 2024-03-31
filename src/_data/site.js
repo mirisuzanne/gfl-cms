@@ -42,6 +42,6 @@ module.exports = async function() {
 
     return data.data.attributes;
   } catch (error) {
-    console.log({error});
+    console.error({error});
   }
 };
