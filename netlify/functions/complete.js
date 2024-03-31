@@ -36,9 +36,8 @@ const coda = {
 };
 
 // utils
-const toDate = (stamp) => new Date(stamp * 1000).toLocaleDateString('en-CA');
-
-const toUsd = (amt) => amt / 100;
+const stampToDate = (stamp) => new Date(stamp * 1000).toLocaleDateString('en-CA');
+const centsToDollars = (amt) => amt / 100;
 
 // replies
 const eventUnknown = (type) => ({
@@ -57,20 +56,6 @@ const eventSuccess = (response) => ({
 });
 
 // to coda
-const codaPost = async (url, data) => {
-  const response = await fetch(url, {
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: {
-      accept: 'application/json',
-      Authorization: `Bearer ${coda.auth}`,
-      'Content-Type': 'application/json',
-    },
-  });
-
-  return await response.json();
-};
-
 const codaRow = (obj) => {
   if (!obj.ID) {
     console.error('Row object should include an ID', obj);
@@ -86,101 +71,84 @@ const codaRow = (obj) => {
   return { cells };
 };
 
-// tickets
-const recordTicket = async (session) => {
-  const tableUrl = `${coda.base}/docs/${session.doc}/tables/${coda.ticket.table}`;
-
-  const ticket = codaRow({
-    ID: session.id,
-    Event: session.event,
-    Name: session.name,
-    Tickets: session.tickets,
-    Paid: session.paid,
-    Notes: session.notes,
+const codaRowPost = async (table, data, key = 'ID') => {
+  const response = await fetch(`${table}/rows`, {
+    method: 'POST',
+    body: JSON.stringify({
+      rows: [codaRow(data)],
+      keyColumns: [key],
+    }),
+    headers: {
+      accept: 'application/json',
+      Authorization: `Bearer ${coda.auth}`,
+      'Content-Type': 'application/json',
+    },
   });
 
-  const response = await codaPost(
-    `${tableUrl}/rows`,
+  return await response.json();
+};
+
+// tickets
+const recordTicket = async (session) => {
+  return await codaRowPost(
+    `${coda.base}/docs/${session.doc}/tables/${coda.ticket.table}`,
     {
-      rows: [ticket],
-      keyColumns: ['ID'],
+      ID: session.id,
+      Event: session.event,
+      Name: session.name,
+      Tickets: session.tickets,
+      Paid: session.paid,
+      Notes: session.notes,
     }
   );
-
-  return eventSuccess(response);
 };
 
 // donor
 const recordDonor = async (session) => {
-  const tableUrl = `${coda.base}/docs/${coda.donation.doc}/tables/${coda.donation.donor}`;
-
   const shipping = session.customer_shipping || session.shipping || session.customer_details;
   const address = shipping?.address || {};
 
-  const donorRow = codaRow({
-    ID: session.customer || session.customer_details.email,
-    Email: session.customer_details.email,
-    Name: session.customer_details.name,
-
-    Street1: address.line1,
-    Street2: address.line2,
-    Locality: address.city,
-    Region: address.state,
-    Postal: address.postal_code,
-    Country: address.country,
-  });
-
-  const donor = await codaPost(
-    `${tableUrl}/rows`,
+  return await codaRowPost(
+    `${coda.base}/docs/${coda.donation.doc}/tables/${coda.donation.donor}`,
     {
-      rows: [donorRow],
-      keyColumns: ['ID'],
+      ID: session.customer || session.customer_details.email,
+      Email: session.customer_details.email,
+      Name: session.customer_details.name,
+
+      Street1: address.line1,
+      Street2: address.line2,
+      Locality: address.city,
+      Region: address.state,
+      Postal: address.postal_code,
+      Country: address.country,
     }
   );
-
-  return donor;
 }
 
 // single donation
 const recordDonation = async (session) => {
-  const donationRow = codaRow({
-    ID: session.payment_intent,
-    Donor: session.customer_details.name,
-    Date: toDate(session.created),
-    Amount: toUsd(session.amount_total),
-  });
-
-  const tableUrl = `${coda.base}/docs/${coda.donation.doc}/tables/${coda.donation.single}`;
-  const donation = await codaPost(
-    `${tableUrl}/rows`,
+  return await codaRowPost(
+    `${coda.base}/docs/${coda.donation.doc}/tables/${coda.donation.single}`,
     {
-      rows: [donationRow],
-      keyColumns: ['ID'],
+      ID: session.payment_intent,
+      Donor: session.customer_details.name,
+      Date: stampToDate(session.created),
+      Amount: centsToDollars(session.amount_total),
     }
   );
-
-  return donation;
 };
 
 // monthly donation
 const recordMonthly = async (session) => {
-  const donationRow = codaRow({
-    ID: session.subscription,
-    Donor: session.customer_details.name,
-    Created: toDate(session.created),
-    Amount: toUsd(session.amount_total),
-  });
-
-  const tableUrl = `${coda.base}/docs/${coda.donation.doc}/tables/${coda.donation.monthly}`;
-  const donation = await codaPost(
-    `${tableUrl}/rows`,
+  return await codaRowPost(
+    `${coda.base}/docs/${coda.donation.doc}/tables/${coda.donation.monthly}`,
     {
-      rows: [donationRow],
-      keyColumns: ['ID'],
+      ID: session.subscription,
+      Donor: session.customer_details.name,
+      Created: stampToDate(session.created),
+      Amount: centsToDollars(session.amount_total),
     }
   );
-
-  return donation;
 };
 
 // checkout
@@ -195,7 +163,8 @@ const onCheckoutComplete = async (stripeEvent) => {
 
   switch (sale.price.product.metadata.type) {
     // case 'ticket':
-    //   return await recordTicket(session);
+    //   const ticket = await recordTicket(session);
+    //   return eventSuccess(ticket);
     case 'donation':
       const donor = await recordDonor(session);
       const donation = await recordDonation(session);
