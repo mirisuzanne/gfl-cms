@@ -48,7 +48,7 @@ module.exports = (eleventyConfig) => {
   eleventyConfig.addPlugin(pluginRss);
   eleventyConfig.addJavaScriptFunction("absoluteUrl", pluginRss.absoluteUrl);
   eleventyConfig.addPlugin(pluginWebc, {
-    components: "src/_includes/components/**/*.webc",
+    components: "src/_includes/**/*.webc",
   });
 
   // plugins

@@ -11,6 +11,6 @@
     :@value="$data.page.url"
     hidden></form-field>
   <div class="form-actions">
-    <button type="submit" @html="submit || submit"></button>
+    <button type="submit" @html="this.submit || 'submit'"></button>
   </div>
 </form>

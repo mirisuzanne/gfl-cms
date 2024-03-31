@@ -1,0 +1,40 @@
+<script>
+class WarnUnder extends HTMLElement {
+  static register(tagName) {
+    if ("customElements" in window) {
+      customElements.define(tagName || "warn-under", WarnUnder);
+    }
+  }
+
+  static observedAttributes = [
+    'data-limit',
+    'data-now',
+  ];
+
+  #output;
+
+  constructor() {
+    super();
+  }
+
+  attributeChangedCallback() {
+    this.update();
+  }
+
+  connectedCallback() {
+    this.#output = this.querySelector(':scope output');
+    this.update();
+  }
+
+  update = () => {
+    this.toggleAttribute(
+      'hidden',
+      parseInt(this.dataset.now) > parseInt(this.dataset.limit)
+    );
+
+    if (this.#output) this.#output.value = this.dataset.now
+  };
+}
+
+WarnUnder.register();
+</script>

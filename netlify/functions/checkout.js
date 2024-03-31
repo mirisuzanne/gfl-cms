@@ -1,19 +1,25 @@
-const environment = process.env.CONTEXT;
+const options = {
+  production: {
+    url: process.env.URL,
+    cms: 'https://grapefruitlab-cms.fly.dev/api',
+    stripe: process.env.STRIPE_SECRET_KEY,
+  },
+  dev: {
+    url: 'http://localhost:8888',
+    cms: 'http://localhost:1337/api',
+    stripe: process.env.STRIPE_TEST_KEY,
+  },
+  preview: {
+    url: process.env.DEPLOY_PRIME_URL,
+    cms: 'https://grapefruitlab-cms.fly.dev/api',
+    stripe: process.env.STRIPE_TEST_KEY,
+  },
+}
 
-const siteBase = environment !== "production"
-  ? (environment === "dev" ? 'http://localhost:8888' : process.env.DEPLOY_PRIME_URL)
-  : process.env.URL;
-
-const apiBase = environment === 'dev'
-  ? 'http://localhost:1337/api'
-  : 'https://grapefruitlab-cms.fly.dev/api';
-
-const api_key = environment !== "production"
-  ? process.env.STRIPE_TEST_KEY
-  : process.env.STRIPE_SECRET_KEY;
+const config = options[process.env.CONTEXT] || options.preview;
 
 const fetch = require("node-fetch");
-const stripe = require("stripe")(api_key);
+const stripe = require("stripe")(config.stripe);
 
 exports.handler = async function (event, context) {
   const referer = event.headers.referer;
@@ -28,7 +34,7 @@ exports.handler = async function (event, context) {
   const price = parseFloat(params.get("price"), 10);
 
   // update the max available
-  const response = await fetch(`${apiBase}/ticket-sales/`);
+  const response = await fetch(`${config.cms}/ticket-sales/`);
   const data = await response.json();
   const cmsEvent = data.find((item) => `${item.id}` === eventID);
   const option = cmsEvent.option.find((opt) => `${opt.id}` === optionID);
@@ -69,7 +75,7 @@ exports.handler = async function (event, context) {
     ],
     metadata: { eventID, optionID, note },
     mode: "payment",
-    success_url: `${siteBase}/checkout/success/`,
+    success_url: `${config.url}/checkout/success/`,
     // go back to page that they were on
     cancel_url: referer,
   });
