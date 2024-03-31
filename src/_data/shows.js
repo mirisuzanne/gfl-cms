@@ -86,6 +86,6 @@ module.exports = async function() {
     });
     return cms;
   } catch (error) {
-    console.log({error});
+    console.error({error});
   }
 };

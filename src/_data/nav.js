@@ -38,6 +38,6 @@ module.exports = async function() {
 
     return data.data.attributes.items;
   } catch (error) {
-    console.log({error});
+    console.error({error});
   }
 };

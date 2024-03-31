@@ -24,7 +24,7 @@ const loadData = (path, files) => {
       );
       data[file] = fileData;
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   });
 
