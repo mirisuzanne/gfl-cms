@@ -13,9 +13,8 @@
   />
 
   <label
-    @html="this.label"
     :for="this.id || uid"
-  ></label>
+  ><slot><template webc:nokeep @html="this.label"></template></slot></label>
 
   <input
     webc:if="!['checkbox', 'textarea'].includes(type)"
