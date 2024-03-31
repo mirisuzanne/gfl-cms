@@ -104,54 +104,51 @@ const recordTicket = async (session) => {
 };
 
 // donor
-const recordDonor = async (session) => {
-  const shipping = session.customer_shipping || session.shipping || session.customer_details;
-  const address = shipping?.address || {};
+const donorAddress = (address) => ({
+  Street1: address.line1,
+  Street2: address.line2,
+  Locality: address.city,
+  Region: address.state,
+  Postal: address.postal_code,
+  Country: address.country,
+});
 
+const sessionDonor = (session) => {
+  const shipping = session.customer_shipping || session.shipping || session.customer_details;
+  const address = donorAddress(shipping?.address || {});
+
+  return {
+    ID: session.customer || session.customer_details.email,
+    Email: session.customer_details.email,
+    Name: session.customer_details.name,
+    ...address,
+  }
+};
+
+const recordDonor = async (donor) => {
   return await codaRowPost(
     `${coda.base}/docs/${coda.donation.doc}/tables/${coda.donation.donor}`,
-    {
-      ID: session.customer || session.customer_details.email,
-      Email: session.customer_details.email,
-      Name: session.customer_details.name,
-
-      Street1: address.line1,
-      Street2: address.line2,
-      Locality: address.city,
-      Region: address.state,
-      Postal: address.postal_code,
-      Country: address.country,
-    }
+    donor
   );
 }
 
 // single donation
-const recordDonation = async (session) => {
+const recordDonation = async (donation) => {
   return await codaRowPost(
     `${coda.base}/docs/${coda.donation.doc}/tables/${coda.donation.single}`,
-    {
-      ID: session.payment_intent,
-      Donor: session.customer_details.name,
-      Date: stampToDate(session.created),
-      Amount: centsToDollars(session.amount_total),
-    }
+    donation
   );
 };
 
 // monthly donation
-const recordMonthly = async (session) => {
+const recordMonthly = async (monthly) => {
   return await codaRowPost(
     `${coda.base}/docs/${coda.donation.doc}/tables/${coda.donation.monthly}`,
-    {
-      ID: session.subscription,
-      Donor: session.customer_details.name,
-      Created: stampToDate(session.created),
-      Amount: centsToDollars(session.amount_total),
-    }
+    monthly
   );
 };
 
-// checkout
+// checkout complete
 const onCheckoutComplete = async (stripeEvent) => {
   const eventObject = stripeEvent.data.object;
 
@@ -165,17 +162,58 @@ const onCheckoutComplete = async (stripeEvent) => {
     // case 'ticket':
     //   const ticket = await recordTicket(session);
     //   return eventSuccess(ticket);
+
     case 'donation':
-      const donor = await recordDonor(session);
-      const donation = await recordDonation(session);
+      const donor = await recordDonor(
+        sessionDonor(session)
+      );
+      const donation = await recordDonation({
+        ID: session.payment_intent,
+        Donor: session.customer_details.name,
+        Date: stampToDate(session.created),
+        Amount: centsToDollars(session.amount_total),
+      });
       return eventSuccess({donor, donation});
+
     case 'monthly':
-      const sponsor = await recordDonor(session);
-      const subscription = await recordMonthly(session);
+      const sponsor = await recordDonor(
+        sessionDonor(session)
+      );
+      const subscription = await recordMonthly({
+        ID: session.subscription,
+        Donor: session.customer_details.name,
+        Created: stampToDate(session.created),
+        Amount: centsToDollars(session.amount_total),
+      });
       return eventSuccess({sponsor, subscription});
+
     default:
       return eventUnknown(session);
   };
+};
+
+// invoice paid
+const onInvoicePaid = async (stripeEvent) => {
+  const invoice = stripeEvent.data.object;
+
+  const subscription = await recordMonthly({
+    ID: invoice.subscription,
+    Paid: stampToDate(invoice.status_transitions.paid_at),
+    Status: 'Active',
+  });
+
+  return eventSuccess({subscription});
+};
+
+const onMonthlyDeleted = async (stripeEvent) => {
+  const invoice = stripeEvent.data.object;
+
+  const subscription = await recordMonthly({
+    ID: invoice.subscription,
+    Status: 'Deleted',
+  });
+
+  return eventSuccess({subscription});
 };
 
 // handler
@@ -193,7 +231,11 @@ exports.handler = async function (event, context) {
     // Handle known or unknown event types
     switch (stripeEvent.type) {
       case "checkout.session.completed":
-        return onCheckoutComplete(stripeEvent);
+        return await onCheckoutComplete(stripeEvent);
+      case "invoice.paid":
+        return await onInvoicePaid(stripeEvent);
+      case "customer.subscription.deleted":
+        return await onMonthlyDeleted(stripeEvent);
       default:
         return eventUnknown(stripeEvent.type);
     };
