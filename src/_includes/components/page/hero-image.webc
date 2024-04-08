@@ -6,5 +6,9 @@
 </script>
 
 <div id="hero">
-  <img :src="hero.url" :alt="hero.alternativeText" sizes="hero" :@attrs="attrs">
+  <img
+    :src="hero.url"
+    :alt="hero.alternativeText"
+    sizes="hero"
+    :@attrs="attrs">
 </div>

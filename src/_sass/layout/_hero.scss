@@ -1,5 +1,5 @@
 #hero {
-  border-bottom: thin dotted var(--border);
+  border-block-end: medium solid var(--border);
   display: grid;
   overflow: hidden;
 }
@@ -9,8 +9,8 @@
   width: 100%;
 
   #hero & {
-    --bright: 40%;
-    --blur: 2px;
+    --bright: 60%;
+    --blur: 4px;
     --sepia: 50%;
     height: 0;
     min-height: 100%;

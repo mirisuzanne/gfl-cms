@@ -1,45 +1,26 @@
+<script webc:setup>
+const findEvents = (show, events) => events.filter((event) => {
+  return show.id === event.show.id;
+});
+</script>
+
 <section class='event-run'>
-  <h @level="2" :@title="title"></h>
-  <venue-card :@name="venue.title" :@adr="venue.address"></venue-card>
+  <h2><date-range
+    :@start="this.show.date"
+    :@end="this.show.end"
+  ></date-range></h2>
+
+  <venue-card
+    webc:if="this.show.venue"
+    :@venue="this.show.venue.data.attributes"
+  ></venue-card>
+
+  <h3 webc:if="this.show.onSale">Reserve your tickets:</h3>
+
   <ul>
-    <script webc:type="js">
-      const convertTime = (timeStr) => {
-        const pm = timeStr.endsWith('am') ? false : true;
-        timeStr = timeStr.replace('am', '')
-        timeStr = timeStr.replace('pm', '')
-        let [hours, minutes] = timeStr.split(':');
-
-        if (hours === '12') {
-          hours = '00';
-        }
-        if (pm) {
-          hours = `${parseInt(hours, 10) + 12}`;
-        }
-        return `${hours.padStart(2, '0')}:${minutes}`;
-      };
-
-      events
-        .map(event => {
-          const e = event.attributes;
-          e.page = getPage(collections.all, event.id, 'event');
-          e.id = event.id;
-          e.show_slug = showSlug;
-          e.sort = utcDate(`${e.date}T${convertTime(e.time)}:00`);
-          e.link = e.onSale && isCurrent(e.sort)
-            ? e.page.url
-            : null;
-          return e;
-        })
-        .sort((a, b) => a.sort - b.sort)
-        .map(event => `
-        <event-item
-          @event-title="${event.title}"
-          @date="${event.date}"
-          @time="${event.time}"
-          @link="${event.link}"
-        ></event-item>
-      `).join('');
-    </script>
-
+    <event-item
+      webc:for="event of findEvents(this.show, $data.runs.events)"
+      :@event="event"
+    ></event-item>
   </ul>
 </section>

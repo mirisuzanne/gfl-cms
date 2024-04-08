@@ -1,0 +1,9 @@
+<h
+  webc:if="this.title || this.gallery.title"
+  level="2"
+  :@title="this.title || this.gallery.title"
+></h>
+<media-gallery
+  :media="this.gallery.figure.gallery.data"
+  :caption="this.gallery.figure.caption"
+></media-gallery>

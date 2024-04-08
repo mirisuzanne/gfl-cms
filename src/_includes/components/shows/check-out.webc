@@ -7,21 +7,15 @@
   >
   <input
     type="hidden"
-    id="coda-table"
-    name="table"
-    :value="this.ticketTable"
-  >
-  <input
-    type="hidden"
     id="coda-row"
     name="row"
     :value="this.eventRow"
   >
   <input
     type="hidden"
-    id="coda-column"
-    name="column"
-    :value="this.remainingColumn"
+    id="stripe-product"
+    name="product"
+    :value="this.product"
   >
 
   <form-field
@@ -54,7 +48,7 @@
   </form-field>
 
   <form-field
-    label="Any notes or requests?"
+    label="Any notes or special requests?"
     name="note"
     type="textarea"
   ></form-field>
@@ -70,7 +64,7 @@
     </p>
 
     <button type="submit">
-      Reserve now
+      Reserve
     </button>
   </div>
 </form>

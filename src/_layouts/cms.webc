@@ -1,0 +1,10 @@
+---
+layout: page
+---
+
+<content-blocks :@cms="cms"></content-blocks>
+
+<div
+  webc:nokeep
+  @raw="content"
+></div>

@@ -1,10 +1,7 @@
 ---
-layout: page
 pagination:
   data: pages
   size: 1
   alias: cms
   addAllPagesToCollections: true
 ---
-
-{% include "content-blocks.njk" %}

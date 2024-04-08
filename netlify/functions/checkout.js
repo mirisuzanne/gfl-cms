@@ -5,8 +5,8 @@ const options = {
     stripe: process.env.STRIPE_SECRET_KEY,
   },
   dev: {
-    url: 'http://localhost:8888',
-    cms: 'http://localhost:1337/api',
+    url: 'http://127.0.0.1:8888',
+    cms: 'http://127.0.0.1:1337/api',
     stripe: process.env.STRIPE_TEST_KEY,
   },
   preview: {

@@ -1,5 +1,5 @@
-<li><a
-  :href="link"
-  @html="title"
-  :data-nav="active ? 'active' : ''"
-></a></li>
+<a
+  :href="this.link"
+  @html="this.title"
+  :data-nav="this.link === $data.page.url ? 'active' : ''"
+></a>

@@ -1,5 +1,4 @@
 #secondary, #contentinfo {
-  border-block-start: thin dotted var(--border);
   display: grid;
   grid-template-columns: var(--columns);
   grid-template-columns: subgrid;
@@ -13,8 +12,13 @@
   }
 }
 
+#secondary {
+  border-block-start: medium solid var(--border);
+}
+
 #contentinfo {
   background-color: var(--overlay);
+  border-block-start: thin dotted var(--border);
 }
 
 #email-form-label h2 {

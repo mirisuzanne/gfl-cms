@@ -1,10 +1,15 @@
-<section class="show-history">
-  <h :level="level || 2" :title="title || 'Our Shows'"></h>
+<section
+  webc:if="this.shows"
+  class="show-history">
+  <h
+    :level="this.level || 2"
+    :title="this.title || 'Our Shows'"
+  ></h>
 
-  <div class="show-grid">
+  <div
+    class="show-grid">
     <script webc:type="js">
-      shows
-        .sort((a, b) => {
+      shows.sort((a, b) => {
           const aD = new Date(a.date);
           const bD = new Date(b.date);
           return bD - aD;
@@ -12,20 +17,19 @@
         .slice(0, limit || shows.length)
         .map(show => {
           show.hero = show.header.hero.data?.attributes;
-          show.url = permaSlug(show, 'show');
           return show;
         })
         .map(show => `
-        <show-card
-          @title="${show.title}"
-          @show-date="${show.date}"
-          @summary="${show.header.summary}"
-          @link-to="${show.url}"
-          @src="${show.hero.url}"
-          @alt="${show.hero.alternativeText}"
-          ${show.onSale ? '@on-sale="true"' : ''}
-        ></show-card>
-      `).join('');
+          <show-card
+            @title="${show.title}"
+            @show-date="${show.date}"
+            @summary="${show.header.summary}"
+            @link-to="${this.buildURL(show)}"
+            @src="${show.hero.url}"
+            @alt="${show.hero.alternativeText}"
+            ${show.onSale ? '@on-sale="true"' : ''}
+          ></show-card>
+        `).join('');
     </script>
   </div>
 </section>

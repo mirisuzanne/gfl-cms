@@ -5,12 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title @html="page.url === '/' ? title : `${title || slug} :: ${site.title}`"></title>
+    <title
+      @html="(page.url === '/') ? title : `${title || slug} :: ${site.title}`"
+    ></title>
 
-    <meta webc:is="font-files" webc:nokeep>
-    <link rel="stylesheet" :href="`${assets.css}${ style || 'main' }.css`" webc:keep>
+    <meta
+      webc:is="font-files">
+    <link
+      webc:keep
+      rel="stylesheet"
+      :href="`${assets.css}${ style || 'main' }.css`">
 
-    <meta webc:is="meta-icons" :@theme="theme">
+    <meta
+      webc:is="meta-icons"
+      :@theme="theme">
     <meta
       webc:is="open-graph"
       :@page="page"

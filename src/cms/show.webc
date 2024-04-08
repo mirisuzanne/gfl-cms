@@ -1,8 +1,7 @@
 ---
-layout: script
-type: script
+tags: [shows]
 pagination:
-  data: scripts
+  data: runs.shows
   size: 1
   alias: cms
   addAllPagesToCollections: true

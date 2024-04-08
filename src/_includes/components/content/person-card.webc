@@ -1,9 +1,15 @@
+<script>
+  const makeTitle = (name, pronouns) => pronouns
+    ? `${name} (${pronouns})`
+    : name;
+</script>
+
 <media-card
   class="h-card"
-  card="person"
-  :level="level"
-  :title="pronouns ? `${name} (${pronouns})` : name"
-  :src="src"
-  :alt="alt"
-  :summary="summary"
+  @card="person"
+  :@level="this.level"
+  :@title="this.person.pronouns ? `${this.person.name} (${this.person.pronouns})` : this.person.name"
+  :@summary="this.person.header.summary"
+  :@src="this.hero?.url"
+  :@alt="this.hero?.alternativeText"
 ></media-card>

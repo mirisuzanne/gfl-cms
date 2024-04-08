@@ -1,14 +1,15 @@
 <media-card
   class="h-entry"
-  card="post"
-  :level="this.level"
-  :title="this.title"
-  :sub-title="this.subTitle"
-  :src="this.src"
-  :alt="this.alt"
-  :summary="this.summary"
-  :link-to="this.permalink"
-  sizes="thumbnail"
+  @card="post"
+  :@level="this.level"
+  :@title="this.post.title"
+  :@sub-title="this.post.header.subTitle"
+  :@summary="this.post.header.summary"
+  :@src="this.hero?.url"
+  :@alt="this.hero?.alternativeText"
+  :@link-to="buildURL(this.post)"
+  :@post-date="this.post.type === 'post' ? this.post.date : null"
+  @sizes="thumbnail"
 >
   <header slot="header">
     <h

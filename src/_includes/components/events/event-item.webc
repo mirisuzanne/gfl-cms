@@ -1,9 +1,12 @@
 <li class="event-item">
-  <link-if :@link="link" :@date="date" :@time="time">
+  <a :href="buildURL(this.event)">
     <time
-      :datetime="formatDate(date, 'iso')"
-      @text="`${formatDate(date, 'event')} @ ${time}`"
+      :datetime="this.event.values.DateTime"
+      @text="formatDate(this.event.values.DateTime, 'event')"
     ></time>
-  </link-if>
-  <span webc:if="eventTitle !== 'null'" @html="mdInline(`&ndash; ${eventTitle}`)"></span>
+  </a>
+  <span
+    webc:if="event.values.Notes"
+    @html="mdInline(`&ndash; ${this.event.values.Notes}`)"
+  ></span>
 </li>

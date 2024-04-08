@@ -1,0 +1,14 @@
+<div class="h-adr">
+  <span
+    webc:if="this.address.street"
+    class="p-street-address"
+    @text="this.address.street"></span>,
+  <span
+    webc:if="this.address.locality"
+    class="p-locality"
+    @text="this.address.locality"></span>
+  <span
+    webc:if="this.address.region"
+    class="p-postal-code"
+    @text="this.address.region"></span>
+</div>

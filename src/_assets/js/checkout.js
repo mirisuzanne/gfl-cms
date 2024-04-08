@@ -31,7 +31,7 @@ const updateCount = (opt) => {
 
 // make sure we're up-to-date
 const apiBase = window.location.href.includes('localhost')
-  ? 'http://localhost:1337/api'
+  ? 'http://127.0.0.1:1337/api'
   : 'https://grapefruitlab-cms.fly.dev/api';
 
 let data = [];

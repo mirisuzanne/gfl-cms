@@ -1,0 +1,16 @@
+<script webc:setup>
+  const startFormat = (start, end) => {
+    return formatDate(start, 'year') === formatDate(end, 'year')
+      ? formatDate(start, 'short')
+      : formatDate(start, 'default');
+  }
+</script>
+
+<time
+  :datetime="formatDate(this.start, 'iso')"
+  @text="startFormat(this.start, this.end)"
+></time> —
+<time
+  :datetime="formatDate(this.end, 'iso')"
+  @text="formatDate(this.end)"
+></time>

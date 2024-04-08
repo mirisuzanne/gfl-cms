@@ -1,4 +1,8 @@
-<hero-image webc:if="hero" id="hero" :@hero="hero"></hero-image>
+<hero-image
+  webc:if="hero"
+  id="hero"
+  :@hero="hero"
+></hero-image>
 
 <header id="banner">
   <p webc:if="feature" class="pretitle">Presenting:</p>

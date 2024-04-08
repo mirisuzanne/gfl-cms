@@ -14,20 +14,30 @@ module.exports = function (eleventyConfig, options = {}) {
     iso: 'yyyy-MM-dd',
     url: 'yyyy-MM-dd',
     default: 'yyyy/MM/dd',
-    event: 'EEEE, MMMM d',
     ...options,
   };
 
-  const utcDate = (date) => {
-    const dateObj = typeof date === 'string'
-      ? new Date(date)
-      : date || new Date();
+  const isZoned = (date) => {
+    return (typeof date === 'string') && (date.length > 24);
+  }
 
-    return utcToZonedTime(dateObj, '+00:00');
+  const makeDate = (date) => {
+    if (typeof date === 'string') {
+      return new Date(date);
+    }
+
+    return date || new Date();
+  }
+
+  const utcDate = (date) => {
+    return utcToZonedTime(date, '+00:00');
   };
 
-  const formatDate = (date, format = 'default') =>
-    dateFormat(utcDate(date), formats[format] || format);
+  const formatDate = (date, format = 'default', zoned) => {
+    const dateObj = makeDate(date);
+    const zDate = zoned || isZoned(date) ? dateObj : utcDate(dateObj);
+    return dateFormat(zDate, formats[format] || format)
+  };
 
   const isCurrent = (date) => {
     const today = subDays(utcDate(), 1);

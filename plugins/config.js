@@ -1,8 +1,8 @@
 const yaml = require('js-yaml');
 const fs   = require('fs');
-const { EleventyRenderPlugin } = require("@11ty/eleventy");
-const pluginRss = require("@11ty/eleventy-plugin-rss");
-const pluginWebc = require("@11ty/eleventy-plugin-webc");
+const { EleventyRenderPlugin } = require('@11ty/eleventy');
+const pluginRss = require('@11ty/eleventy-plugin-rss');
+const pluginWebc = require('@11ty/eleventy-plugin-webc');
 
 const build = require('./build');
 const cms = require('./cms');
@@ -32,23 +32,17 @@ const loadData = (path, files) => {
 }
 
 module.exports = (eleventyConfig) => {
-  const opts = {
-    data: './src/_data/',
-    files: ['images', 'sass', 'time'],
-  };
-
   eleventyConfig.addPassthroughCopy({
     './src/_assets/fonts': 'fonts',
     './src/_assets/js': 'js',
     './src/_assets/favicons/*.*': './',
   });
 
-  const data = loadData(opts.data, opts.files);
   eleventyConfig.addPlugin(EleventyRenderPlugin);
   eleventyConfig.addPlugin(pluginRss);
-  eleventyConfig.addJavaScriptFunction("absoluteUrl", pluginRss.absoluteUrl);
+  eleventyConfig.addJavaScriptFunction('absoluteUrl', pluginRss.absoluteUrl);
   eleventyConfig.addPlugin(pluginWebc, {
-    components: "src/_includes/**/*.webc",
+    components: 'src/_includes/**/*.webc',
   });
 
   // plugins
@@ -60,9 +54,13 @@ module.exports = (eleventyConfig) => {
   eleventyConfig.addPlugin(tickets);
 
   // assets
-  eleventyConfig.addPlugin(time, data.time);
-  eleventyConfig.addPlugin(images, data.images);
-  eleventyConfig.addPlugin(sass, { sassIn: data.sass.folder });
+  const assets = loadData(
+    './src/_data/',
+    ['images', 'sass', 'time']
+  );
+  eleventyConfig.addPlugin(time, assets.time);
+  eleventyConfig.addPlugin(images, assets.images);
+  eleventyConfig.addPlugin(sass, { sassIn: assets.sass.folder });
 
   eleventyConfig.addDataExtension('yml, yaml', (contents) =>
     yaml.load(contents),
