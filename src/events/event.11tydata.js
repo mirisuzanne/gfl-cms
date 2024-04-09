@@ -5,6 +5,12 @@ const getTitle = (data) => dateFormat(
   new Date(data.event.values.DateTime),
   data.time.event
 );
+const getSubTitle = (data) => {
+  const showTitle = `[${data.event.show.title}](../)`;
+  return data.soldOut
+    ? `${showTitle} | **SOLD OUT**`
+    : `Tickets for ${showTitle}`;
+}
 
 module.exports = {
   layout: 'page',
@@ -16,8 +22,9 @@ module.exports = {
     addAllPagesToCollections: true,
   },
   eleventyComputed: {
-    title: (data) => `Tickets: ${getTitle(data)}`,
-    subtitle: (data) => data.event.show.title,
+    soldOut: (data) => data.event.values.Left < 1,
+    title: (data) => getTitle(data),
+    subtitle: (data) => getSubTitle(data),
     summary: (data) => data.event.show.header?.summary,
     hero: (data) => getHero(data.event.show) || getHero(data.site),
     date: (data) => data.event.values.DateTime,

@@ -1,0 +1,21 @@
+<div
+  webc:if="event.values.Notes"
+  @html="event.values.Notes"
+></div>
+
+<check-out
+  webc:if="!soldOut"
+  :@event="event"
+  :@max="this.event.values.Left"
+></check-out>
+
+<div webc:else class="sold-out">
+  <h2>No Tickets Available</h2>
+  <p>
+    This performance is sold out!
+    There are often tickets that become available
+    at the last minute.
+    <strong>If you show up at the door,
+      we'll do our best to find you a seat.</strong>
+  </p>
+</div>

@@ -25,5 +25,8 @@
       :@site="site"
       :@desc="summary || site.header.summary">
   </head>
-  <body @raw="content"></body>
+  <body>
+    <template @raw="content" webc:nokeep></template>
+    <script @raw="getBundle('js')" webc:keep></script>
+  </body>
 </html>
