@@ -1,5 +1,5 @@
 <media-card
-  :data-card="onSale ? 'show feature' : 'show'"
+  :@card="onSale ? 'show feature' : 'show'"
   :@level="level"
   :@title="title"
   :@link-to="linkTo"
