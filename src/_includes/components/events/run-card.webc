@@ -11,7 +11,7 @@ const findEvents = (show, events) => events.filter((event) => {
   ></date-range></h2>
 
   <venue-card
-    webc:if="this.show.venue"
+    webc:if="this.show.venue.data"
     :@venue="this.show.venue.data.attributes"
   ></venue-card>
 
