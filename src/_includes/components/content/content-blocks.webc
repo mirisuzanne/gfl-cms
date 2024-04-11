@@ -48,7 +48,7 @@
   ></post-card>
 
   <venue-card
-    webc:if="item.__component === 'content.venue-card'"
+    webc:if="item.__component === 'content.venue-card' && item.venue.data"
     :@venue="item.venue.data.attributes"
   ></venue-card>
 
