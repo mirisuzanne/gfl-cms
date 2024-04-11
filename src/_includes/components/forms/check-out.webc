@@ -4,24 +4,23 @@
   <input
     type="hidden"
     id="docID"
+    name="docID"
     :value="this.event.show.tickets">
   <input
     type="hidden"
     id="eventID"
+    name="eventID"
     :value="this.event.name">
   <input
     type="hidden"
     id="ticketID"
+    name="ticketID"
     :value="this.event.values.ID">
   <input
     type="hidden"
     id="max"
+    name="max"
     :value="this.max">
-
-  <div class="field-group">
-    <form-field @label="Reservation Name" @required="required"></form-field>
-    <form-field @label="Email" @type="email" @required="required"></form-field>
-  </div>
 
   <div class="form-field">
     <label for="count">
@@ -67,22 +66,19 @@
   ></form-field>
 
   <div class="form-actions">
-    <ul class="checkout-summary">
-      <li>
-        <output for="count">1</output>
-        <span plural-for="count">ticket</span>
-      </li>
-      <li>
-        for
-        <strong
-          @text="formatDate(this.event.values.DateTime, 'event')"
-        ></strong>
-      </li>
-      <li>
-        <output for="count price">(name your price)</output>
-        <strong>Total</strong>
-      </li>
-    </ul>
+    <p class="checkout-summary">
+      <strong
+        @text="formatDate(this.event.values.DateTime, 'event')"
+      ></strong>
+      <br>
+      <output for="count">1</output>
+      <span plural-for="count">ticket</span>
+      @
+      <output for="price">(name your price)</output>
+      <br>
+      $<output for="count price">0</output>
+      <strong>Total</strong>
+    </p>
 
     <button type="submit">
       Reserve
@@ -104,7 +100,7 @@
     input.count.setAttribute('max', max);
   }
 
-  const getData = async (doc, event) => {
+  const getTix = async (doc, event) => {
     try {
       const params = {
         doc: encodeURIComponent(doc),
@@ -121,7 +117,7 @@
   }
 
   const updateMax = async () => {
-    const data = await getData(input.docID.value, input.eventID.value);
+    const data = await getTix(input.docID.value, input.eventID.value);
     setMax(data.tix);
   }
 
@@ -129,10 +125,12 @@
   const output = {
     count: document.querySelector('output[for=count]'),
     pluralCount: document.querySelector('[plural-for=count]'),
+    price: document.querySelector('output[for=price]'),
     total: document.querySelector('output[for="count price"]'),
   };
 
   const initial = {
+    price: output.price.value,
     total: output.total.value,
     warning: maxWarn.dataset.limit,
   };
@@ -142,15 +140,18 @@
     const price = parseFloat(input.price.value);
 
     output.count.value = count;
-    output.total.value = price && count ? `$${count * price}` : initial.total;
+    output.price.value = price ? `$${price}` : initial.price;
+    output.total.value = price && count ? count * price : initial.total;
     output.pluralCount.innerText = count > 1 ? `Tickets` : `Ticket`;
 
     maxWarn.dataset.limit = count + parseInt(initial.warning);
   }
 
   // do it
-  updateMax();
-  updateSummary();
+  window.onload = () => {
+    updateMax();
+    updateSummary();
+  }
 
   input.count.addEventListener('input', updateSummary);
   input.price.addEventListener('input', updateSummary);

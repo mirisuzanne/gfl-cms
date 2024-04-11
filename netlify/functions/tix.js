@@ -67,12 +67,12 @@ exports.handler = async function (event, context) {
       body: JSON.stringify({tix}),
     };
 
-  } catch (error) {
-    console.error(error);
+  } catch (e) {
+    console.error(e);
 
     return {
       statusCode: 400,
-      body: `Error: ${error.message}`,
+      body: JSON.stringify(e),
     };
   }
 }

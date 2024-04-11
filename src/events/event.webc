@@ -1,7 +1,20 @@
 <div
-  webc:if="event.values.Notes"
-  @html="event.values.Notes"
+  webc:if="event.show.details"
+  webc:nokeep
+  @html="md(event.show.details)"
 ></div>
+
+<div
+  webc:if="event.values.Notes"
+  webc:nokeep
+  @html="md(event.values.Notes)"
+></div>
+
+<venue-card
+  webc:if="event.show.venue.data"
+  :@venue="event.show.venue.data.attributes"
+  @level="2"
+></venue-card>
 
 <check-out
   webc:if="!soldOut"
@@ -12,10 +25,12 @@
 <div webc:else class="sold-out">
   <h2>No Tickets Available</h2>
   <p>
-    This performance is sold out!
-    There are often tickets that become available
+    Advance tickets for this event are sold out!
+    But extra tickets often become available
     at the last minute.
-    <strong>If you show up at the door,
-      we'll do our best to find you a seat.</strong>
+    <strong>
+      If you show up at the door,
+      we'll do our best to find you a seat.
+    </strong>
   </p>
 </div>
