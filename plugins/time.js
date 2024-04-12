@@ -1,47 +1,19 @@
-const dateFormat = require('date-fns/format');
-const { utcToZonedTime } = require('date-fns-tz');
-const subDays = require('date-fns/subDays')
+const toFormat = require('date-fns/format');
+const { utcToZonedTime, toDate } = require('date-fns-tz');
 
-const year = () => `${new Date().getFullYear()}`;
+const year = (date) => `${new Date(date).getFullYear()}`;
+const zone = 'America/Denver';
 
-module.exports = function (eleventyConfig, options = {}) {
+module.exports = function (eleventyConfig, formats = {}) {
   // https://date-fns.org/v2.21.2/docs/format
-  const formats = {
-    day: 'd',
-    month: 'MMMM',
-    year: 'yyyy',
-    rough: 'MMMM yyyy',
-    iso: 'yyyy-MM-dd',
-    url: 'yyyy-MM-dd',
-    default: 'yyyy/MM/dd',
-    ...options,
-  };
-
-  const makeDate = (date) => {
-    if (typeof date === 'string') {
-      return new Date(date);
-    }
-
-    return date || new Date();
-  }
-
-  const utcDate = (date) => {
-    return utcToZonedTime(date, '+00:00');
-  };
-
   const formatDate = (date, format = 'default') => {
-    const dateObj = utcDate(makeDate(date));
-    return dateFormat(dateObj, formats[format] || format)
+    const dateObj = toDate(date, zone);
+    const useFormat = formats[format] || format;
+    const inFormat = toFormat(dateObj, useFormat, zone);
+    return inFormat;
   };
-
-  const isCurrent = (date) => {
-    const today = subDays(utcDate(), 1);
-    return date > today;
-  }
 
   eleventyConfig.addShortcode('year', year);
   eleventyConfig.addFilter('year', year);
-  eleventyConfig.addFilter('utcDate', utcDate);
-  eleventyConfig.addFilter('isCurrent', isCurrent);
   eleventyConfig.addFilter('formatDate', formatDate);
 };
