@@ -1,0 +1,158 @@
+<form action="/api/checkout" method="POST">
+  <h2 id="tickets-form-label">Reserve Tickets</h2>
+
+  <input
+    type="hidden"
+    id="docID"
+    name="docID"
+    :value="this.event.show.tickets">
+  <input
+    type="hidden"
+    id="eventID"
+    name="eventID"
+    :value="this.event.name">
+  <input
+    type="hidden"
+    id="ticketID"
+    name="ticketID"
+    :value="this.event.values.ID">
+  <input
+    type="hidden"
+    id="max"
+    name="max"
+    :value="this.max">
+
+  <div class="form-field">
+    <label for="count">
+      How many tickets?
+      <warn-under
+        data-limit="5"
+        :data-now="this.max"
+        id="max-warn"
+        class="form-help">
+        (<output @text="dataNow"></output> remaining)
+      </warn-under>
+    </label>
+    <input
+      type="number"
+      id="count"
+      name="count"
+      required="true"
+      min="1"
+      value="1"
+      :max="this.max"
+    >
+  </div>
+
+  <div class="form-field">
+    <label for="price">
+      Name your price
+      <span class="form-help">($per-ticket)</span>
+    </label>
+    <input
+      type="number"
+      id="price"
+      name="price"
+      required="true"
+      min="0.5"
+      step="0.5"
+    >
+  </div>
+
+  <form-field
+    @label="Notes or special requests"
+    @name="note"
+    @type="textarea"
+  ></form-field>
+
+  <div class="form-actions">
+    <p class="checkout-summary">
+      <strong
+        @text="formatDate(this.event.values.DateTime, 'event')"
+      ></strong>
+      <br>
+      <output for="count">1</output>
+      <span plural-for="count">ticket</span>
+      @
+      <output for="price">(name your price)</output>
+      <br>
+      $<output for="count price">0</output>
+      <strong>Total</strong>
+    </p>
+
+    <button type="submit">
+      Reserve
+    </button>
+  </div>
+</form>
+
+<script>
+  const maxWarn = document.getElementById('max-warn');
+
+  const inputIDs = ['count', 'price', 'max', 'docID', 'eventID', 'ticketID'];
+  const input = {};
+  inputIDs.forEach((key) => { input[key] = document.getElementById(key); });
+
+  // updating the max available for an event
+  const setMax = (max) => {
+    input.max.value = max;
+    maxWarn.dataset.now = max;
+    input.count.setAttribute('max', max);
+  }
+
+  const getTix = async (doc, event) => {
+    try {
+      const params = {
+        doc: encodeURIComponent(doc),
+        event: encodeURIComponent(event),
+      };
+
+      const url = `/api/tix?doc=${params.doc}&event=${params.event}`;
+      const response = await fetch(url);
+
+      return await response.json();
+    } catch(e) {
+      console.error(e);
+    }
+  }
+
+  const updateMax = async () => {
+    const data = await getTix(input.docID.value, input.eventID.value);
+    setMax(data.tix);
+  }
+
+  // handling user inputs
+  const output = {
+    count: document.querySelector('output[for=count]'),
+    pluralCount: document.querySelector('[plural-for=count]'),
+    price: document.querySelector('output[for=price]'),
+    total: document.querySelector('output[for="count price"]'),
+  };
+
+  const initial = {
+    price: output.price.value,
+    total: output.total.value,
+    warning: maxWarn.dataset.limit,
+  };
+
+  const updateSummary = () => {
+    const count = parseInt(input.count.value);
+    const price = parseFloat(input.price.value);
+
+    output.count.value = count;
+    output.price.value = price ? `$${price}` : initial.price;
+    output.total.value = price && count ? count * price : initial.total;
+    output.pluralCount.innerText = count > 1 ? `Tickets` : `Ticket`;
+
+    maxWarn.dataset.limit = count + parseInt(initial.warning);
+  }
+
+  // do it
+  window.onload = () => {
+    updateMax();
+    updateSummary();
+  }
+
+  input.count.addEventListener('input', updateSummary);
+  input.price.addEventListener('input', updateSummary);
+</script>

@@ -1,42 +1,45 @@
 const EleventyFetch = require('@11ty/eleventy-fetch');
 const qs = require('qs');
 
-const cms = process.env.CONTEXT == 'dev'
-  ? 'http://localhost:1337'
-  : 'https://grapefruitlab-cms.fly.dev';
+const context = {
+  dev: {
+    base: 'http://127.0.0.1:1337/api/',
+    auth: process.env.STRAPI_KEY_DEV
+  },
+  production: {
+    base: 'https://grapefruitlab-cms.fly.dev/api/',
+    auth: process.env.STRAPI_KEY,
+  }
+};
 
-const STRAPI_KEY = process.env.CONTEXT === 'dev'
-  ? process.env.STRAPI_KEY_DEV
-  : process.env.STRAPI_KEY;
+const api = context[process.env.CONTEXT] || context.production;
+const get = 'nav';
 
-const object = 'nav';
-const query = qs.stringify(
+const populate = qs.stringify(
   {
     populate: {
-      items: {
-        populate: '*'
-      },
+      items: { populate: '*' },
     },
   },
-  {
-    encodeValuesOnly: true,
-  }
+  { encodeValuesOnly: true }
 );
 
 module.exports = async function() {
   try {
-    const data = await EleventyFetch(`${cms}/api/${object}?${query}`, {
+    const response = await EleventyFetch(`${api.base}${get}?${populate}`, {
       type: 'json',
       duration: '0s',
-      removeUrlQueryParams: true,
       fetchOptions: {
-        headers: {
-          Authorization: `Bearer ${STRAPI_KEY}`,
-        },
+        headers: { Authorization: `Bearer ${api.auth}` },
       },
     });
 
-    return data.data.attributes.items;
+    const nav = response.data.attributes.items.map((item) => {
+      item.page = item.page.data.attributes;
+      return item;
+    });
+
+    return nav;
   } catch (error) {
     console.error({error});
   }

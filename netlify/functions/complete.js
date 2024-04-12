@@ -89,16 +89,25 @@ const codaRowPost = async (table, data, key = 'ID') => {
 };
 
 // tickets
-const recordTicket = async (session) => {
+const getCustom = (data, key) => {
+  const field = data.custom_fields.find((item) => item.key === key);
+  return field ? field[field.type].value : null;
+};
+
+const recordTicket = async (session, sale) => {
+  const customer = session.customer_details;
+  const meta = session.metadata;
+
   return await codaRowPost(
-    `${coda.base}/docs/${session.doc}/tables/${coda.ticket.table}`,
+    `${coda.base}/docs/${meta.docID}/tables/${coda.ticket.table}`,
     {
       ID: session.id,
-      Event: session.event,
-      Name: session.name,
-      Tickets: session.tickets,
-      Paid: session.paid,
-      Notes: session.notes,
+      Event: meta.eventID,
+      Name: getCustom(session, 'name') || customer.name,
+      Email: customer.email,
+      Tickets: sale.quantity,
+      Paid: session.amount_total / 100,
+      Notes: meta.note || '',
     }
   );
 };
@@ -159,9 +168,9 @@ const onCheckoutComplete = async (stripeEvent) => {
   const sale = session.line_items.data[0];
 
   switch (sale.price.product.metadata.type) {
-    // case 'ticket':
-    //   const ticket = await recordTicket(session);
-    //   return eventSuccess(ticket);
+    case 'ticket':
+      const ticket = await recordTicket(session, sale);
+      return eventSuccess(ticket);
 
     case 'donation':
       const donor = await recordDonor(

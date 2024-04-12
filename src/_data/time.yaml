@@ -1,4 +1,8 @@
 # used by build plugins
-short: PP
+short: MMMM d
 long: &default MMMM d, y
+event: 'EEEE, MMMM d @ h:mm aa'
+year: 'yyyy'
+iso: 'yyyy-MM-dd'
+rough: 'MMMM yyyy'
 default: *default

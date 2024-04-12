@@ -4,19 +4,11 @@
     <span visually-hidden><b>Grapefruit</b> Lab</span>
   </a>
   <ul>
-    <script webc:type="js">
-      nav.map(item => {
-        const itemPage = item.page.data.attributes;
-        const itemSlug = `${permaSlug(itemPage)}`;
-
-        return `
-          <nav-item
-            title="${item.title}"
-            link="${itemSlug}"
-            :@active="${itemSlug === page.url}"
-          ></nav-item>
-        `;
-      }).join('');
-    </script>
+    <li webc:for="item of nav">
+      <nav-item
+        :@title="item.title"
+        :@link="buildURL(item.page)"
+      ></nav-item>
+    </li>
 </ul>
 </nav>

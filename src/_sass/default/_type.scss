@@ -50,3 +50,8 @@ hr {
   border-block-end-width: thin;
   margin-block: var(--spacer);
 }
+
+::selection {
+  background: config.$border;
+  color: config.$bg;
+}

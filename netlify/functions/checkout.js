@@ -1,17 +1,14 @@
 const options = {
   production: {
     url: process.env.URL,
-    cms: 'https://grapefruitlab-cms.fly.dev/api',
     stripe: process.env.STRIPE_SECRET_KEY,
   },
   dev: {
-    url: 'http://localhost:8888',
-    cms: 'http://localhost:1337/api',
+    url: 'http://127.0.0.1:8888',
     stripe: process.env.STRIPE_TEST_KEY,
   },
   preview: {
     url: process.env.DEPLOY_PRIME_URL,
-    cms: 'https://grapefruitlab-cms.fly.dev/api',
     stripe: process.env.STRIPE_TEST_KEY,
   },
 }
@@ -21,69 +18,92 @@ const config = options[process.env.CONTEXT] || options.preview;
 const fetch = require("node-fetch");
 const stripe = require("stripe")(config.stripe);
 
+const getTix = async (doc, event) => {
+  try {
+    const params = {
+      doc: encodeURIComponent(doc),
+      event: encodeURIComponent(event),
+    };
+
+    const url = `${config.url}/api/tix?doc=${params.doc}&event=${params.event}`;
+    const response = await fetch(url);
+
+    return await response.json();
+  } catch(e) {
+    console.error(e);
+  }
+}
+
 exports.handler = async function (event, context) {
-  const referer = event.headers.referer;
-  // JSON.parse doesn't work here
-  const params = new URLSearchParams(event.body);
-  const eventID = params.get("event");
-  const optionID = params.get("option");
-  const productID = params.get("product");
-  const note = params.get("note");
-  const max = parseInt(params.get("max"), 10);
-  const count = parseInt(params.get("count"), 10);
-  const price = parseFloat(params.get("price"), 10);
+  try {
+    const referer = event.headers.referer;
 
-  // update the max available
-  const response = await fetch(`${config.cms}/ticket-sales/`);
-  const data = await response.json();
-  const cmsEvent = data.find((item) => `${item.id}` === eventID);
-  const option = cmsEvent.option.find((opt) => `${opt.id}` === optionID);
-  const productMax = option.seats - option.sold;
+    // JSON.parse doesn't work here
+    const params = new URLSearchParams(event.body);
+    const docID = params.get("docID");
+    const eventID = params.get("eventID");
+    const productID = params.get("ticketID");
+    const note = params.get("note");
+    const max = parseInt(params.get("max"), 10);
+    const count = parseInt(params.get("count"), 10);
+    const price = parseFloat(params.get("price"), 10);
 
-  const ticketMax = productMax || max;
+    // update the max available
+    const data = getTix(docID, eventID);
+    const ticketMax = data.tix || max;
 
-  // create a checkout flow in stripe
-  const item = {
-    price_data: {
-      currency: 'usd',
-      product: productID,
-      unit_amount: price * 100,
-    },
-    quantity: count,
-  };
+    // create a an item for stripe
+    const item = {
+      price_data: {
+        currency: 'usd',
+        product: productID,
+        unit_amount: price * 100,
+      },
+      quantity: Math.min(count, ticketMax),
+    };
 
-  if (ticketMax > 1) {
-    item.adjustable_quantity = {
-      enabled: true,
-      minimum: 1,
-      maximum: productMax || max,
+    // only allow editing quantity if there's more available
+    if (ticketMax > 1) {
+      item.adjustable_quantity = {
+        enabled: true,
+        minimum: 1,
+        maximum: ticketMax,
+      };
+    }
+
+    // create a checkout session
+    const session = await stripe.checkout.sessions.create({
+      line_items: [ item ],
+      custom_fields: [
+        {
+          key: 'name',
+          label: {
+            type: 'custom',
+            custom: 'Reservation Name',
+          },
+          type: 'text',
+          optional: true,
+        },
+      ],
+      metadata: { docID, eventID, note },
+      mode: "payment",
+      success_url: `${config.url}/checkout/success/`,
+      // go back to page that they were on
+      cancel_url: referer,
+    });
+
+    return {
+      statusCode: 303,
+      headers: {
+        Location: session.url,
+      },
+    };
+  } catch (e) {
+    console.error(e);
+
+    return {
+      statusCode: 400,
+      body: JSON.stringify(e),
     };
   }
-
-  const session = await stripe.checkout.sessions.create({
-    line_items: [ item ],
-    custom_fields: [
-      {
-        key: 'name',
-        label: {
-          type: 'custom',
-          custom: 'Reservation Name',
-        },
-        type: 'text',
-        optional: true,
-      },
-    ],
-    metadata: { eventID, optionID, note },
-    mode: "payment",
-    success_url: `${config.url}/checkout/success/`,
-    // go back to page that they were on
-    cancel_url: referer,
-  });
-
-  return {
-    statusCode: 303,
-    headers: {
-      Location: session.url,
-    },
-  };
 };

@@ -2,16 +2,26 @@
 layout: base
 ---
 
-<site-nav :@page="page" :@nav="nav"></site-nav>
+<site-nav
+  :@page="page"
+  :@nav="nav"
+></site-nav>
+
 <page-header
   :@hero="hero"
   :@title="title"
   :@subtitle="subtitle"
 ></page-header>
-<main id="content">
-  <div webc:nokeep @raw="content"></div>
-</main>
+
+<main
+  id="content"
+  @raw="content"
+></main>
+
 <aside id="secondary">
   <email-form></email-form>
 </aside>
-<page-footer :@site="site"></page-footer>
+
+<page-footer
+  :@site="site"
+></page-footer>

@@ -4,32 +4,41 @@ const getPage = (collection, id, type) => collection.find((page) => {
     return type ? typeMatch && idMatch : idMatch;
   });
 
-const permaSlug = (page, type) => {
-  let slug = page.slug || `${page.id}`;
+const buildURL = (page) => {
+  const type = page.type || 'show';
+  let slug = page.slug;
 
-  if (page.type === 'post') {
-    const date = page.date;
-    slug = `article/${date}/${slug}`;
-  } else if (type === 'show') {
-    slug = `shows/${slug}`;
-  } else if (type === 'event') {
-    const show = page.show_slug;
-    const date = page.date;
-    slug = `shows/${show}/${date}/${slug}`;
-  } else if (type === 'script') {
-    const show = page.show_slug;
-    slug = `shows/${show}/script`;
+  switch (type) {
+    case 'post':
+      slug = `article/${page.date}/${slug}`;
+      break;
+    case 'show':
+      slug = `shows/${slug}/`;
+      break;
+    case 'event':
+    case 'row':
+      slug = `shows/${page.show.slug}/${slug}/`;
+      break;
+    default:
+      break;
   }
 
-  if (slug.endsWith('index')) {
+  slug = slug.startsWith('/') ? slug : `/${slug}`
+  slug = slug.replaceAll('//', '/');
+
+  if (slug.endsWith('/') || slug.endsWith('.html')) {
+    return slug;
+  } else if (slug.endsWith('index')) {
     return `${slug}.html`;
   }
 
-  slug = slug.endsWith('/') || slug.endsWith('.html') ? slug : `${slug}/`;
-  return slug.startsWith('/') ? slug : `/${slug}`;
+  return `${slug}/`;
 }
 
+const getHero = (src) => src.header?.hero.data?.attributes;
+
 module.exports = (eleventyConfig) => {
-  eleventyConfig.addFilter('permaSlug', permaSlug);
+  eleventyConfig.addFilter('buildURL', buildURL);
   eleventyConfig.addFilter('getPage', getPage);
+  eleventyConfig.addFilter('getHero', getHero);
 }

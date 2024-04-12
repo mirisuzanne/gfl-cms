@@ -2,7 +2,7 @@ const Image = require('@11ty/eleventy-img');
 const path = require('path');
 
 const cms = process.env.CONTEXT == 'dev'
-  ? 'http://localhost:1337'
+  ? 'http://127.0.0.1:1337'
   : 'https://grapefruitlab-cms.fly.dev';
 
 module.exports = function(eleventyConfig, options = {}) {

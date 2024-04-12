@@ -1,4 +1,4 @@
-<article :data-card="card">
+<article :data-card="this.card">
   <slot name="hero">
     <card-hero
       :src="src || 'amol-dress.jpg'"

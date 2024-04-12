@@ -1,90 +1,98 @@
-<script webc:if="blocks && blocks.length > 0" webc:type="js">
-  blocks.map((item, i) => {
-    let itemOut = `<p>ugh ${i}</p>`;
-
-    if (item.__component === 'content.body') {
-      itemOut = `<md-body
-        :body="blocks[${i}].body"
-        ></md-body>`;
-    }
-
-    else if (item.__component === 'content.h2') {
-      itemOut = `<h
-        @level="2"
-        @title="blocks[${i}].heading"
-      ></h>`;
-    }
-
-    else if (item.__component === 'content.action-link') {
-      itemOut = `<a
-        :href="blocks[${i}].url"
-        :@text="blocks[${i}].text"
-        class="action"
-      ></a>`;
-    }
-
-    // if (item.__component === 'content.quote') {
-    //   return `<block-quote
-    //     @quote-text="${ item.content }"
-    //     @cite-name="${ item.cite.name }"
-    //   ></block-quote>`;
-    // }
-
-    // if (item.__component === 'content.person-card') {
-    //   const person = item.person.data.attributes;
-    //   const cardHero = person.header.hero.data.attributes;
-
-    //   return `<person-card
-    //     name="${ person.name }"
-    //     pronouns="${ person.pronouns }"
-    //     summary="${ person.header.summary }"
-    //     src="${ cardHero.url }"
-    //     alt="${ cardHero.alternativeText }"
-    //   ></person-card>`;
-    // }
-
-    // if (item.__component === 'content.gallery-card') {
-    //   const gallery = item.gallery.data.attributes;
-    //   const title = item.title || gallery.title;
-    //   const caption = gallery.figure.caption;
-    //   const media = gallery.figure.gallery.data;
-
-    //   return `<h
-    //     webc:if="${ title }"
-    //     level="2"
-    //     @title="${ title }"
-    //   ></h>
-    //   <media-gallery
-    //     :media="media"
-    //     caption="${ caption }"
-    //   ></media-gallery>`;
-    // }
-
-    // if (item.__component === 'content.figure') {
-    //   const caption = item.caption;
-    //   const media = item.gallery.data;
-
-    //   return `<media-gallery
-    //     :media="media"
-    //     caption="${ caption }"
-    //   ></media-gallery>`;
-    // }
-
-    // if (item.__component === 'auto.show-history') {
-    //   return `<show-history
-    //     :shows="shows"
-    //     limit="${ item.shows }"
-    //   ></show-history>`;
-    // }
-
-    // if (item.__component === 'auto.contact-form') {
-    //   return `<contact-form
-    //     action="${ item.action }"
-    //     submit="${ item.submit }"
-    //     :page-url="page.url"
-    //   ></contact-form>`;
-    // }
-
-    return itemOut;
-  }).join(' ');
+<script webc:setup>
+  const findHero = (page) => getHero(page) || getHero($data.site);
 </script>
+
+<template
+  webc:nokeep
+  webc:for="item of this.cms.content"
+>
+  <h
+    webc:if="item.__component === 'content.h2'"
+    @level="2"
+    :@title="item.heading"
+  ></h>
+
+  <div
+    webc:if="item.__component === 'content.body'"
+    webc:nokeep
+    @html="md(item.body)"
+  ></div>
+
+  <a
+    webc:if="item.__component === 'content.action-link'"
+    class="action"
+    :href="item.url"
+    @html="item.text"
+  ></a>
+
+  <rsvp-form
+    webc:if="item.__component === 'content.rsvp-form'"
+    :@name="item.name"
+    :@next="item.next?.path"
+    :@form-fields="item.formFields"
+  ></rsvp-form>
+
+  <block-quote
+    webc:if="item.__component === 'content.quote'"
+    :@quote-text="item.content"
+    :@cite-name="item.cite.name"
+    :@cite-date="item.cite.date"
+    :@cite-source="item.cite.source"
+    :@cite-url="item.cite.url"
+  ></block-quote>
+
+  <post-card
+    webc:if="item.__component === 'content.post-card'"
+    :@post="item.page.data.attributes"
+    :@hero="findHero(item.page.data.attributes)"
+  ></post-card>
+
+  <venue-card
+    webc:if="item.__component === 'content.venue-card' && item.venue.data"
+    :@venue="item.venue.data.attributes"
+  ></venue-card>
+
+  <person-card
+    webc:if="item.__component === 'content.person-card'"
+    :@person="item.person.data.attributes"
+    :@hero="findHero(item.person.data.attributes)"
+  ></person-card>
+
+  <media-gallery
+    webc:if="item.__component === 'content.figure'"
+    :@media="item.gallery.data"
+    :@caption="item.caption"
+  ></media-gallery>
+
+  <gallery-card
+    webc:if="item.__component === 'content.gallery-card'"
+    :@title="item.title"
+    :@gallery="item.gallery.data.attributes"
+  ></gallery-card>
+
+  <show-history
+    webc:if="item.__component === 'auto.show-history'"
+    :@shows="$data.runs.shows"
+    :@limit="item.limit"
+    :@collections="$data.collections"
+  ></show-history>
+
+  <contact-form
+    webc:if="item.__component === 'auto.contact-form'"
+    :@action="item.action"
+    :@submit="item.submit"
+    :@collections="$data.collections"
+  ></contact-form>
+
+  <press-card
+    webc:if="item.__component === 'auto.press-card' && cms.press"
+    :@title="item.title"
+    :@press="cms.press.data.map((data) => data.attributes.quote)"
+  ></press-card>
+
+  <run-card
+    webc:if="item.__component === 'auto.run-card' && cms.tickets"
+    :@show="cms"
+  ></run-card>
+
+</template>
