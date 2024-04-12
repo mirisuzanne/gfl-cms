@@ -17,10 +17,6 @@ module.exports = function (eleventyConfig, options = {}) {
     ...options,
   };
 
-  const isZoned = (date) => {
-    return (typeof date === 'string') && (date.length > 24);
-  }
-
   const makeDate = (date) => {
     if (typeof date === 'string') {
       return new Date(date);
@@ -33,10 +29,9 @@ module.exports = function (eleventyConfig, options = {}) {
     return utcToZonedTime(date, '+00:00');
   };
 
-  const formatDate = (date, format = 'default', zoned) => {
-    const dateObj = makeDate(date);
-    const zDate = zoned || isZoned(date) ? dateObj : utcDate(dateObj);
-    return dateFormat(zDate, formats[format] || format)
+  const formatDate = (date, format = 'default') => {
+    const dateObj = utcDate(makeDate(date));
+    return dateFormat(dateObj, formats[format] || format)
   };
 
   const isCurrent = (date) => {
