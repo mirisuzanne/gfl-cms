@@ -9,8 +9,7 @@
 <time
   :datetime="formatDate(this.start, 'iso')"
   @text="startFormat(this.start, this.end)"
-></time> —
-<time
+></time>—<time
   :datetime="formatDate(this.end, 'iso')"
   @text="formatDate(this.end)"
 ></time>
