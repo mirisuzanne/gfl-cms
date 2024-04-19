@@ -16,13 +16,10 @@
   @level="2"
 ></venue-card>
 
-<check-out
-  webc:if="!soldOut"
-  :@event="event"
-  :@max="this.event.values.Left"
-></check-out>
-
-<div webc:else class="sold-out">
+<div
+  webc:if="soldOut"
+  class="sold-out"
+>
   <h2>No Tickets Available</h2>
   <p>
     Advance tickets for this event are sold out!
@@ -34,3 +31,9 @@
     </strong>
   </p>
 </div>
+
+<check-out
+  webc:if="event.values.ID && !soldOut"
+  :@event="event"
+  :@max="event.values.Left"
+></check-out>

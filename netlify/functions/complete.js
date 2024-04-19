@@ -89,11 +89,6 @@ const codaRowPost = async (table, data, key = 'ID') => {
 };
 
 // tickets
-const getCustom = (data, key) => {
-  const field = data.custom_fields.find((item) => item.key === key);
-  return field ? field[field.type].value : null;
-};
-
 const recordTicket = async (session, sale) => {
   const customer = session.customer_details;
   const meta = session.metadata;
@@ -103,11 +98,12 @@ const recordTicket = async (session, sale) => {
     {
       ID: session.id,
       Event: meta.eventID,
-      Name: getCustom(session, 'name') || customer.name,
-      Email: customer.email,
+      Name: meta.name || customer.name,
+      Email: meta.email || customer.email,
       Tickets: sale.quantity,
       Paid: session.amount_total / 100,
       Notes: meta.note || '',
+      Subscribe: meta.subscribe ? true : false,
     }
   );
 };
