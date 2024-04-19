@@ -9,7 +9,7 @@
     ></time>
   </a>
   <span
-    webc:if="event.values.Notes"
-    @html="mdInline(`&ndash; ${this.event.values.Notes}`)"
+    webc:if="event.values.Title"
+    @html="mdInline(`&ndash; ${this.event.values.Title}`)"
   ></span>
 </li>

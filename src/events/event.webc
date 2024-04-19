@@ -1,13 +1,15 @@
-<div
-  webc:if="event.show.details"
-  webc:nokeep
-  @html="md(event.show.details)"
-></div>
+<h2 @text="event.values.Title"></h2>
 
 <div
   webc:if="event.values.Notes"
   webc:nokeep
   @html="md(event.values.Notes)"
+></div>
+
+<div
+  webc:if="event.show.details"
+  webc:nokeep
+  @html="md(event.show.details)"
 ></div>
 
 <venue-card
