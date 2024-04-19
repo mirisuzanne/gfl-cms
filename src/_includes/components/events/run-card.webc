@@ -1,7 +1,7 @@
 <script webc:setup>
-const findEvents = (show, events) => events.filter((event) => {
-  return show.id === event.show.id;
-});
+const findEvents = (show, events) => events
+  .filter((event) => show.id === event.show.id)
+  .sort((a, b) => new Date(a.values.DateTime) - new Date(b.values.DateTime));
 </script>
 
 <section class='event-run'>

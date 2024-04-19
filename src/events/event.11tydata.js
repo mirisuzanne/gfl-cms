@@ -1,20 +1,24 @@
 const dateFormat = require('date-fns/format');
+const { utcToZonedTime } = require('date-fns-tz');
 
 const getHero = (src) => src.header?.hero.data?.attributes;
-const getTitle = (data) => dateFormat(
-  new Date(data.event.values.DateTime),
-  data.time.event
-);
+
+const getTitle = (data) => {
+  const utcDate = utcToZonedTime(data.event.values.DateTime, '+00:00');
+  return dateFormat(utcDate, data.time.event);
+};
+
 const getSubTitle = (data) => {
   const showTitle = `[${data.event.show.title}](../)`;
   return data.soldOut
-    ? `${showTitle} | **SOLD OUT**`
+    ? `**SOLD OUT** ${showTitle}`
     : `Tickets for ${showTitle}`;
 }
 
 module.exports = {
   layout: 'page',
   tags: ['events'],
+  hideEmailForm: true,
   pagination: {
     data: 'runs.events',
     size: 1,

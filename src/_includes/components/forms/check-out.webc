@@ -22,6 +22,26 @@
     name="max"
     :value="this.max">
 
+  <div class="field-group">
+    <form-field
+      @label="Reservation Name"
+      @name="name"
+      @required="required"
+    ></form-field>
+    <form-field
+      @label="Email"
+      @name="email"
+      @type="email"
+      @required="required"
+    ></form-field>
+  </div>
+
+  <form-field
+    @type="checkbox"
+    @label="Subscribe to our mailing list"
+    @name="subscribe"
+  ></form-field>
+
   <div class="form-field">
     <label for="count">
       How many tickets?

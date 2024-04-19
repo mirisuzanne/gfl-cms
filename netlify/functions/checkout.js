@@ -43,10 +43,20 @@ exports.handler = async function (event, context) {
     const docID = params.get("docID");
     const eventID = params.get("eventID");
     const productID = params.get("ticketID");
+    const name = params.get("name");
+    const email = params.get("email");
+    const subscribe = params.get("subscribe");
     const note = params.get("note");
     const max = parseInt(params.get("max"), 10);
     const count = parseInt(params.get("count"), 10);
     const price = parseFloat(params.get("price"), 10);
+
+    const description = params.get("description") || `
+      Your reservation is complete!
+      There are no tickets involved —
+      just give your name when you arrive,
+      and enjoy the show.
+    `;
 
     // update the max available
     const data = getTix(docID, eventID);
@@ -74,18 +84,9 @@ exports.handler = async function (event, context) {
     // create a checkout session
     const session = await stripe.checkout.sessions.create({
       line_items: [ item ],
-      custom_fields: [
-        {
-          key: 'name',
-          label: {
-            type: 'custom',
-            custom: 'Reservation Name',
-          },
-          type: 'text',
-          optional: true,
-        },
-      ],
-      metadata: { docID, eventID, note },
+      metadata: { docID, eventID, name, note, subscribe },
+      customer_email: email,
+      payment_intent_data: { description },
       mode: "payment",
       success_url: `${config.url}/checkout/success/`,
       // go back to page that they were on
