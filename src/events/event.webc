@@ -1,4 +1,4 @@
-<h2 @text="event.values.Title"></h2>
+<h2 @text="mdI(event.values.Title)"></h2>
 
 <div
   webc:if="event.values.Notes"
