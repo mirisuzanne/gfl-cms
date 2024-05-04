@@ -177,6 +177,7 @@ const onCheckoutComplete = async (stripeEvent) => {
         Donor: session.customer_details.name,
         Date: stampToDate(session.created),
         Amount: centsToDollars(session.amount_total),
+        For: sale.price.product.metadata.for || 'Any',
       });
       return eventSuccess({donor, donation});
 
