@@ -1,4 +1,15 @@
-<h2 @html="mdInline(event.values.Title)"></h2>
+<script webc:setup>
+  const isPast = (date) => {
+    const a = new Date(date);
+    const b = new Date();
+    return a < b;
+  };
+</script>
+
+<h2
+  @html="mdInline(event.values.Title)"
+  :log="console.log(event.name)"
+></h2>
 
 <div
   webc:if="event.values.Notes"
@@ -19,14 +30,14 @@
 ></venue-card>
 
 <div
-  webc:if="soldOut"
+  webc:if="soldOut || isPast(event.values.DateTime)"
   class="sold-out"
 >
   <h2>No Tickets Available</h2>
   <p>
-    Advance tickets for this event are sold out!
-    But extra tickets often become available
-    at the last minute.
+    Advance tickets for this event
+    are no longer available!
+    But seats often open up at the last minute.
     <strong>
       If you show up at the door,
       we'll do our best to find you a seat.
