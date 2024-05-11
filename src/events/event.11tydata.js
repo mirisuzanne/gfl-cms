@@ -15,6 +15,12 @@ const getSubTitle = (data) => {
     : `Tickets for ${showTitle}`;
 }
 
+const isPast = (date) => {
+  const a = new Date(date);
+  const b = new Date();
+  return a < b;
+}
+
 module.exports = {
   layout: 'page',
   tags: ['events'],
@@ -27,6 +33,7 @@ module.exports = {
   },
   eleventyComputed: {
     soldOut: (data) => data.event.values.Left < 1,
+    isPast: (data) => isPast(data.event.values.DateTime),
     title: (data) => getTitle(data),
     subtitle: (data) => getSubTitle(data),
     summary: (data) => data.event.show.header?.summary,

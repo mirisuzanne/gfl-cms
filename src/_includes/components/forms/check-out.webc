@@ -1,4 +1,7 @@
-<form action="/api/checkout" method="POST">
+<form
+  action="/api/checkout"
+  method="POST"
+>
   <h2 id="tickets-form-label">Reserve Tickets</h2>
 
   <input
