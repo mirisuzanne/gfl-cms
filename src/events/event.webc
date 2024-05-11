@@ -46,7 +46,7 @@
 </div>
 
 <check-out
-  webc:if="event.values.ID && !soldOut"
+  webc:elseif="event.values.ID"
   :@event="event"
   :@max="event.values.Left"
 ></check-out>
