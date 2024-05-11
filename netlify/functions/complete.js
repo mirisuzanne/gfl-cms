@@ -92,12 +92,14 @@ const codaRowPost = async (table, data, key = 'ID') => {
 const recordTicket = async (session, sale) => {
   const customer = session.customer_details;
   const meta = session.metadata;
+  const productMeta = sale.price.product.metadata;
+  const doc = meta.docID || productMeta.docID;
 
   return await codaRowPost(
-    `${coda.base}/docs/${meta.docID}/tables/${coda.ticket.table}`,
+    `${coda.base}/docs/${doc}/tables/${coda.ticket.table}`,
     {
       ID: session.id,
-      Event: meta.eventID,
+      Event: meta.eventID || productMeta.eventID,
       Name: meta.name || customer.name,
       Email: meta.email || customer.email,
       Tickets: sale.quantity,
