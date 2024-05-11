@@ -8,7 +8,6 @@
 
 <h2
   @html="mdInline(event.values.Title)"
-  :log="console.log(event.name)"
 ></h2>
 
 <div
