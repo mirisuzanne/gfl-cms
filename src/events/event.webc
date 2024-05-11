@@ -1,14 +1,4 @@
-<script webc:setup>
-  const isPast = (date) => {
-    const a = new Date(date);
-    const b = new Date();
-    return a < b;
-  };
-</script>
-
-<h2
-  @html="mdInline(event.values.Title)"
-></h2>
+<h2 @html="mdInline(event.values.Title)"></h2>
 
 <div
   webc:if="event.values.Notes"
@@ -29,7 +19,7 @@
 ></venue-card>
 
 <div
-  webc:if="soldOut || isPast(event.values.DateTime)"
+  webc:if="soldOut || isPast"
   class="sold-out"
 >
   <h2>No Tickets Available</h2>
@@ -45,7 +35,7 @@
 </div>
 
 <check-out
-  webc:elseif="event.values.ID"
+  webc:if="event.values.ID && !(soldOut || isPast)"
   :@event="event"
   :@max="event.values.Left"
 ></check-out>
