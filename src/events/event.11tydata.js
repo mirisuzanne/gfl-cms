@@ -18,11 +18,7 @@ const getSubTitle = (data) => {
 const isPast = (date) => {
   const event = new Date(date);
   const now = new Date();
-  console.log({
-    event,
-    now,
-    past: event < now,
-  });
+  now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
   return event < now;
 }
 
