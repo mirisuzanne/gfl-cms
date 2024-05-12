@@ -16,9 +16,10 @@ const getSubTitle = (data) => {
 }
 
 const isPast = (date) => {
-  const a = new Date(date);
-  const b = new Date();
-  return a < b;
+  const event = new Date(date);
+  const now = new Date();
+  now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+  return event < now;
 }
 
 module.exports = {
