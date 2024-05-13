@@ -1,6 +1,6 @@
 <h level="2" :@title="this.title || `In The Press`"></h>
 <block-quote
-  webc:for="quote of this.press.sort((a, b) => a.date - b.date)"
+  webc:for="quote of this.press.sort((a, b) => b.date - a.date)"
   :@quote-text="quote.content"
   :@cite-name="quote.cite.name"
   :@cite-date="quote.cite.date"
