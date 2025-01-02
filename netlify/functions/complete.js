@@ -132,7 +132,7 @@ const recordMerch = async (session, items) => {
     ? shippingAddress(customer, session.shipping)
     : '';
 
-  return items.map(async (sale) => {
+  return await items.map(async (sale) => {
     return await codaRowPost(
       `${coda.base}/docs/${coda.merch.doc}/tables/${coda.merch.table}`,
       {
