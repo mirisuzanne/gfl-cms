@@ -132,8 +132,10 @@ const recordMerch = async (session, items) => {
     ? shippingAddress(customer, session.shipping)
     : '';
 
-  return await items.map(async (sale) => {
-    return await codaRowPost(
+  const results = [];
+
+  for (const sale of items) {
+    const itemRow = await codaRowPost(
       `${coda.base}/docs/${coda.merch.doc}/tables/${coda.merch.table}`,
       {
         ID: session.id,
@@ -148,7 +150,10 @@ const recordMerch = async (session, items) => {
         Address: adr,
       }
     );
-  });
+    results.push(itemRow);
+  }
+
+  return results;
 };
 
 // donor
