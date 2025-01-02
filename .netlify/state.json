@@ -12,9 +12,10 @@
 				"name": "Colorado"
 			},
 			"timezone": "America/Denver",
-			"latitude": 39.6993,
-			"longitude": -104.8814
+			"latitude": 39.7628,
+			"longitude": -105.0263,
+			"postalCode": "80211"
 		},
-		"timestamp": 1715466597323
+		"timestamp": 1735799510805
 	}
 }

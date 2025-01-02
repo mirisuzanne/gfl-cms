@@ -32,6 +32,10 @@ const coda = {
     donor: "Donors",
     single: "Single",
     monthly: "Monthly",
+  },
+  merch: {
+    doc: '3-e4ekurKt',
+    table: "General",
   }
 };
 
@@ -110,6 +114,43 @@ const recordTicket = async (session, sale) => {
   );
 };
 
+// merch
+const shippingAddress = (customer, details) => {
+  const name = details.name || customer.name;
+  const address = details.address;
+  const street = address.line1 && address.line2
+    ? `${address.line1}\n${address.line2}`
+    : address.line1 || address.line2;
+  const location = `${address.city} ${address.state}, ${address.postal_code}`;
+  return `${name}\n${street}\n${location}`;
+};
+
+const recordMerch = async (session, items) => {
+  const customer = session.customer_details;
+  const meta = session.metadata;
+  const adr = session.shipping
+    ? shippingAddress(customer, session.shipping)
+    : '';
+
+  return items.map(async (sale) => {
+    return await codaRowPost(
+      `${coda.base}/docs/${coda.merch.doc}/tables/${coda.merch.table}`,
+      {
+        ID: session.id,
+        Item: sale.price.product.name,
+        Name: meta.name || customer.name,
+        Email: meta.email || customer.email,
+        Count: sale.quantity,
+        Unit: sale.price.unit_amount / 100,
+        Total: session.amount_total / 100,
+        Notes: meta.note || '',
+        Shipping: session.shipping_rate?.display_name || '',
+        Address: adr,
+      }
+    );
+  });
+};
+
 // donor
 const donorAddress = (address) => ({
   Street1: address.line1,
@@ -163,12 +204,17 @@ const onCheckoutComplete = async (stripeEvent) => {
     expand: ['line_items.data.price.product'],
   });
 
-  const sale = session.line_items.data[0];
+  const items = session.line_items.data;
+  const sale = items[0];
 
   switch (sale.price.product.metadata.type) {
     case 'ticket':
       const ticket = await recordTicket(session, sale);
       return eventSuccess(ticket);
+
+    case 'merch':
+      const merch = await recordMerch(session, items);
+      return eventSuccess(merch);
 
     case 'donation':
       const donor = await recordDonor(
