@@ -214,6 +214,7 @@ const onCheckoutComplete = async (stripeEvent) => {
 
     case 'merch':
       const merch = await recordMerch(session, items);
+      console.log(merch);
       return eventSuccess(merch);
 
     case 'donation':
@@ -242,6 +243,7 @@ const onCheckoutComplete = async (stripeEvent) => {
       return eventSuccess({sponsor, subscription});
 
     default:
+      console.log('unknown product type');
       return eventUnknown(session);
   };
 };
