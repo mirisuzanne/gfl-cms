@@ -206,7 +206,10 @@ const onCheckoutComplete = async (stripeEvent) => {
   const eventObject = stripeEvent.data.object;
 
   const session = await stripe.checkout.sessions.retrieve(eventObject.id, {
-    expand: ['line_items.data.price.product'],
+    expand: [
+      'line_items.data.price.product',
+      'shipping_rate',
+    ],
   });
 
   const items = session.line_items.data;
