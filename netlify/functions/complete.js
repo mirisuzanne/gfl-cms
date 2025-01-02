@@ -138,7 +138,7 @@ const recordMerch = async (session, items) => {
     const itemRow = await codaRowPost(
       `${coda.base}/docs/${coda.merch.doc}/tables/${coda.merch.table}`,
       {
-        ID: session.id,
+        ID: session.payment_intent,
         Item: sale.price.product.name,
         Name: meta.name || customer.name,
         Email: meta.email || customer.email,
