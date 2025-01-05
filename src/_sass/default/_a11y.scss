@@ -2,7 +2,7 @@
   display: none !important;
 }
 
-[visually-hidden]:not(:focus):not(:active) {
+visually-hidden:not(:focus):not(:active) {
   position: absolute !important;
   height: 1px;
   width: 1px;

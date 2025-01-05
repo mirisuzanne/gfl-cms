@@ -71,14 +71,18 @@
     <label for="price">
       Name your price
       <span class="form-help">($per-ticket)</span>
+      <button data-dialog="pay-info" aria-pressed="false" type="button">
+        <visually-hidden>help</visually-hidden>
+        <span aria-hidden="true">?</span>
+      </button>
     </label>
     <input
       type="number"
       id="price"
       name="price"
       required="true"
-      min="0.5"
-      step="0.5"
+      min="2"
+      step="1"
     >
   </div>
 
@@ -108,6 +112,46 @@
     </button>
   </div>
 </form>
+
+<dialog id="pay-info">
+  <p>
+    We require a $2 per-ticket minimum
+    for online reservations,
+    but you can pay any amount (or nothing at all)
+    for a walk-up ticket at the door.
+  </p>
+  <p>
+    Not sure how much to offer?
+    We want our shows to be accessible to all,
+    and hope those who can afford it
+    will help cover the cost for those who can't.
+    Every penny goes back into our work --
+    paying our collaborators,
+    covering childcare,
+    renting space,
+    purchasing materials (set, props, costumes),
+    and providing facilitating arts programs
+    in several Colorado prisons.
+  </p>
+  <ul>
+    <li>
+      Movie tickets often cost $15 or more.
+    </li>
+    <li>
+      Our average is often close to $25 per ticket.
+    </li>
+    <li>
+      Similar theaters in the area often charge
+      $30-$60 per ticket.
+    </li>
+    <li>
+      We hope you'll join us,
+      however much you are willing to pay.
+    </li>
+  </ul>
+
+  <form method="dialog"><button>ok</button></form>
+</dialog>
 
 <script>
   const maxWarn = document.getElementById('max-warn');
@@ -178,4 +222,18 @@
 
   input.count.addEventListener('input', updateSummary);
   input.price.addEventListener('input', updateSummary);
+
+  const payInfo = document.getElementById('pay-info');
+  const payInfoBtn = document.querySelector('[data-dialog=pay-info]');
+
+  const dialogBtnState = () => {
+    payInfoBtn.setAttribute('aria-pressed', payInfo.open);
+  }
+
+  payInfo.addEventListener('close', dialogBtnState);
+  payInfoBtn.addEventListener('click', (e) => {
+    if (payInfo.open) payInfo.close();
+    else payInfo.showModal();
+    dialogBtnState();
+  });
 </script>
