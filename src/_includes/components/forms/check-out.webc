@@ -71,11 +71,11 @@
     <label for="price">
       Name your price
       <span class="form-help">($per-ticket)</span>
-      <button data-dialog="pay-info" aria-pressed="false" type="button">
-        <visually-hidden>help</visually-hidden>
-        <span aria-hidden="true">?</span>
-      </button>
     </label>
+    <button data-dialog="pay-info" aria-pressed="false" type="button">
+      <visually-hidden>help</visually-hidden>
+      <span aria-hidden="true">?</span>
+    </button>
     <input
       type="number"
       id="price"
