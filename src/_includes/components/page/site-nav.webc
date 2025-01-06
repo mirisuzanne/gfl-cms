@@ -1,7 +1,7 @@
 <nav>
   <a href="/" rel="home" :data-nav="page.url === '/' ? 'active' : ''">
     <word-mark></word-mark>
-    <span visually-hidden><b>Grapefruit</b> Lab</span>
+    <visually-hidden><b>Grapefruit</b> Lab</visually-hidden>
   </a>
   <ul>
     <li webc:for="item of nav">
