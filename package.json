@@ -7,7 +7,7 @@
   "author": "Miriam Suzanne <miriam@oddbird.net>",
   "license": "ISC",
   "scripts": {
-    "start": "eleventy --serve --incremental",
+    "serve": "eleventy --serve --incremental",
     "build": "eleventy",
     "lint": "stylelint \"**/*.scss\" --fix"
   },
@@ -33,5 +33,8 @@
     "sass": "^1.72.0",
     "stripe": "^8.211.0",
     "striptags": "^3.2.0"
+  },
+  "dependencies": {
+    "@terriblemia/track-list": "^1.1.1"
   }
 }

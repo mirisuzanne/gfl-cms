@@ -1,0 +1,27 @@
+---
+layout: page
+noBots: true
+---
+
+<p>
+  Hello.
+</p>
+
+<figure>
+  <track-list>
+    <ol slot="tracks">
+      <li>
+        <strong>Bewick's History of British Birds (Jane's Theme)</strong>
+        <audio controls preload src="https://www.teacupgorilla.com/assets/files/jane/1-british-birds.mp3" width="100%"></audio>
+      </li>
+      <li>
+        <strong>Resurgam (Helen's Theme)</strong>
+        <audio controls preload src="https://www.teacupgorilla.com/assets/files/jane/3-resurgam.mp3" width="100%"></audio>
+      </li>
+    </ol>
+  </track-list>
+  <figcaption>
+    Singles from Teacup Gorilla's new album,
+    <em>Jane/Eyre: No Net Ensnares Me</em>
+  </figcaption>
+</figure>

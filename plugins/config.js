@@ -42,7 +42,10 @@ module.exports = (eleventyConfig) => {
   eleventyConfig.addPlugin(pluginRss);
   eleventyConfig.addJavaScriptFunction('absoluteUrl', pluginRss.absoluteUrl);
   eleventyConfig.addPlugin(pluginWebc, {
-    components: 'src/_includes/**/*.webc',
+    components: [
+      'src/_includes/**/*.webc',
+      'npm:@terriblemia/track-list/**/*.webc',
+    ],
   });
 
   // plugins
