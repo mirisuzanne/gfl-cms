@@ -1,27 +1,88 @@
 ---
 layout: page
+title: Hello Test
 noBots: true
 ---
 
 <p>
-  Hello.
+  Hello world.
 </p>
 
-<figure>
-  <track-list>
-    <ol slot="tracks">
-      <li>
-        <strong>Bewick's History of British Birds (Jane's Theme)</strong>
-        <audio controls preload src="https://www.teacupgorilla.com/assets/files/jane/1-british-birds.mp3" width="100%"></audio>
-      </li>
-      <li>
-        <strong>Resurgam (Helen's Theme)</strong>
-        <audio controls preload src="https://www.teacupgorilla.com/assets/files/jane/3-resurgam.mp3" width="100%"></audio>
-      </li>
-    </ol>
-  </track-list>
-  <figcaption>
-    Singles from Teacup Gorilla's new album,
-    <em>Jane/Eyre: No Net Ensnares Me</em>
-  </figcaption>
-</figure>
+<form
+  action=""
+  method="POST"
+>
+<div class="form-field">
+  <label for="price">
+    Name your price
+    <span class="form-help">($per-ticket)</span>
+  </label>
+  <button data-dialog="pay-info" aria-pressed="false" type="button" data-help>
+    <visually-hidden>help</visually-hidden>
+    <span aria-hidden="true">?</span>
+  </button>
+  <input
+    type="number"
+    id="price"
+    name="price"
+    required="true"
+    min="2"
+    step="1"
+  >
+</div>
+<button type="submit">
+  Reserve
+</button>
+</form>
+
+<dialog id="pay-info">
+  <form method="dialog"><button>close</button></form>
+
+  <h2>
+    Not sure how much to pay?
+  </h2>
+  <p>
+    We want our shows to be affordable for everyone,
+    which means different things for different people.
+    We require a $2 per-ticket minimum
+    for online reservations,
+    but you can pay any amount (or nothing at all)
+    for a walk-up ticket at the door.
+    Here are some reference points to get you started:
+  </p>
+  <ul>
+    <li>
+      Movie tickets often cost $15 or more.
+    </li>
+    <li>
+      Our average is close to $25 per ticket.
+    </li>
+    <li>
+      Similar theaters in Denver charge $30-$60 per ticket.
+    </li>
+  </ul>
+  <p>
+    Every penny goes toward the art --
+    paying our collaborators,
+    covering their childcare,
+    renting rehearsal and performance space,
+    purchasing materials (set, props, costumes),
+    and facilitating arts programs in Colorado prisons.
+  </p>
+</dialog>
+
+<script>
+  const payInfo = document.getElementById('pay-info');
+  const payInfoBtn = document.querySelector('[data-dialog=pay-info]');
+
+  const dialogBtnState = () => {
+    payInfoBtn.setAttribute('aria-pressed', payInfo.open);
+  }
+
+  payInfo.addEventListener('close', dialogBtnState);
+  payInfoBtn.addEventListener('click', (e) => {
+    if (payInfo.open) payInfo.close();
+    else payInfo.showModal();
+    dialogBtnState();
+  });
+</script>

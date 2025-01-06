@@ -51,6 +51,24 @@ hr {
   margin-block: var(--spacer);
 }
 
+dialog {
+  max-width: 40em;
+  padding: var(--gutter);
+
+  & form[method=dialog] {
+    float: right;
+    margin: 0 0 var(--gutter) var(--gutter);
+    position: relative;
+    z-index: 2;
+
+    & + * { margin-block-start: 0; }
+  }
+
+  @include config.above(40em) {
+    padding-inline: calc(var(--gutter) * 2);
+  }
+}
+
 ::selection {
   background: config.$border;
   color: config.$bg;

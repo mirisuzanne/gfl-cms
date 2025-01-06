@@ -23,7 +23,7 @@ legend {
 }
 
 label {
-  cursor: pointer;
+  grid-area: label;
 
   &:not([type=checkbox] + label) {
     display: block;
@@ -55,12 +55,9 @@ button {
 }
 
 .form-field {
-  display: var(--ccs-custom-display, block);
+  display: grid;
+  grid-template: 'label dialog' auto 'input input' auto / 1fr auto;
   margin-bottom: var(--gutter);
-
-  &:focus-within {
-    --focus-help: 1;
-  }
 }
 
 output {
@@ -83,6 +80,7 @@ textarea {
   display: block;
   font: inherit;
   font-size: var(--xsmall);
+  grid-area: input;
   padding: var(--half-shim);
   width: 100%;
 
@@ -98,14 +96,15 @@ textarea {
 }
 
 [data-help] {
-  opacity: var(--focus-help, 0.75);
-  transition: opacity 200ms;
+  font-size: var(--xsmall);
+  grid-column: help;
 }
 
-[data-help='hidden'] {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
+label + button[data-help] {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  grid-area: dialog;
+  padding: 0 0.5em;
 }
 
 .form-actions {
