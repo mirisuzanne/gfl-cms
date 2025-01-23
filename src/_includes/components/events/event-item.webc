@@ -1,6 +1,6 @@
 <li class="event-item">
   <strong
-    webc:if="this.event.values.Left === 0"
+    webc:if="this.event.values.Left < 1"
   >[SOLD OUT]</strong>
   <a :href="buildURL(this.event)">
     <time
