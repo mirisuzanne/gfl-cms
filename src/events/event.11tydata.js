@@ -25,7 +25,6 @@ const isPast = (date) => {
 module.exports = {
   layout: 'page',
   tags: ['events'],
-  hideEmailForm: true,
   pagination: {
     data: 'runs.events',
     size: 1,
