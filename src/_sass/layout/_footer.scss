@@ -16,12 +16,11 @@
   border-block-start: medium solid var(--border);
 }
 
+#secondary h2 {
+  margin-block-start: unset;
+}
+
 #contentinfo {
   background-color: var(--overlay);
   border-block-start: thin dotted var(--border);
-}
-
-#email-form-label h2 {
-  font-size: inherit;
-  margin-block-start: unset;
 }
