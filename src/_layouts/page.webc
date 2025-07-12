@@ -18,13 +18,14 @@ layout: base
   @raw="content"
 ></main>
 
-<aside
-  id="secondary">
-  <h2>Email newsletter</h2>
-  <a href="http://eepurl.com/dpdDEP">Subscribe for updates</a>
-  or
-  <a href="https://us12.campaign-archive.com/home/?u=c06c98b0844b3f7d8e16f8bc7&id=526a857f4f">
-    read our previous newsletters</a>.
+<aside id="secondary">
+  <div>
+    <h2>Email newsletter</h2>
+    <a href="http://eepurl.com/dpdDEP">Subscribe for updates</a>
+    or
+    <a href="https://us12.campaign-archive.com/home/?u=c06c98b0844b3f7d8e16f8bc7&id=526a857f4f">
+      read our previous newsletters</a>.
+  </div>
 </aside>
 
 <page-footer
