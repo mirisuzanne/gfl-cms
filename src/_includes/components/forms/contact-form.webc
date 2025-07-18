@@ -1,6 +1,7 @@
 <form-submit
   name="contact"
-  netlify
+  data-netlify="true"
+  netlify-honeypot="bot-field"
   :action="action || '/contact/thanks/'"
   :@submit="submit || 'send'"
 >
@@ -9,4 +10,8 @@
     <form-field @label="Email" @type="email" @required="required"></form-field>
   </div>
   <form-field @label="Message" @type="textarea" @required="required"></form-field>
+  <form-field
+    @label="Not for humans"
+    name="bot-field"
+    hidden></form-field>
 </form-submit>
