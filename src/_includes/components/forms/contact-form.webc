@@ -3,7 +3,7 @@
   method="POST"
   data-netlify="true"
   netlify-honeypot="bot-field"
-  :action="action || '/contact/thanks'"
+  :action="action || '/contact/thanks/'"
   :@submit="submit || 'send'"
 >
   <div class="field-group">
