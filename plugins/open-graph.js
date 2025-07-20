@@ -1,5 +1,3 @@
-const pluginRss = require('@11ty/eleventy-plugin-rss');
-
 const ogImage = (og, url) => {
   if (og && og.image) {
     return `/images/${og.image}/`;
@@ -11,9 +9,6 @@ const ogImage = (og, url) => {
   return `${api}${encoded}/opengraph/_wait:2_${new Date().toISOString()}`;
 }
 
-module.exports = function (eleventyConfig) {
-  eleventyConfig.addPlugin(pluginRss);
-
+export default function (eleventyConfig) {
   eleventyConfig.addFilter('ogImage', ogImage);
-  eleventyConfig.addLiquidFilter('absoluteUrl', pluginRss.absoluteUrl);
 };

@@ -18,8 +18,9 @@ const options = {
 
 const config = options[process.env.CONTEXT] || options.dev;
 
-const fetch = require("node-fetch");
-const stripe = require("stripe")(config.STRIPE);
+import fetch from "node-fetch";
+import Stripe from 'stripe';
+const stripe = new Stripe(config.STRIPE);
 
 const coda = {
   base: 'https://coda.io/apis/v1',
@@ -281,7 +282,7 @@ const onMonthlyDeleted = async (stripeEvent) => {
 };
 
 // handler
-exports.handler = async function (event, context) {
+export async function handler (event, context) {
   const { body, headers } = event;
 
   try {
@@ -308,4 +309,4 @@ exports.handler = async function (event, context) {
     console.error(`Stripe webhook failed with ${error}.`);
     return eventError(error);
   }
-};
+}

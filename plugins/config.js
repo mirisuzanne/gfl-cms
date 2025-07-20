@@ -1,26 +1,26 @@
-const yaml = require('js-yaml');
-const fs   = require('fs');
-const { EleventyRenderPlugin } = require('@11ty/eleventy');
-const pluginRss = require('@11ty/eleventy-plugin-rss');
-const pluginWebc = require('@11ty/eleventy-plugin-webc');
+import { load } from 'js-yaml';
+import { readFileSync } from 'fs';
+import { EleventyRenderPlugin } from '@11ty/eleventy';
+import pluginRss from '@11ty/eleventy-plugin-rss';
+import pluginWebc from '@11ty/eleventy-plugin-webc';
 
-const build = require('./build');
-const cms = require('./cms');
-const icons = require('./icons');
-const images = require('./images');
-const openGraph = require('./open-graph');
-const parse = require('./parse');
-const sass = require('./sass');
-const tickets = require('./tickets');
-const time = require('./time');
+import build from './build.js';
+import cms from './cms.js';
+import icons from './icons.js';
+import images from './images.js';
+import openGraph from './open-graph.js';
+import parse from './parse.js';
+import sass from './sass.js';
+import tickets from './tickets.js';
+import time from './time.js';
 
 const loadData = (path, files) => {
   const data = {};
 
   files.forEach(file => {
     try {
-      const fileData = yaml.load(
-        fs.readFileSync(`${path}${file}.yaml`, 'utf8')
+      const fileData = load(
+        readFileSync(`${path}${file}.yaml`, 'utf8')
       );
       data[file] = fileData;
     } catch (e) {
@@ -31,7 +31,7 @@ const loadData = (path, files) => {
   return data;
 }
 
-module.exports = (eleventyConfig) => {
+export default (eleventyConfig) => {
   eleventyConfig.addPassthroughCopy({
     './src/_assets/fonts': 'fonts',
     './src/_assets/js': 'js',
@@ -40,7 +40,6 @@ module.exports = (eleventyConfig) => {
 
   eleventyConfig.addPlugin(EleventyRenderPlugin);
   eleventyConfig.addPlugin(pluginRss);
-  eleventyConfig.addJavaScriptFunction('absoluteUrl', pluginRss.absoluteUrl);
   eleventyConfig.addPlugin(pluginWebc, {
     components: [
       'src/_includes/**/*.webc',
@@ -66,6 +65,6 @@ module.exports = (eleventyConfig) => {
   eleventyConfig.addPlugin(sass, { sassIn: assets.sass.folder });
 
   eleventyConfig.addDataExtension('yml, yaml', (contents) =>
-    yaml.load(contents),
+    load(contents),
   );
 }

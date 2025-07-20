@@ -1,8 +1,8 @@
-require('dotenv').config();
+import 'dotenv/config';
 
-const config = require('./plugins/config');
+import config from './plugins/config.js';
 
-module.exports = function (eleventyConfig) {
+export default function (eleventyConfig) {
   // config
   eleventyConfig.addPlugin(config);
   eleventyConfig.setLiquidOptions({jsTruthy: true});

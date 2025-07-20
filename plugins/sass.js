@@ -1,7 +1,7 @@
-const sass = require("sass");
-const path = require("node:path");
+import { compileString } from "sass";
+import { join, parse } from "node:path";
 
-module.exports = function(eleventyConfig, options = {}) {
+export default function(eleventyConfig, options = {}) {
   const opts = {
     sassIn: 'sass',
     cssOut: 'css',
@@ -19,19 +19,19 @@ module.exports = function(eleventyConfig, options = {}) {
           let cssPath = data.page.filePathStem.startsWith(`/${opts.sassIn}/`)
             ? data.page.filePathStem.replace(`/${opts.sassIn}/`, '')
             : data.page.filePathStem.replace('/', '');
-          return `${path.join(opts.cssOut, cssPath)}.css`;
+          return `${join(opts.cssOut, cssPath)}.css`;
         };
       }
     },
 
     compile: async function (inputContent, inputPath) {
-      let parsed = path.parse(inputPath);
+      let parsed = parse(inputPath);
 
       if (parsed.name.startsWith("_")) {
         return;
       }
 
-      let result = sass.compileString(inputContent, {
+      let result = compileString(inputContent, {
         loadPaths: [parsed.dir || "."],
       });
 

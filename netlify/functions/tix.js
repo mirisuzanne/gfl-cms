@@ -5,7 +5,7 @@
 // - doc = <document ID>
 // - event = <event name or ID>
 
-const fetch = require("node-fetch");
+import fetch from "node-fetch";
 
 const api = {
   base: 'https://coda.io/apis/v1',
@@ -51,7 +51,7 @@ const getTix = async (doc, row) => {
   return rowData.values[column.id];
 }
 
-exports.handler = async function (event, context) {
+export async function handler (event, context) {
   try {
     const params = new URLSearchParams(event.rawQuery);
 
