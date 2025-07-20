@@ -1,5 +1,4 @@
 <form-submit
-  netlify
   :name="this.name || `rsvp-${$data.page.url}`"
   :action="this.next || '/rsvp/thanks/'"
   :@fields="this.formFields"

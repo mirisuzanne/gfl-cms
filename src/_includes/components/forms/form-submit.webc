@@ -1,5 +1,7 @@
 <form
   method="POST"
+  data-netlify="true"
+  netlify-honeypot="bot-field"
   @attributes
 >
   <slot>
@@ -7,8 +9,12 @@
 
   <form-field
     @label="Current URL"
-    name="url"
+    @name="url"
     :@value="$data.page.url"
+    hidden></form-field>
+  <form-field
+    @label="Not for humans"
+    @name="bot-field"
     hidden></form-field>
   <div class="form-actions">
     <button type="submit" @html="this.submit || 'submit'"></button>
