@@ -1,11 +1,11 @@
-const Image = require('@11ty/eleventy-img');
-const path = require('path');
+import Image, { generateHTML } from '@11ty/eleventy-img';
+import { join } from 'path';
 
 const cms = process.env.CONTEXT == 'dev'
   ? 'http://127.0.0.1:1337'
   : 'https://grapefruitlab-cms.fly.dev';
 
-module.exports = function(eleventyConfig, options = {}) {
+export default function(eleventyConfig, options = {}) {
   const imgFolder = options.imgFolder;
   const imgOutput = { ...options.output };
   const imgSizes = {
@@ -24,7 +24,7 @@ module.exports = function(eleventyConfig, options = {}) {
     if (imgSrc.startsWith('/uploads/')) {
       imgSrc = `${cms}${src}`;
     } else if (imgFolder && !src.includes('://')) {
-      imgSrc = path.join(imgFolder, src);
+      imgSrc = join(imgFolder, src);
     }
 
     const metadata = await Image(imgSrc, imgOutput);
@@ -51,7 +51,7 @@ module.exports = function(eleventyConfig, options = {}) {
     if (namedSizes) { imageAttributes['data-img'] = namedSizes; }
 
     // You bet we throw an error on missing alt in `imageAttributes` (alt=' works okay)
-    return Image.generateHTML(metadata, imageAttributes, {
+    return generateHTML(metadata, imageAttributes, {
       whitespaceMode: 'inline',
     });
   }

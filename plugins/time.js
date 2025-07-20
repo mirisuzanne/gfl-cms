@@ -1,14 +1,14 @@
-const toFormat = require('date-fns/format');
-const { utcToZonedTime } = require('date-fns-tz');
+import { format } from "date-fns";
+import { utcToZonedTime } from 'date-fns-tz';
 
 const year = (date) => `${new Date(date).getFullYear()}`;
 
-module.exports = function (eleventyConfig, formats = {}) {
+export default function (eleventyConfig, formats = {}) {
   // https://date-fns.org/v2.21.2/docs/format
-  const formatDate = (date, format = 'default') => {
+  const formatDate = (date, as = 'default') => {
     const utcDate = utcToZonedTime(date, '+00:00');
-    const useFormat = formats[format] || format;
-    const inFormat = toFormat(utcDate, useFormat);
+    const useFormat = formats[as] || as;
+    const inFormat = format(utcDate, useFormat);
     return inFormat;
   };
 

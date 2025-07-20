@@ -15,8 +15,9 @@ const options = {
 
 const config = options[process.env.CONTEXT] || options.preview;
 
-const fetch = require("node-fetch");
-const stripe = require("stripe")(config.stripe);
+import fetch from "node-fetch";
+import Stripe from 'stripe';
+const stripe = new Stripe(config.stripe);
 
 const getTix = async (doc, event) => {
   try {
@@ -34,7 +35,7 @@ const getTix = async (doc, event) => {
   }
 }
 
-exports.handler = async function (event, context) {
+export async function handler (event, context) {
   try {
     const referer = event.headers.referer;
 
@@ -107,4 +108,4 @@ exports.handler = async function (event, context) {
       body: JSON.stringify(e),
     };
   }
-};
+}

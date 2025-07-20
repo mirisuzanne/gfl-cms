@@ -1,9 +1,9 @@
-const slugify = require('slugify');
-const markdownIt = require('markdown-it');
-const anchor = require('markdown-it-anchor');
-const { EleventyRenderPlugin } = require('@11ty/eleventy');
-const syntaxHighlight = require('@11ty/eleventy-plugin-syntaxhighlight');
-const striptags = require('striptags');
+import slugify from 'slugify';
+import markdownIt from 'markdown-it';
+import anchor from 'markdown-it-anchor';
+import { EleventyRenderPlugin } from '@11ty/eleventy';
+import syntaxHighlight from '@11ty/eleventy-plugin-syntaxhighlight';
+import stripTags from 'striptags';
 
 const slug = (str) => {
   if (!str) {
@@ -27,11 +27,11 @@ const mdIt = markdownIt({
 
 const block = (content) => (content ? mdIt.render(content.trim()) : '');
 const inline = (content) => (content ? mdIt.renderInline(content.trim()) : '');
-const mdRemove = (content) => (content ? striptags(inline(content)) : '');
+const mdRemove = (content) => (content ? stripTags(inline(content)) : '');
 
 const cmsItem = (item) => ({ item, is: item.__component });
 
-module.exports = function (eleventyConfig) {
+export default function (eleventyConfig) {
   eleventyConfig.addPlugin(EleventyRenderPlugin);
   eleventyConfig.addPlugin(syntaxHighlight);
 

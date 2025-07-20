@@ -37,7 +37,7 @@ const buildURL = (page) => {
 
 const getHero = (src) => src.header?.hero.data?.attributes;
 
-module.exports = (eleventyConfig) => {
+export default (eleventyConfig) => {
   eleventyConfig.addFilter('buildURL', buildURL);
   eleventyConfig.addFilter('getPage', getPage);
   eleventyConfig.addFilter('getHero', getHero);

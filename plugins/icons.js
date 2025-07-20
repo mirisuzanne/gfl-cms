@@ -2,7 +2,7 @@
 // by @bmuenzenmeyer
 // https://github.com/bmuenzenmeyer/eleventy-plugin-inline-link-favicon
 
-const Image = require('@11ty/eleventy-img');
+import Image, { generateHTML } from '@11ty/eleventy-img';
 
 const SERVICE_BASE = `https://v1.indieweb-avatar.11ty.dev/:url:/`
 
@@ -29,7 +29,7 @@ async function iconImg(url, alt) {
 
   let metadata = await Image(iconUrl, imgOptions);
 
-  return Image.generateHTML(metadata, imgAttrs, {
+  return generateHTML(metadata, imgAttrs, {
     whitespaceMode: 'inline',
   });
 }
@@ -39,7 +39,7 @@ async function iconLink(url, text, alt) {
   return `<a href="${url}">${icon}${text || url}</a>`;
 }
 
-module.exports = (eleventyConfig) => {
+export default (eleventyConfig) => {
   eleventyConfig.addAsyncFilter('fav', iconLink);
   eleventyConfig.addPairedAsyncShortcode('fav', (text, url, alt) =>
     iconLink(url, text, alt)

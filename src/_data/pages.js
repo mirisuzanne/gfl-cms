@@ -1,5 +1,5 @@
-const EleventyFetch = require('@11ty/eleventy-fetch');
-const qs = require('qs');
+import EleventyFetch from '@11ty/eleventy-fetch';
+import { stringify } from 'qs';
 
 const context = {
   dev: {
@@ -15,7 +15,7 @@ const context = {
 const api = context[process.env.CONTEXT] || context.production;
 const get = 'pages';
 
-const populate = qs.stringify(
+const populate = stringify(
   {
     populate: {
       header: {
@@ -61,7 +61,7 @@ const populate = qs.stringify(
   }
 );
 
-module.exports = async function() {
+export default async function() {
   try {
     const response = await EleventyFetch(`${api.base}${get}?${populate}`, {
       type: 'json',

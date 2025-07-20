@@ -5,6 +5,6 @@ const getSeats = (option) => option.tickets.data.reduce(
   option.seats
 );
 
-module.exports = function (eleventyConfig, options = {}) {
+export default function (eleventyConfig, options = {}) {
   eleventyConfig.addFilter('getSeats', getSeats);
 };
