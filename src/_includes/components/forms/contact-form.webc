@@ -1,5 +1,6 @@
 <form-submit
   name="contact"
+  method="POST"
   data-netlify="true"
   netlify-honeypot="bot-field"
   :action="action || '/contact/thanks'"
