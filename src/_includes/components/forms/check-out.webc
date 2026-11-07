@@ -81,7 +81,7 @@
       id="price"
       name="price"
       required="true"
-      min="2"
+      min="5"
       step="1"
     >
   </div>
